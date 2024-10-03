@@ -5,13 +5,16 @@ import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from './Buttons'
 
+import trendsService from '../services/trends'
+
 const Canvas = () => {
     const canvas = useRef()
 
     useEffect(() => {
         const keyDownHandler = (event) => {
             if (event.code == 'Enter') {
-                console.log('Enter - NOT IMPLEMENTED YET')
+                console.log('Enter')
+                exportCanvas()
             }
             else if (event.shiftKey && event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
                 console.log('Redo')
@@ -21,14 +24,21 @@ const Canvas = () => {
                 console.log('Undo')
                 undoCanvas()
             }
+            else if (event.code == 'KeyR' && (event.ctrlKey || event.metaKey)) {
+                console.log('Clear')
+                clearCanvas()
+            }
     }
         document.addEventListener('keydown', (event) => keyDownHandler(event))
     }, [])
 
     const exportCanvas = async () => {
         try {
-            const data = await canvas.current.exportImage('png')
-            console.log(data)
+            const data_url = await canvas.current.exportImage('png')
+            const result = await trendsService.submit(data_url, 'today 1-m')
+            if (result) {
+                console.log('Successfully received data!')
+            }
         } catch(error) {
             console.log(error)
         }
@@ -40,8 +50,8 @@ const Canvas = () => {
     return (
         <div>
             <ReactSketchCanvas
-                width={1080}
-                height={720}
+                width={800}
+                height={400}
                 strokeWidth={4}
                 strokeColor="black"
                 ref={canvas}

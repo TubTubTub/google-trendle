@@ -27,4 +27,5 @@ def trend(keyword):
 def compute_similarity():
     body = request.get_json()
     print('Received body!', f'{body['data_url'][:30]}...')
+    parsed_data_url = Trend.parse_data_url(body['data_url'])
     return body

@@ -34,7 +34,8 @@ const Canvas = () => {
 
     const exportCanvas = async () => {
         try {
-            const data_url = await canvas.current.exportImage('png')
+            const data_url = await canvas.current.exportImage('jpeg')
+            console.log(data_url)
             const result = await trendsService.submit(data_url, 'today 1-m')
             if (result) {
                 console.log('Successfully received data!')

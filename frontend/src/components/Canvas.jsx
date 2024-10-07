@@ -5,10 +5,12 @@ import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from './Buttons'
 
+import { useTrendsDispatch } from '../contexts/TrendsContextHooks'
 import trendsService from '../services/trends'
 
 const Canvas = () => {
     const canvas = useRef()
+    const dispatch = useTrendsDispatch()
 
     useEffect(() => {
         const keyDownHandler = (event) => {
@@ -36,8 +38,10 @@ const Canvas = () => {
         try {
             const data_url = await canvas.current.exportImage('jpeg')
             console.log(data_url)
-            const result = await trendsService.submit(data_url, 'today 1-m')
+            // const result = await trendsService.submit(data_url, 'today 1-m')
+            const result = 0.6
             if (result) {
+                dispatch({ type: 'SET_DATA_URL', payload: data_url })
                 console.log('Successfully received data!')
             }
         } catch(error) {

@@ -1,9 +1,11 @@
 import { AppShell, Center, Stack } from '@mantine/core'
 import Header from './components/Header'
-import Canvas from './components/Canvas'
+import Game from './components/Game'
 import Footer from './components/Footer'
 import GameSettings from './components/GameSettings'
 import Result from './components/Result'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { ToolIconButton } from './components/Buttons'
 
 const App = () => {
     return (
@@ -16,12 +18,14 @@ const App = () => {
             </AppShell.Header>
 
             <AppShell.Main>
-                <Center style={{ height: "80vh" }}>
+                <Center style={{ height: "80vh", gap: '2em' }}>
+                    <ToolIconButton label="Previous trendle" onClick={() => console.log('back')} icon={<IoIosArrowBack />} tooltip />
                     <Stack>
                         <GameSettings />
-                        <Canvas />
+                        <Game />
+                        <Result />
                     </Stack>
-                    <Result />
+                    <ToolIconButton label="Next trendle" onClick={() => console.log('next')} icon={<IoIosArrowForward />} tooltip />
                 </Center>
             </AppShell.Main>
 

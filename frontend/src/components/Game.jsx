@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Button, Group } from '@mantine/core'
+import { Button, Group, Stack } from '@mantine/core'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
@@ -8,7 +8,7 @@ import { ToolIconButton } from './Buttons'
 import { useTrendsDispatch } from '../contexts/TrendsContextHooks'
 import trendsService from '../services/trends'
 
-const Canvas = () => {
+const Game = () => {
     const canvas = useRef()
     const dispatch = useTrendsDispatch()
 
@@ -54,7 +54,7 @@ const Canvas = () => {
     const clearCanvas = () => canvas.current.clearCanvas()
 
     return (
-        <div>
+        <Stack>
             <ReactSketchCanvas
                 width={800}
                 height={400}
@@ -72,8 +72,8 @@ const Canvas = () => {
                     <ToolIconButton label="Clear canvas" onClick={clearCanvas} icon={<FaRegTrashCan />} />
                 </Group>
             </Group>
-        </div>
+        </Stack>
     )
 }
 
-export default Canvas
+export default Game

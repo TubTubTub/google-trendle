@@ -1,16 +1,22 @@
-import { useState } from 'react'
 import { Paper, Rating } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useTrendsValue } from '../contexts/TrendsContextHooks'
 
 const Result = () => {
     const [resultOpened, resultHandler] = useDisclosure(true)
-    const [score, setScore] = useState(3)
+    const trends = useTrendsValue()
+
+    const element = (
+        <Paper shadow="xs" radius="md" p="xl" m="xl">
+            dissfndfnssndsfnsdkfsn
+            <Rating value={trends.score} count={5} readOnly />
+        </Paper>
+    )
 
     return (
-        <Paper shadow="xs" p="xl" m="xl">
-            dissfndfnssndsfnsdkfsn
-            <Rating value={score} count={5} readOnly />
-        </Paper>
+        <div>
+            {trends.score ? element : null}
+        </div>
     )
 }
 

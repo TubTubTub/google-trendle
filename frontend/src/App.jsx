@@ -1,4 +1,4 @@
-import { AppShell, Center } from '@mantine/core'
+import { AppShell, Center, Stack } from '@mantine/core'
 import Header from './components/Header'
 import Canvas from './components/Canvas'
 import Footer from './components/Footer'
@@ -17,8 +17,10 @@ const App = () => {
 
             <AppShell.Main>
                 <Center style={{ height: "80vh" }}>
-                    <GameSettings />
-                    <Canvas />
+                    <Stack>
+                        <GameSettings />
+                        <Canvas />
+                    </Stack>
                     <Result />
                 </Center>
             </AppShell.Main>

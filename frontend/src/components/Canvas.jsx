@@ -42,6 +42,7 @@ const Canvas = () => {
             const result = 0.6
             if (result) {
                 dispatch({ type: 'SET_DATA_URL', payload: data_url })
+                dispatch({ type: 'SET_SCORE', payload: result })
                 console.log('Successfully received data!')
             }
         } catch(error) {

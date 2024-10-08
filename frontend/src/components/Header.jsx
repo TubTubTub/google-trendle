@@ -17,19 +17,22 @@ const Header = () => {
     return (
         <Group h="100%" justify="space-between">
             <Title order={3}>Google Trendle</Title>
-            <ToolIconButton
-                label="Open help screen"
-                onClick={helpHandler.open}
-                icon={<IoHelpOutline size="2em"/>}
-                size="xl"
-            />
-            <ToolIconButton
-                label="Toggle colour scheme"
-                onClick={toggleColorScheme}
-                icon={computedColorScheme === 'light' ? <FiMoon size="2em" /> : <FiSun size="2em" />}
-                size="xl"
-            />
-            <Help opened={helpOpened} onClose={helpHandler.close} />
+
+            <Group justify="flex-end">
+                <ToolIconButton
+                    label="Open help screen"
+                    onClick={helpHandler.open}
+                    icon={<IoHelpOutline size="2em"/>}
+                    size="xl"
+                />
+                <ToolIconButton
+                    label="Toggle colour scheme"
+                    onClick={toggleColorScheme}
+                    icon={computedColorScheme === 'light' ? <FiMoon size="2em" /> : <FiSun size="2em" />}
+                    size="xl"
+                />
+                <Help opened={helpOpened} onClose={helpHandler.close} />
+            </Group>
         </Group>
     )
 }

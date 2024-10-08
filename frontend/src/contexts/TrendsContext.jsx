@@ -19,6 +19,11 @@ const trendsReducer = (state, action) => {
                 ...state,
                 data_url: action.payload
             }
+        case 'SET_SCORE':
+            return {
+                ...state,
+                score: action.payload
+            }
         default:
             return state
     }
@@ -29,6 +34,7 @@ const TrendsContext = createContext()
 const initialValues = {
     timeframe: 'today 1-m',
     data_url: '',
+    score: null,
 }
 
 export const TrendsContextProvider = (props) => {

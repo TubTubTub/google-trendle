@@ -1,16 +1,49 @@
 import { useRef, useEffect } from 'react'
-import { Button, Group, Stack } from '@mantine/core'
+import { Button, Group, Stack, Text, useMantineTheme, useMantineColorScheme } from '@mantine/core'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
+import { PiLineVerticalBold } from 'react-icons/pi'
 import { ToolIconButton } from './Buttons'
 
-import { useTrendsDispatch } from '../contexts/TrendsContextHooks'
+import { useTrends } from '../contexts/TrendsContextHooks'
 import trendsService from '../services/trends'
+
+const axisData = [
+    {
+        x: 0,
+        y: 5
+    },
+    {
+        x: 3,
+        y: 2
+    },
+    {
+        x: 5,
+        y: 4
+    }
+]
+
+const XAxis = ({ number }) => {
+    return (
+        <Group justify="space-between">
+            {
+                Array(number).fill(0).map((_, index) => (
+                    <Stack key={index} gap={0}>
+                        <PiLineVerticalBold style={{ marginTop: '-1px' }} color="gray" size="0.75em" />
+                        <Text fw={500} c="dimmed">hi</Text>
+                    </Stack>
+                ))
+            }
+        </Group>
+    )
+}
 
 const Game = () => {
     const canvas = useRef()
-    const dispatch = useTrendsDispatch()
+    const [trends, trendsDispatch] = useTrends()
+    const theme = useMantineTheme()
+    const { colorScheme, _ } = useMantineColorScheme()
 
     useEffect(() => {
         const keyDownHandler = (event) => {
@@ -40,9 +73,15 @@ const Game = () => {
             console.log(data_url)
             // const result = await trendsService.submit(data_url, 'today 1-m')
             const result = 0.6
+            const stats = {
+                'accuracy': result * 100,
+                'average': 39,
+                'numberOfUsers': 349,
+            }
             if (result) {
-                dispatch({ type: 'SET_DATA_URL', payload: data_url })
-                dispatch({ type: 'SET_SCORE', payload: result })
+                trendsDispatch({ type: 'SET_DATA_URL', payload: data_url })
+                trendsDispatch({ type: 'SET_SCORE', payload: result })
+                trendsDispatch({ type: 'SET_STATS', payload: stats })
                 console.log('Successfully received data!')
             }
         } catch(error) {
@@ -54,16 +93,19 @@ const Game = () => {
     const clearCanvas = () => canvas.current.clearCanvas()
 
     return (
-        <Stack>
+        <Stack gap={0}>
             <ReactSketchCanvas
                 width={800}
                 height={400}
                 strokeWidth={4}
-                strokeColor="black"
+                strokeColor={colorScheme === 'dark' ? 'white' : 'black' }
+                canvasColor={colorScheme === 'dark' ? theme.colors.dark[4] : 'white' }
                 ref={canvas}
             />
+            <XAxis number={Number(trends.timeframe.match(/\d+/)) + 1} />
+
             <Group justify="space-between" py="xs">
-                <Button onClick={exportCanvas}>
+                <Button onClick={exportCanvas} disabled={trends.score}>
                     Export
                 </Button>
                 <Group gap="0.75em">

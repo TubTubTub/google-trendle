@@ -17,20 +17,21 @@ const GameSettings = () => {
                 }}
                 p="md"
             >
-                <Text fw={500}>
-                        {`Past ${trends.timeframe.match(/\d+/)} ${trends.timeframe.at(-1) === 'm' ? 'Months' : 'Years'}`}
+                <Text fw={500} ta="center">
+                        {getTimeframeDisplay(trends.timeframe.match(/\d+/), trends.timeframe.at(-1))}
                 </Text>
             </Paper>
             <SegmentedControl
                 orientation="vertical"
                 onChange={setTimeframeSize}
                 data={[
-                    { label: 'Months',value:'m' },
-                    { label: 'Years', value:'y' },
+                    { label: 'Months', value: 'm' },
+                    { label: 'Years', value: 'y' },
                 ]}
             />
             <Slider
-                defaultValue={6}
+                defaultValue={trends.timeframe.match(/\d+/)}
+                min={1}
                 max={12}
                 label={(value) => value}
                 step={1}
@@ -40,6 +41,17 @@ const GameSettings = () => {
             />
         </Group>
     )
+}
+
+const getTimeframeDisplay = (number, size) => {
+    let plural = ''
+    if (number > 1) plural = 's'
+
+    let sizeWord = ''
+    if (size === 'm') sizeWord = 'Month'
+    else if (size === 'y') sizeWord = 'Year'
+
+    return `Past ${number} ${sizeWord}${plural}`
 }
 
 export default GameSettings

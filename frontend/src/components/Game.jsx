@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Button, Group, Stack, Text, useMantineTheme, useMantineColorScheme } from '@mantine/core'
+import { Button, Group, Stack, Text, Paper, useMantineTheme, useMantineColorScheme } from '@mantine/core'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
@@ -9,20 +9,7 @@ import { ToolIconButton } from './Buttons'
 import { useTrends } from '../contexts/TrendsContextHooks'
 import trendsService from '../services/trends'
 
-const axisData = [
-    {
-        x: 0,
-        y: 5
-    },
-    {
-        x: 3,
-        y: 2
-    },
-    {
-        x: 5,
-        y: 4
-    }
-]
+import backgroundSVG from '../assets/background.svg'
 
 const XAxis = ({ number }) => {
     return (
@@ -40,10 +27,10 @@ const XAxis = ({ number }) => {
 }
 
 const Game = () => {
-    const canvas = useRef()
     const [trends, trendsDispatch] = useTrends()
-    const theme = useMantineTheme()
     const { colorScheme, _ } = useMantineColorScheme()
+    const theme = useMantineTheme()
+    const canvas = useRef()
 
     useEffect(() => {
         const keyDownHandler = (event) => {
@@ -101,6 +88,7 @@ const Game = () => {
                 strokeColor={colorScheme === 'dark' ? 'white' : 'black' }
                 canvasColor={colorScheme === 'dark' ? theme.colors.dark[4] : 'white' }
                 ref={canvas}
+                backgroundImage={backgroundSVG}
             />
             <XAxis number={Number(trends.timeframe.match(/\d+/)) + 1} />
 
@@ -108,6 +96,9 @@ const Game = () => {
                 <Button onClick={exportCanvas} disabled={trends.score}>
                     Export
                 </Button>
+                <Paper shadow="sm" withBorder style={{ paddingBlock: '0.5em', paddingInline: '1em' }}>
+                    <Text fw={500} ta="center">{trends.word}</Text>
+                </Paper>
                 <Group gap="0.75em">
                     <ToolIconButton label="Undo" onClick={undoCanvas} icon={<FaUndoAlt />} />
                     <ToolIconButton label="Redo" onClick={redoCanvas} icon={<FaRedoAlt />} />

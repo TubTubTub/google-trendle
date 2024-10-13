@@ -3,6 +3,7 @@ from flask_cors import CORS
 from json import dumps
 
 from src.controllers.trends import trends_blueprint
+from src.controllers.words import words_blueprint
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -19,3 +20,4 @@ def handle_error(error):
     return error
 
 app.register_blueprint(trends_blueprint, url_prefix='/api/trends')
+app.register_blueprint(words_blueprint, url_prefix='/api/words')

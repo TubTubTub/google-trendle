@@ -29,20 +29,4 @@ class Trend:
 
         df = pd.DataFrame(allArray, columns=['y', 'x', 'red', 'green', 'blue'])
         return df
-
-image_data = Trend.parse_data_url(get_test_string())
-image_data.groupby(by='x', as_index=False, sort=False)
-image_data.drop(image_data[image_data.red == 255].index & image_data[image_data.green == 255].index & image_data[image_data.blue == 255].index, inplace=True)
-image_data['y'].mean()
-print(image_data)
-image_data.plot(x='x', y='y')
-
-# trend_data = Trend.get_data('hi', 'today 3-m')
-# # trend_length = len(trend_data.index)
-# print(trend_data.columns)
-# print(trend_data.head())
-# trend_data['x1'] = trend_data.index
-# trend_data.groupby(by='x1')
-# print(trend_data)
-# trend_data.plot.scatter(x='x1', y='hi')
 # %%

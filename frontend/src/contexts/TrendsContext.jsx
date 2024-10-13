@@ -1,4 +1,5 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useEffect } from 'react'
+import wordsService from '../services/words'
 
 const trendsReducer = (state, action) => {
     switch (action.type) {
@@ -29,18 +30,23 @@ const trendsReducer = (state, action) => {
                 ...state,
                 stats: action.payload
             }
+        case 'SET_WORD':
+            return {
+                ...state,
+                word: action.payload
+            }
         default:
             return state
     }
 }
 
 const TrendsContext = createContext()
-
 const initialValues = {
     timeframe: 'today 3-m',
     data_url: null,
     score: null,
     stats: null,
+    word: null,
 }
 
 export const TrendsContextProvider = (props) => {

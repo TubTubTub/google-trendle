@@ -54,30 +54,25 @@ const Game = () => {
         document.addEventListener('keydown', (event) => keyDownHandler(event))
     }, [])
 
+    const undoCanvas = () => canvas.current.undo()
+    const redoCanvas = () => canvas.current.redo()
+    const clearCanvas = () => canvas.current.clearCanvas()
+
     const exportCanvas = async () => {
         try {
             const data_url = await canvas.current.exportImage('jpeg')
-            console.log(data_url)
-            // const result = await trendsService.submit(data_url, 'today 1-m')
-            const result = 0.6
-            const stats = {
-                'accuracy': result * 100,
-                'average': 39,
-                'numberOfUsers': 349,
-            }
+            const result = await trendsService.submit(data_url, 'today 1-m')
+
+            console.log('EXPORED DATA URL (Game.jsx):', data_url)
             if (result) {
                 trendsDispatch({ type: 'SET_DATA_URL', payload: data_url })
-                trendsDispatch({ type: 'SET_SCORE', payload: result })
-                trendsDispatch({ type: 'SET_STATS', payload: stats })
-                console.log('Successfully received data!')
+                trendsDispatch({ type: 'SET_RESULT', payload: result })
+                console.log('RECEIVED DATA:', result)
             }
         } catch(error) {
             console.log(error)
         }
     }
-    const undoCanvas = () => canvas.current.undo()
-    const redoCanvas = () => canvas.current.redo()
-    const clearCanvas = () => canvas.current.clearCanvas()
 
     return (
         <Stack gap={0}>
@@ -93,7 +88,7 @@ const Game = () => {
             <XAxis number={Number(trends.timeframe.match(/\d+/)) + 1} />
 
             <Group justify="space-between" py="xs">
-                <Button onClick={exportCanvas} disabled={trends.score}>
+                <Button onClick={exportCanvas} disabled={trends.result.score}>
                     Export
                 </Button>
                 <Paper shadow="sm" withBorder style={{ paddingBlock: '0.5em', paddingInline: '1em' }}>

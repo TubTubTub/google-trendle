@@ -20,15 +20,10 @@ const trendsReducer = (state, action) => {
                 ...state,
                 data_url: action.payload
             }
-        case 'SET_SCORE':
+        case 'SET_RESULT':
             return {
                 ...state,
-                score: action.payload
-            }
-        case 'SET_STATS':
-            return {
-                ...state,
-                stats: action.payload
+                result: action.payload
             }
         case 'SET_WORD':
             return {
@@ -44,9 +39,12 @@ const TrendsContext = createContext()
 const initialValues = {
     timeframe: 'today 3-m',
     data_url: null,
-    score: null,
-    stats: null,
     word: null,
+    result: {
+        score: null,
+        globalAverage: null,
+        globalAttempts: null
+    }
 }
 
 export const TrendsContextProvider = (props) => {

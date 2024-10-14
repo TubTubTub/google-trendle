@@ -8,8 +8,15 @@ const submit = async (data_url, timeframe) => {
         'data_url': data_url,
         'timeframe': timeframe,
     }
-    const result = await axios.post(baseURL, body)
-    return result
+    // const result = await axios.post(baseURL, body)
+    // return result
+    
+    /* TEMP RESULTS */
+    return {
+        score: 69,
+        globalAverage: 30,
+        globalAttempts: 20
+    }
 }
 
 export default { submit }

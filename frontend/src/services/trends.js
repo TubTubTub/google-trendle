@@ -13,10 +13,19 @@ const submit = async (data_url, timeframe) => {
     
     /* TEMP RESULTS */
     return {
-        score: 69,
-        globalAverage: 30,
-        globalAttempts: 20
+        data: {
+            score: 69,
+            globalAverage: 30,
+            globalAttempts: 20
+        }
     }
 }
 
-export default { submit }
+const getYAxisLabels = async (word) => {
+    /* TEMP RESULTS */
+    return {
+        data: [Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]
+    }
+}
+
+export default { submit, getYAxisLabels }

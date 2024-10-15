@@ -30,6 +30,11 @@ const trendsReducer = (state, action) => {
                 ...state,
                 word: action.payload
             }
+        case 'SET_Y_AXIS_LABELS':
+            return {
+                ...state,
+                yAxisLabels: action.payload
+            }
         default:
             return state
     }
@@ -40,6 +45,7 @@ const initialValues = {
     timeframe: 'today 3-m',
     data_url: null,
     word: null,
+    yAxisLabels: [],
     result: {
         score: null,
         globalAverage: null,

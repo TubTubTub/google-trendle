@@ -11,14 +11,32 @@ import trendsService from '../services/trends'
 
 import backgroundSVG from '../assets/background.svg'
 
-const XAxis = ({ number }) => {
+const XAxis = ({ size, number }) => {
+    const labelsArray = []
+    const currentDate = new Date()
+    if (size === 'm') {
+        currentDate.setMonth(currentDate.getMonth() + 1)
+        
+        for (let i = 0 ; i < number ; i++) {
+            currentDate.setMonth(currentDate.getMonth() - 1)
+            labelsArray.push(currentDate.getMonth() + 1)
+        }
+    }
+    else if (size === 'y') {
+        currentDate.setYear(currentDate.getFullYear())
+        
+        for (let i = 0 ; i < number ; i++) {
+            currentDate.setYear(currentDate.getFullYear() - 1)
+            labelsArray.push(currentDate.getFullYear() + 1)
+        }
+    }
     return (
         <Group justify="space-between">
             {
-                Array(number).fill(0).map((_, index) => (
+                labelsArray.reverse().map((label, index) => (
                     <Stack key={index} gap={0}>
                         <PiLineVerticalBold style={{ marginTop: '-1px' }} color="gray" size="0.75em" />
-                        <Text fw={500} c="dimmed">hi</Text>
+                        <Text fw={500} c="dimmed">{label}</Text>
                     </Stack>
                 ))
             }
@@ -85,7 +103,7 @@ const Game = () => {
                 ref={canvas}
                 backgroundImage={backgroundSVG}
             />
-            <XAxis number={Number(trends.timeframe.match(/\d+/)) + 1} />
+            <XAxis size={trends.timeframe.at(-1)} number={Number(trends.timeframe.match(/\d+/)) + 1} />
 
             <Group justify="space-between" py="xs">
                 <Button onClick={exportCanvas} disabled={trends.result.score}>

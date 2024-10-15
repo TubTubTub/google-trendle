@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Center, Stack, Transition, Group } from '@mantine/core'
+import { Center, Stack, Transition, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { IoIosArrowBack } from 'react-icons/io'
 
 import { ToolIconButton } from './Buttons'
 import ErrorAlert from './ErrorAlert'
 import Game from './Game'
 import GameSettings from './GameSettings'
+import NextTrendle from './NextTrendle'
 import Result from './Result'
 
 import { useTrends } from '../contexts/TrendsContextHooks'
 import wordsService from '../services/words'
+import trendsService from '../services/trends'
 
 const GameMain = () => {
     const [trends, trendsDispatch] = useTrends()
@@ -24,8 +26,15 @@ const GameMain = () => {
 
     useEffect(() => {
         wordsService.getWord()
-            .then(result => {
-                trendsDispatch({ type: 'SET_WORD', payload: result.data })
+            .then(wordResult => {
+                trendsDispatch({ type: 'SET_WORD', payload: wordResult.data })
+
+                trendsService.getYAxisLabels(wordResult.data)
+                    .then(labelsResult => {
+                        trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: labelsResult.data })
+                    })
+                    .catch(error => setErrorMessage(error.message))
+
             })
             .catch(error => setErrorMessage(error.message))
     }, [])
@@ -34,23 +43,6 @@ const GameMain = () => {
         trends.result.score ? open() : close()
         console.log(trends.result.score ? 'opened' : 'closed')
     }, [trends.result.score, open, close])
-    
-    const loadNextTrendle = async () => {
-        try {
-            const newWord = await wordsService.getWord()
-            trendsDispatch({ type: 'SET_WORD', payload: newWord.data })
-
-            const emptyResult = {
-                score: null,
-                globalAverage: null,
-                globalAttempts: null
-            }
-            trendsDispatch({ type: 'SET_RESULT', payload: emptyResult })
-            trendsDispatch({ type: 'SET_DATA_URL', payload: null })
-        } catch(error) {
-            setErrorMessage(error.message)
-        }
-    }
 
     const gameStyle = {
         position: 'relative',
@@ -63,13 +55,16 @@ const GameMain = () => {
     return (
         <Center style={{ height: "80vh", gap: '2em' }}>
             <ErrorAlert message={error} />
+
             <Group style={gameStyle}>
                 <ToolIconButton label="Previous trendle" onClick={() => console.log('back')} icon={<IoIosArrowBack />} tooltip />
                 <Stack>
                     <GameSettings />
                     <Game />
                 </Stack>
-                <ToolIconButton label="Next trendle" onClick={loadNextTrendle} icon={<IoIosArrowForward />} tooltip />
+                <NextTrendle setErrorMessage={setErrorMessage} />
+                    <Text fw={500} c="dimmed" style={{ position: 'absolute', left: '3.5em', transform: 'translateY(-87px)' }}>{trends.yAxisLabels[0]}</Text>
+                    <Text fw={500} c="dimmed" style={{ position: 'absolute', left: '3.5em', transform: 'translateY(+53px)' }}>{trends.yAxisLabels[1]}</Text>
             </Group>
 
             <Transition

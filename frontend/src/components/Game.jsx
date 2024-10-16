@@ -78,12 +78,12 @@ const Game = () => {
 
     const exportCanvas = async () => {
         try {
-            const data_url = await canvas.current.exportImage('jpeg')
-            const result = await trendsService.submit(data_url, 'today 1-m')
+            const dataURL = await canvas.current.exportImage('jpeg')
+            const result = await trendsService.submit(dataURL, 'today 1-m')
 
-            console.log('EXPORED DATA URL (Game.jsx):', data_url)
+            console.log('EXPORED DATA URL (Game.jsx):', dataURL)
             if (result) {
-                trendsDispatch({ type: 'SET_DATA_URL', payload: data_url })
+                trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
                 trendsDispatch({ type: 'SET_RESULT', payload: result })
                 console.log('RECEIVED DATA:', result)
             }

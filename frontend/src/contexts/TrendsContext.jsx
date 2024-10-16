@@ -4,6 +4,7 @@ import wordsService from '../services/words'
 const trendsReducer = (state, action) => {
     switch (action.type) {
         case 'SET_TIMEFRAME_SIZE':
+            sessionStorage.setItem('TIMEFRAME_SIZE', action.payload)
             return {
                 ...state,
                 timeframe: state.timeframe.substring(0, state.timeframe.length - 1) + action.payload
@@ -11,6 +12,7 @@ const trendsReducer = (state, action) => {
         case 'SET_TIMEFRAME_VALUE':
             console.log(action.payload)
             console.log('setting', state.timeframe.replace(/[0-9]+/, action.payload))
+            sessionStorage.setItem('TIMEFRAME_VALUE', action.payload)
             return {
                 ...state,
                 timeframe: state.timeframe.replace(/[0-9]+/, action.payload)
@@ -18,7 +20,7 @@ const trendsReducer = (state, action) => {
         case 'SET_DATA_URL':
             return {
                 ...state,
-                data_url: action.payload
+                dataURL: action.payload
             }
         case 'SET_RESULT':
             return {
@@ -43,7 +45,7 @@ const trendsReducer = (state, action) => {
 const TrendsContext = createContext()
 const initialValues = {
     timeframe: 'today 3-m',
-    data_url: null,
+    dataURL: null,
     word: null,
     yAxisLabels: [],
     result: {

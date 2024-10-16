@@ -25,23 +25,34 @@ const GameMain = () => {
     }
 
     useEffect(() => {
-        wordsService.getWord()
-            .then(wordResult => {
-                trendsDispatch({ type: 'SET_WORD', payload: wordResult.data })
+        wordsService.getWord(false)
+            .then(newWord => {
+                trendsDispatch({ type: 'SET_WORD', payload: newWord })
 
-                trendsService.getYAxisLabels(wordResult.data)
+                trendsService.getYAxisLabels(newWord, false)
                     .then(labelsResult => {
-                        trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: labelsResult.data })
+                        trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: labelsResult })
                     })
                     .catch(error => setErrorMessage(error.message))
 
             })
             .catch(error => setErrorMessage(error.message))
+        
+        const timeframeValue = sessionStorage.getItem('TIMEFRAME_VALUE')
+        const timeframeSize = sessionStorage.getItem('TIMEFRAME_SIZE')
+        
+        if (timeframeValue && timeframeValue !== 'null') {
+            console.log('pls', timeframeValue)
+            trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: timeframeValue })
+        }
+        if (timeframeValue && timeframeSize !== 'null') {
+            console.log('plsdss', typeof timeframeSize, timeframeSize == true)
+            trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: timeframeSize })
+        }
     }, [])
 
     useEffect(() => {
         trends.result.score ? open() : close()
-        console.log(trends.result.score ? 'opened' : 'closed')
     }, [trends.result.score, open, close])
 
     const gameStyle = {

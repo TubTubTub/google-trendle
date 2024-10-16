@@ -10,10 +10,10 @@ const NextTrendle = ({ setErrorMessage }) => {
 
     const loadNextTrendle = async () => {
         try {
-            const newWord = await wordsService.getWord()
-            const yAxisLabels = await trendsService.getYAxisLabels(newWord)
-            trendsDispatch({ type: 'SET_WORD', payload: newWord.data })
-            trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: yAxisLabels.data })
+            const newWord = await wordsService.getWord(true)
+            const yAxisLabels = await trendsService.getYAxisLabels(newWord, true)
+            trendsDispatch({ type: 'SET_WORD', payload: newWord })
+            trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: yAxisLabels })
 
             const emptyResult = {
                 score: null,

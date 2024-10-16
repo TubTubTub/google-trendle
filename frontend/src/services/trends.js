@@ -3,9 +3,9 @@ import { BACKEND_URL } from '../utils/constants'
 
 const baseURL = `${BACKEND_URL}/api/trends`
 
-const submit = async (data_url, timeframe) => {
+const submit = async (dataURL, timeframe) => {
     const body = {
-        'data_url': data_url,
+        'dataURL': dataURL,
         'timeframe': timeframe,
     }
     // const result = await axios.post(baseURL, body)
@@ -21,10 +21,17 @@ const submit = async (data_url, timeframe) => {
     }
 }
 
-const getYAxisLabels = async (word) => {
+const getYAxisLabels = async (word, forceNew) => {
     /* TEMP RESULTS */
-    return {
-        data: [Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]
+    const storedLabels = sessionStorage.getItem('Y_AXIS_LABELS')
+
+    if (storedLabels && !forceNew) {
+        return JSON.parse(storedLabels)
+    }
+    else {
+        const newLabels = [Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]
+        sessionStorage.setItem('Y_AXIS_LABELS', JSON.stringify(newLabels))
+        return newLabels
     }
 }
 

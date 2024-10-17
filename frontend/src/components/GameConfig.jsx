@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Group, SegmentedControl, Slider, Text, Paper, useMantineTheme, useMantineColorScheme } from '@mantine/core'
 import { useTrends } from '../contexts/TrendsContextHooks'
 
@@ -13,24 +12,13 @@ const getTimeframeDisplay = (number, size) => {
     return `Past ${number} ${sizeWord}${plural}`
 }
 
-const GameSettings = () => {
-    const [trends, dispatch] = useTrends()
+const GameConfig = () => {
+    const [trends, trendsDispatch] = useTrends()
     const theme = useMantineTheme()
     const { colorScheme, _ } = useMantineColorScheme()
 
-    const initialTimeframeValue = sessionStorage.getItem('TIMEFRAME_VALUE') || trends.timeframe.match(/\d+/)
-    let initialTimeframeSize = sessionStorage.getItem('TIMEFRAME_SIZE')
-    if (!initialTimeframeSize || initialTimeframeSize ==='null') {
-        initialTimeframeSize = trends.timeframe.at(-1)
-    }
-
-    const [sizeValue, setSizeValue] = useState(initialTimeframeSize)
-
-    const setTimeframeSize = (value) => {
-        setSizeValue(value)
-        dispatch({ type: 'SET_TIMEFRAME_SIZE', payload: value })
-    }
-    const setTimeframeValue = (value) => dispatch({ type: 'SET_TIMEFRAME_VALUE', payload: value })
+    const setTimeframeSize = (value) => trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: value })
+    const setTimeframeValue = (value) => trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: value })
 
     return (
         <Group align='stretch'>
@@ -42,20 +30,22 @@ const GameSettings = () => {
                 p="md"
             >
                 <Text fw={500} ta="center">
-                        {getTimeframeDisplay(initialTimeframeValue, initialTimeframeSize)}
+                        {getTimeframeDisplay(trends.timeframe.match(/\d+/), trends.timeframe.at(-1))}
                 </Text>
             </Paper>
+
             <SegmentedControl
                 orientation="vertical"
-                value={sizeValue}
+                value={trends.timeframe.at(-1)}
                 onChange={setTimeframeSize}
                 data={[
                     { label: 'Months', value: 'm' },
                     { label: 'Years', value: 'y' },
                 ]}
             />
+
             <Slider
-                defaultValue={initialTimeframeValue}
+                value={trends.timeframe.match(/\d+/)}
                 min={1}
                 max={12}
                 label={(value) => value}
@@ -68,4 +58,4 @@ const GameSettings = () => {
     )
 }
 
-export default GameSettings
+export default GameConfig

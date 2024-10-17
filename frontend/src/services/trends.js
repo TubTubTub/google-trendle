@@ -12,13 +12,14 @@ const submit = async (dataURL, timeframe) => {
     // return result
     
     /* TEMP RESULTS */
-    return {
+    const result = {
         data: {
             score: 69,
             globalAverage: 30,
             globalAttempts: 20
         }
     }
+    return result.data
 }
 
 const getYAxisLabels = async (word, forceNew) => {

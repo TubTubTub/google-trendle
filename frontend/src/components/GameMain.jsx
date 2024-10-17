@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Center, Stack, Transition, Group, Text } from '@mantine/core'
+import { Center, Stack, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IoIosArrowBack } from 'react-icons/io'
 
-import { ToolIconButton } from './Buttons'
 import ErrorAlert from './ErrorAlert'
-import Game from './Game'
-import GameSettings from './GameSettings'
+import Canvas from './Canvas'
+import GameConfig from './GameConfig'
+import PreviousTrendle from './PreviousTrendle'
 import NextTrendle from './NextTrendle'
 import Result from './Result'
 
@@ -18,11 +17,6 @@ const GameMain = () => {
     const [trends, trendsDispatch] = useTrends()
     const [error, setError] = useState('')
     const [resultOpened, { open, close }] = useDisclosure(false)
-
-    const setErrorMessage = (message) => {
-        setError(message)
-        setTimeout(() => setError(''), 3000)
-    }
 
     useEffect(() => {
         wordsService.getWord(false)
@@ -38,18 +32,21 @@ const GameMain = () => {
             })
             .catch(error => setErrorMessage(error.message))
         
-        const timeframeValue = sessionStorage.getItem('TIMEFRAME_VALUE')
-        const timeframeSize = sessionStorage.getItem('TIMEFRAME_SIZE')
+        const initialTimeframeValue = sessionStorage.getItem('TIMEFRAME_VALUE')
+        const initialTimeframeSize = sessionStorage.getItem('TIMEFRAME_SIZE')
         
-        if (timeframeValue && timeframeValue !== 'null') {
-            console.log('pls', timeframeValue)
-            trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: timeframeValue })
+        if (initialTimeframeValue && initialTimeframeValue !== 'null') {
+            trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: initialTimeframeValue })
         }
-        if (timeframeValue && timeframeSize !== 'null') {
-            console.log('plsdss', typeof timeframeSize, timeframeSize == true)
-            trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: timeframeSize })
+        if (initialTimeframeSize && initialTimeframeSize !== 'null') {
+            trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: initialTimeframeSize })
         }
     }, [])
+
+    const setErrorMessage = (message) => {
+        setError(message)
+        setTimeout(() => setError(''), 3000)
+    }
 
     useEffect(() => {
         trends.result.score ? open() : close()
@@ -60,7 +57,8 @@ const GameMain = () => {
         transitionProperty: 'right',
         transitionDuration: '200ms',
         transitionTimingFunction: 'ease',
-        right: (resultOpened ? '10vw' : 0)
+        right: (resultOpened ? '10vw' : 0),
+        zIndex: 2,
     }
 
     return (
@@ -68,27 +66,15 @@ const GameMain = () => {
             <ErrorAlert message={error} />
 
             <Group style={gameStyle}>
-                <ToolIconButton label="Previous trendle" onClick={() => console.log('back')} icon={<IoIosArrowBack />} tooltip />
+                <PreviousTrendle setErrorMessage={setErrorMessage} />
                 <Stack>
-                    <GameSettings />
-                    <Game />
+                    <GameConfig />
+                    <Canvas />
                 </Stack>
                 <NextTrendle setErrorMessage={setErrorMessage} />
-                    <Text fw={500} c="dimmed" style={{ position: 'absolute', left: '3.5em', transform: 'translateY(-87px)' }}>{trends.yAxisLabels[0]}</Text>
-                    <Text fw={500} c="dimmed" style={{ position: 'absolute', left: '3.5em', transform: 'translateY(+53px)' }}>{trends.yAxisLabels[1]}</Text>
             </Group>
 
-            <Transition
-                mounted={resultOpened}
-                transition="slide-right"
-                duration={200}
-                timingFunction="ease"
-                keepMounted
-            >
-                {(transitionStyle) => (
-                    <Result onClose={close} style={{...transitionStyle, zIndex: 1, position: 'absolute', right: '24vw' }} />
-                )}
-            </Transition>
+            <Result open={resultOpened} onClose={close} />
         </Center>
     )
 }

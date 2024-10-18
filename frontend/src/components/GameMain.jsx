@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { Center, Stack, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
+import { useTrendsValue } from '../contexts/TrendsContextHooks'
+import useSessionStorage from '../hooks/useSessionStorage'
+
 import ErrorAlert from './ErrorAlert'
 import Canvas from './Canvas'
 import GameConfig from './GameConfig'
@@ -9,48 +12,24 @@ import PreviousTrendle from './PreviousTrendle'
 import NextTrendle from './NextTrendle'
 import Result from './Result'
 
-import { useTrends } from '../contexts/TrendsContextHooks'
-import wordsService from '../services/words'
-import trendsService from '../services/trends'
-
 const GameMain = () => {
-    const [trends, trendsDispatch] = useTrends()
     const [error, setError] = useState('')
     const [resultOpened, { open, close }] = useDisclosure(false)
+    const trends = useTrendsValue()
+    const setupSessionState = useSessionStorage()
 
     useEffect(() => {
-        wordsService.getWord(false)
-            .then(newWord => {
-                trendsDispatch({ type: 'SET_WORD', payload: newWord })
-
-                trendsService.getYAxisLabels(newWord, false)
-                    .then(labelsResult => {
-                        trendsDispatch({ type: 'SET_Y_AXIS_LABELS', payload: labelsResult })
-                    })
-                    .catch(error => setErrorMessage(error.message))
-
-            })
-            .catch(error => setErrorMessage(error.message))
-        
-        const initialTimeframeValue = sessionStorage.getItem('TIMEFRAME_VALUE')
-        const initialTimeframeSize = sessionStorage.getItem('TIMEFRAME_SIZE')
-        
-        if (initialTimeframeValue && initialTimeframeValue !== 'null') {
-            trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: initialTimeframeValue })
-        }
-        if (initialTimeframeSize && initialTimeframeSize !== 'null') {
-            trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: initialTimeframeSize })
-        }
+        setupSessionState(setErrorMessage)
     }, [])
+
+    useEffect(() => {
+        trends.result.score ? open() : close()
+    }, [trends.result.score, open, close])
 
     const setErrorMessage = (message) => {
         setError(message)
         setTimeout(() => setError(''), 3000)
     }
-
-    useEffect(() => {
-        trends.result.score ? open() : close()
-    }, [trends.result.score, open, close])
 
     const gameStyle = {
         position: 'relative',

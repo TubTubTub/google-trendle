@@ -50,7 +50,7 @@ const GameConfig = () => {
                 max={12}
                 label={(value) => value}
                 step={1}
-                onChangeEnd={setTimeframeValue}
+                onChange={setTimeframeValue}
                 size="lg"
                 style={{ flexGrow: 1, alignSelf: 'center' }}
             />

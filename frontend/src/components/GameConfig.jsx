@@ -1,5 +1,6 @@
-import { Group, SegmentedControl, Slider, Text, Paper, useMantineTheme, useMantineColorScheme } from '@mantine/core'
+import { Group, SegmentedControl, Slider, Text } from '@mantine/core'
 import { useTrends } from '../contexts/TrendsContextHooks'
+import CustomPaper from './CustomPaper'
 
 const getTimeframeDisplay = (number, size) => {
     let plural = ''
@@ -14,25 +15,17 @@ const getTimeframeDisplay = (number, size) => {
 
 const GameConfig = () => {
     const [trends, trendsDispatch] = useTrends()
-    const theme = useMantineTheme()
-    const { colorScheme, _ } = useMantineColorScheme()
 
     const setTimeframeSize = (value) => trendsDispatch({ type: 'SET_TIMEFRAME_SIZE', payload: value })
     const setTimeframeValue = (value) => trendsDispatch({ type: 'SET_TIMEFRAME_VALUE', payload: value })
 
     return (
         <Group align='stretch'>
-            <Paper
-                style={{
-                    alignContent: 'center',
-                    backgroundColor: colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1]
-                }}
-                p="md"
-            >
+            <CustomPaper>
                 <Text fw={500} ta="center">
                         {getTimeframeDisplay(trends.timeframe.match(/\d+/), trends.timeframe.at(-1))}
                 </Text>
-            </Paper>
+            </CustomPaper>
 
             <SegmentedControl
                 orientation="vertical"

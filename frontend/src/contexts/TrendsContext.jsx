@@ -48,6 +48,7 @@ const trendsReducer = (state, action) => {
 }
 
 const TrendsContext = createContext()
+
 const initialValues = {
     timeframe: 'today 3-m',
     dataURL: null,

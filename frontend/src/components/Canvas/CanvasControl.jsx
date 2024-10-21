@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Button, Group, Text, Paper } from '@mantine/core'
+import { Button, Group, Text, Paper, Loader } from '@mantine/core'
 import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from '../Buttons'
@@ -61,6 +61,7 @@ const CanvasControl = ({ canvas }) => {
 
             <Paper shadow="sm" withBorder style={{ paddingBlock: '0.5em', paddingInline: '1em' }}>
                 <Text fw={500} ta="center">{trends.word}</Text>
+                {trends.word ? null : <Loader type="dots" style={{ height: '1.5em' }} />}
             </Paper>
 
             <Group gap="0.75em">

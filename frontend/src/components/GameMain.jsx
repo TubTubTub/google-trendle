@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Center, Stack, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -13,23 +13,17 @@ import NextTrendle from './NextTrendle'
 import Result from './Result'
 
 const GameMain = () => {
-    const [error, setError] = useState('')
     const [resultOpened, { open, close }] = useDisclosure(false)
     const trends = useTrendsValue()
     const setupSessionState = useSessionStorage()
 
     useEffect(() => {
-        setupSessionState(setErrorMessage)
+        setupSessionState()
     }, [])
 
     useEffect(() => {
         trends.result.score ? open() : close()
     }, [trends.result.score, open, close])
-
-    const setErrorMessage = (message) => {
-        setError(message)
-        setTimeout(() => setError(''), 3000)
-    }
 
     const gameStyle = {
         position: 'relative',
@@ -39,18 +33,18 @@ const GameMain = () => {
         right: (resultOpened ? '10vw' : 0),
         zIndex: 2,
     }
-
+    
     return (
         <Center style={{ height: "80vh", gap: '2em' }}>
-            <ErrorAlert message={error} />
+            <ErrorAlert />
 
             <Group style={gameStyle}>
-                <PreviousTrendle setErrorMessage={setErrorMessage} />
+                <PreviousTrendle />
                 <Stack>
                     <GameConfig />
                     <Canvas />
                 </Stack>
-                <NextTrendle setErrorMessage={setErrorMessage} />
+                <NextTrendle />
             </Group>
 
             <Result open={resultOpened} onClose={close} />

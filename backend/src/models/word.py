@@ -4,7 +4,7 @@ import os
 class Word:
     @staticmethod
     def get_random_word():
-        path = os.path.join(os.path.dirname(__file__), '../unix_word_list.txt')
+        path = os.path.join(os.path.dirname(__file__), '../assets/google-10000-english.txt')
 
         with open(path, 'r') as file:
             line = next(file)

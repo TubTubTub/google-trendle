@@ -7,12 +7,15 @@ import '@mantine/core/styles.css'
 import theme from './theme'
 
 import { TrendsContextProvider } from './contexts/TrendsContext'
+import { ErrorContextProvider } from './contexts/ErrorContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS defaultColorScheme="light">
       <TrendsContextProvider>
-        <App />
+        <ErrorContextProvider>
+          <App />
+        </ErrorContextProvider>
       </TrendsContextProvider>
     </MantineProvider>
   </StrictMode>,

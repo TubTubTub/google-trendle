@@ -2,6 +2,7 @@ import { Paper, Rating, Text, CloseButton, ThemeIcon, Button, Stack, Flex, Simpl
 import { useTrendsValue } from '../contexts/TrendsContextHooks'
 import { FaEarthAmericas, FaUser, FaArrowRightLong } from 'react-icons/fa6'
 import CustomPaper from './CustomPaper'
+import useNextTrendle from '../hooks/useNextTrendle'
 
 const scoreDescriptions = {
     '0': [`You're shit!`, { from: 'red', to: 'pink', deg: 90 }],
@@ -19,6 +20,7 @@ const roundHalf = (num) => {
 
 const Result = ({ open, onClose }) => {
     const trends = useTrendsValue()
+    const loadNextTrendle = useNextTrendle()
 
     return (
         <Transition
@@ -77,7 +79,7 @@ const Result = ({ open, onClose }) => {
                                 <Text ta="center" size="lg" fw={500}>{trends.result.globalAttempts}</Text>
                             </CustomPaper>
                         </SimpleGrid>
-                        <Button rightSection={<FaArrowRightLong />}>
+                        <Button onClick={loadNextTrendle} rightSection={<FaArrowRightLong />}>
                             Next Trendle
                         </Button>
 

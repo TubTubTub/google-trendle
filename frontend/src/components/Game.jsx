@@ -12,7 +12,7 @@ import PreviousTrendle from './PreviousTrendle'
 import NextTrendle from './NextTrendle'
 import Result from './Result'
 
-const GameMain = () => {
+const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
     const trends = useTrendsValue()
     const setupSessionState = useSessionStorage()
@@ -52,4 +52,4 @@ const GameMain = () => {
     )
 }
 
-export default GameMain
+export default Game

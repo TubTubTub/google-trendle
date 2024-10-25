@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <path
+     d="M22,7H16.333V4a1,1,0,0,0-1-1H8.667a1,1,0,0,0-1,1v7H2a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V8A1,1,0,0,0,22,7ZM7.667,19H3V13H7.667Zm6.666,0H9.667V5h4.666ZM21,19H16.333V9H21Z"
+     id="path1" />
+  <path
+     style="fill:#ff0000;stroke-width:2.10129"
+     d="m 100.369,533.33333 v -99.38499 h 77.24478 77.24477 v 99.38499 99.385 H 177.61378 100.369 Z"
+     id="path2"
+     transform="scale(0.03)" />
+  <path
+     style="fill:#ffcc00;stroke-width:2.10129"
+     d="M 545.14145,466.42066 V 300.123 h 77.24477 77.24478 v 166.29766 166.29767 h -77.24478 -77.24477 z"
+     id="path3"
+     transform="scale(0.03)" />
+  <path
+     style="fill:#ffcc00;stroke-width:2.10129"
+     d="M 322.75523,400 V 167.28167 H 400 477.24477 V 400 632.71833 H 400 322.75523 Z"
+     id="path4"
+     transform="scale(0.03)" />
+  <path
+     style="fill:#b3b3b3;stroke-width:2.10129"
+     d="M 545.14145,466.42066 V 300.123 h 77.24477 77.24478 v 166.29766 166.29767 h -77.24478 -77.24477 z"
+     id="path5"
+     transform="scale(0.03)" />
+  <path
+     style="fill:#a05a2c;stroke-width:2.10129"
+     d="m 100.369,533.33333 v -99.38499 h 77.24478 77.24477 v 99.38499 99.385 H 177.61378 100.369 Z"
+     id="path6"
+     transform="scale(0.03)" />
+</svg>

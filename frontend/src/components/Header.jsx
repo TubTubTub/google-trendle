@@ -4,6 +4,7 @@ import { FiMoon, FiSun } from 'react-icons/fi'
 import { IoHelpOutline } from 'react-icons/io5'
 import { ToolIconButton } from './Buttons'
 import Help from './Help'
+import Login from './Login'
 
 const Header = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme()
@@ -32,6 +33,7 @@ const Header = () => {
                     size="xl"
                 />
                 <Help opened={helpOpened} onClose={helpHandler.close} />
+                <Login />
             </Group>
         </Group>
     )

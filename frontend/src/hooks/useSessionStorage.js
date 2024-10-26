@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import wordsService from '../services/words'
-import trendsService from '../services/trends'
 import { useTrendsDispatch } from '../contexts/TrendsContextHooks'
 import { useSetError } from '../contexts/ErrorContextHooks'
+import wordsService from '../services/words'
+import trendsService from '../services/trends'
 
 const useSessionStorage = () => {
     const trendsDispatch = useTrendsDispatch()

@@ -8,6 +8,10 @@ const getAll = async () => {
     return [['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
             ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
             ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
+            ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
+            ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
+            ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
+            ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3],
             ['Deez nuts', 100], ['Jeremiah', 69], ['Derke', 10], ['Greg', 12], ['JJ Olatunji', 232], ['Bean', 3]]
 }
 

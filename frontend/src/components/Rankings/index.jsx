@@ -24,8 +24,8 @@ const Rankings = () => {
     }
     
     return (
-        <Stack>
-            <ScrollArea type="auto" scrollbars="y">
+        <Stack justify="space-between" gap={0}>
+            <ScrollArea type="auto" scrollbars="y" style={{ height: document.documentElement.clientHeight - 115}}>
                 <Group justify="center">
                     <LeaderboardSVG style={{ width: '1.5em', height: '1.5em' }}/>
                     <Title ta="center" order={2} py="md">Leaderboard</Title>
@@ -35,7 +35,7 @@ const Rankings = () => {
             
             <Divider />
 
-            <Group py="sm" px="xl" mx="xs" gap="0.2em">
+            <Group py="md" px="xl" mx="xs" gap="0.2em">
                 <Text fw={400} ta="left">1.</Text>
                 <Badge mx="xs">100</Badge>
                 <Text fw={500} ta="left">TempUser </Text>

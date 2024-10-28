@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import { TrendsContextProvider } from './contexts/TrendsContext'
 import { ErrorContextProvider } from './contexts/ErrorContext'
+import { ProfileContextProvider } from './contexts/ProfileContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')).render(
       <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS defaultColorScheme="light">
         <TrendsContextProvider>
           <ErrorContextProvider>
-            <App />
+            <ProfileContextProvider>
+              <App />
+            </ProfileContextProvider>
           </ErrorContextProvider>
         </TrendsContextProvider>
       </MantineProvider>

@@ -1,15 +1,22 @@
-import sqlalchemy as sa
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../', '../'))
+from src import Test, sa
+from sqlalchemy import text
 
-DATABASE_URL = 'postgresql://test:testpassword@localhost:5432/google_trendle'
+def add_data(text):
+    test = Test(random=text)
+    sa.session.add(test)
+    sa.session.commit()
 
-engine = sa.create_engine(url=DATABASE_URL)
-metadata_obj = sa.MetaData()
+def print_data():
+    for record in sa.session.execute(text('SELECT * FROM test;')):
+        print(record)
 
-testTable = sa.Table(
-    'test',
-    metadata_obj,
-    sa.Column('col1', sa.String, primary_key=True),
-    sa.Column('col2', sa.Integer)
-)
+def delete():
+    sa.session.query(Test).delete()
+    sa.session.commit()
 
-metadata_obj.create_all(engine)
+add_data(text='bruh')
+print_data()
+delete()
+print_data()

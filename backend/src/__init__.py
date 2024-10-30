@@ -32,4 +32,4 @@ def handle_error(error):
 app.register_blueprint(trends_blueprint, url_prefix='/api/trends')
 app.register_blueprint(words_blueprint, url_prefix='/api/words')
 
-from src import models
+from src.models import *

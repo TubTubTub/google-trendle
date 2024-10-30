@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from json import dumps
 
-from src.config import Config
+from src.utils.config import Config
 from src.routes.trends import trends_blueprint
 from src.routes.words import words_blueprint
 

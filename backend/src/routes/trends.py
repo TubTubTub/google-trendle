@@ -2,7 +2,7 @@ from flask import Blueprint, abort, Response, request
 from flask_cors import cross_origin
 from json import dumps
 
-from src.models.trend import Trend
+from src.handlers.trend import Trend
 
 trends_blueprint = Blueprint('trends', __name__)
 

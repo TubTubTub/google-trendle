@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_cors import cross_origin
 
-from src.models.word import Word
+from src.handlers.word import Word
 
 words_blueprint = Blueprint('words', __name__)
 

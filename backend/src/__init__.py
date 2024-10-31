@@ -6,8 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 from json import dumps
 
 from src.utils.config import Config
-from src.routes.trends import trends_blueprint
-from src.routes.words import words_blueprint
 
 app = Flask(__name__)
 app.debug = True
@@ -17,6 +15,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 cors = CORS(app)
 migrate = Migrate(app, db, command="mg")
+
 login_manager = LoginManager(app)
 
 @app.errorhandler(404)
@@ -26,10 +25,8 @@ def handle_page_not_found(error):
 
 @app.errorhandler(Exception)
 def handle_error(error):
-    print('An error occured!', error)
-    return error
-
-app.register_blueprint(trends_blueprint, url_prefix='/api/trends')
-app.register_blueprint(words_blueprint, url_prefix='/api/words')
+    print('AN ERROR OCCURED (src.__init__.py):', str(error))
+    return dumps({ 'error': str(error) })
 
 from src.models import *
+import src.controllers

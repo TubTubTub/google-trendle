@@ -10,9 +10,10 @@ from src.models import User
 users_blueprint = Blueprint('users', __name__)
 
 @users_blueprint.post('/login')
-@cross_origin()
+# @cross_origin()
 def login():
     body = request.get_json()
+    print(body,' attempting login')
     if current_user.is_authenticated:
         print('already logged in')
         return json.dumps({ 'user': repr(current_user) })
@@ -27,17 +28,17 @@ def login():
         db.session.add(new_user)
         db.session.commit()
 
-        print('regsitered new user')
-        login_user(new_user, remember=True)
+        print('registering new user')
+        login_user(new_user, remember=True) 
         return json.dumps({ 'user': repr(new_user) })
     else:
         login_user(user, remember=True)
-        print('logged in')
+        print('logging in with user', user)
         return json.dumps({ 'user': repr(user) })
 
 @users_blueprint.post('/logout')
+# @cross_origin()
 @login_required
-@cross_origin()
 def logout():
     logout_user()
     print('logged out')

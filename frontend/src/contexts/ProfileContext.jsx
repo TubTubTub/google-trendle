@@ -3,7 +3,6 @@ import { createContext, useReducer } from 'react'
 const profileReducer = (state, action) => {
     switch (action.type) {
         case 'SET_PROFILE':
-            console.log(action.payload, 'aypadl')
             return {
                 ...state,
                 profile: action.payload

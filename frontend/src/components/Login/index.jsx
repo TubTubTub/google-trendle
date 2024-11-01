@@ -11,6 +11,17 @@ const Login = () => {
     const [user, setUser] = useState(null)
     const [{ profile }, profileDispatch] = useProfile()
 
+    useEffect(() => {
+        if (user) {
+            loginService.getInfo(user.access_token)
+                .then((result) => {
+                    profileDispatch({ type: 'SET_PROFILE', payload: result })
+                    loginService.login(result)
+                })
+                .catch((error) => console.log('Error retrieving user information (Login.jsx)', error))
+        }
+    }, [user, profileDispatch])
+
     const login = useGoogleLogin({
         onSuccess: (result) => setUser(result),
         onError: (error) => console.log('LOGIN FAILED (Login.jsx):', error),
@@ -19,16 +30,12 @@ const Login = () => {
     const logout = () => {
         googleLogout()
         setUser(null)
-        profileDispatch({ type: 'SET_PROFILE', payload: null })
+        loginService.logout(profile)
+            .then(() => {
+                profileDispatch({ type: 'SET_PROFILE', payload: null })
+                console.log('logged out successfull (Login.jsx)')
+            })
     }
-
-    useEffect(() => {
-        if (user) {
-            loginService.getInfo(user.access_token)
-                .then((result) => profileDispatch({ type: 'SET_PROFILE', payload: result }))
-                .catch((error) => console.log('Error retrieving user information (Login.jsx)', error))
-        }
-    }, [user, profileDispatch])
  
     return (
         <>

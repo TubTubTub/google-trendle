@@ -17,16 +17,18 @@ cors = CORS(app)
 migrate = Migrate(app, db, command="mg")
 
 login_manager = LoginManager(app)
+login_manager.login_view = '/'
 
 @app.errorhandler(404)
 def handle_page_not_found(error):
     error_message = dumps({ 'error': 'unknown endpoint' })
     return error_message, 404
 
-@app.errorhandler(Exception)
-def handle_error(error):
-    print('AN ERROR OCCURED (src.__init__.py):', str(error))
-    return dumps({ 'error': str(error) })
+# @app.errorhandler(Exception)
+# def handle_error(error):
+#     print('AN ERROR OCCURED (src.__init__.py):', str(error))
+#     return dumps({ 'error': str(error) })
+
 
 from src.models import *
 import src.controllers

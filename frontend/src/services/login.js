@@ -15,19 +15,23 @@ const getInfo = async (token) => {
 }
 
 const login = async (profile) => {
-    const body = {
+    const body = JSON.stringify({
         userId: profile.id,
         name: profile.name
-    }
-    const result = await axios.post(`${baseURL}/login`, body)
+    })
+    console.log(body, 'wowowwo', typeof body)
+    const result = await axios.post(`${baseURL}/login`, body, {
+        headers: { 'Content-Type': 'application/json' },
+        Accept: 'application/json'
+    })
     return result.data
 }
 
 const logout = async (profile) => {
-    const body = {
+    const body = JSON.stringify({
         userId: profile.id,
         name: profile.name
-    }
+    })
     const result = await axios.post(`${baseURL}/logout`, body)
     return result.data
 }

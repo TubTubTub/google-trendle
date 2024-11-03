@@ -27,6 +27,7 @@ def handle_page_not_found(error):
     error_message = dumps({ 'error': 'unknown endpoint' })
     return error_message, 404
 
+@app.route('/temp', methods=['GET'])
 def temp():
     return 'someting'
 

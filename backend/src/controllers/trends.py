@@ -20,7 +20,6 @@ def trend(keyword):
         handle_missing_keyword('timeframe')
 
     data = Trend.get_data(keyword, 'today 1-m')
-    print('hisss', data    )
     return data.to_dict()
 
 @trends_blueprint.post('')

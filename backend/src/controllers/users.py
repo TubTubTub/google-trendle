@@ -1,10 +1,10 @@
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_cors import cross_origin
 import sqlalchemy as sa
 import json
 
-from src import db
+from src import db,app
 from src.models import User
 
 users_blueprint = Blueprint('users', __name__)
@@ -12,33 +12,39 @@ users_blueprint = Blueprint('users', __name__)
 @users_blueprint.route('/login', methods=['POST', 'GET'])
 @cross_origin()
 def login():
-    if request.method == 'POST':
-        body = json.loads(request.data)
+    with app.app_context():
+        print(app.app_context())
+        if request.method == 'POST':
+            body = json.loads(request.data)
 
-        if current_user.is_authenticated:
-            print('already logged in')
-            return json.dumps({ 'user': repr(current_user) })
-        
-        user = db.session.scalar(
-            sa.select(User).where(User.id == body['userId'])
-        )
+            if current_user.is_authenticated:
+                print('(login) Already logged in!')
+                return json.dumps({ 'user': repr(current_user) })
+            
+            user = db.session.scalar(
+                sa.select(User).where(User.id == body['userId'])
+            )
 
-        if user is None:
-            print('registering new user')
-            user = User(id=body['userId'], name=body['name'])
-            db.session.add(user)
-            db.session.commit()
+            if user is None:
+                user = User(id=body['userId'], name=body['name'])
+                print('(login) Registering new user:', user)
+                db.session.add(user)
+                db.session.commit()
 
-        print('logging in with user', user)
-        login_user(user)
+            print('(login) Logging in:', user)
+            login_user(user)
+            print('(login) Current user:', current_user)
 
-        return redirect('/')
+            return 'wow'
+
+        return 'okay'
 
 @users_blueprint.route('/logout', methods=['POST', 'GET'])
 @cross_origin()
-@login_required
 def logout():
-    if request.method == 'POST':
-        logout_user()
-        print('logged out')
-        return redirect('/')
+    with app.app_context():
+        if request.method == 'POST':
+            print('(logut) Logging out of user:', current_user)
+            logout_user()
+            print('(logut) Current user:', current_user)
+            return 'yay'

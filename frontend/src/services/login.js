@@ -27,12 +27,8 @@ const login = async (profile) => {
     return result.data
 }
 
-const logout = async (profile) => {
-    const body = JSON.stringify({
-        userId: profile.id,
-        name: profile.name
-    })
-    const result = await axios.post(`${baseURL}/logout`, body)
+const logout = async () => {
+    const result = await axios.post(`${baseURL}/logout`)
     return result.data
 }
 

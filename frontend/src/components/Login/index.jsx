@@ -30,7 +30,7 @@ const Login = () => {
     const logout = () => {
         googleLogout()
         setUser(null)
-        loginService.logout(profile)
+        loginService.logout()
             .then(() => {
                 profileDispatch({ type: 'SET_PROFILE', payload: null })
                 console.log('logged out successfull (Login.jsx)')

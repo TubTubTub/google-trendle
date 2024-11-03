@@ -9,20 +9,26 @@ from src.utils.config import Config
 
 app = Flask(__name__)
 app.debug = True
-app.app_context().push()
 app.config.from_object(Config)
 
-db = SQLAlchemy(app)
-cors = CORS(app)
-migrate = Migrate(app, db, command="mg")
+with app.app_context():
+    db = SQLAlchemy(app)
+    cors = CORS(app)
+    migrate = Migrate(app, db, command="mg")
 
-login_manager = LoginManager(app)
-login_manager.login_view = '/'
+    request_ctx = app.test_request_context()
+    request_ctx.push()
+
+    login_manager = LoginManager(app)
+    login_manager.login_view = 'temp'
 
 @app.errorhandler(404)
 def handle_page_not_found(error):
     error_message = dumps({ 'error': 'unknown endpoint' })
     return error_message, 404
+
+def temp():
+    return 'someting'
 
 # @app.errorhandler(Exception)
 # def handle_error(error):

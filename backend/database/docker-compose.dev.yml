@@ -1,5 +1,6 @@
+name: google-trendle
 services:
-  database:
+  postgres:
     image: postgres
     restart: always
     environment:
@@ -9,6 +10,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  
+  redis:
+    image: redis
+    restart: always
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - rsdata:/data
+    ports:
+      - 6379:6379
 
 volumes:
   pgdata:
+  rsdata:

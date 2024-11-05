@@ -19,8 +19,9 @@ const login = async (profile) => {
         userId: profile.id,
         name: profile.name
     })
-    console.log(body, 'wowowwo', typeof body)
+
     const result = await axios.post(`${baseURL}/login`, body, {
+        withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
         Accept: 'application/json'
     })
@@ -28,7 +29,11 @@ const login = async (profile) => {
 }
 
 const logout = async () => {
-    const result = await axios.post(`${baseURL}/logout`)
+    const result = await axios.post(`${baseURL}/logout`, {}, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        Accept: 'application/json'
+    })
     return result.data
 }
 

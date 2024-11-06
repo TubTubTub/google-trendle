@@ -3,22 +3,13 @@ import { BACKEND_URL } from '../utils/constants'
 
 const baseURL = `${BACKEND_URL}/api/trends`
 
-const submit = async (dataURL, timeframe) => {
+const submit = async (word, dataURL, timeframe) => {
     const body = {
+        'word': word,
         'dataURL': dataURL,
-        'timeframe': timeframe,
+        'timeframe': timeframe
     }
-    // const result = await axios.post(baseURL, body)
-    // return result
-    
-    /* TEMP RESULTS */
-    const result = {
-        data: {
-            score: 69,
-            globalAverage: 30,
-            globalAttempts: 20
-        }
-    }
+    const result = await axios.post(baseURL, body)
     return result.data
 }
 

@@ -38,7 +38,7 @@ const CanvasControl = ({ canvas }) => {
     const exportCanvas = async () => {
         try {
             const dataURL = await canvas.current.exportImage('jpeg')
-            const result = await trendsService.submit(dataURL, 'today 1-m')
+            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, 'today 1-m')
 
             console.log('EXPORED DATA URL (Game.jsx):', dataURL)
 

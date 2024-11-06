@@ -1,5 +1,4 @@
 from flask import Blueprint, request, session
-from flask_cors import cross_origin
 import sqlalchemy as sa
 import json
 

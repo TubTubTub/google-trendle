@@ -1,0 +1,1 @@
+Wordle, but for Google Trends.

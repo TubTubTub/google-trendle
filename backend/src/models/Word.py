@@ -5,7 +5,7 @@ class Word(db.Model):
     id = db.Column(db.String(128), primary_key=True)
     global_attempts = db.Column(db.Integer, nullable=False)
     global_average = db.Column(db.Float, nullable=False)
-    users = db.relationship('User', secondary=user_word, back_populates='users')
+    users = db.relationship('User', secondary=user_word, back_populates='words')
     
     def __repr__(self):
         return f'(Word {self.id} | GAttempts: {self.global_attempts}, GAverage: {self.global_average})'

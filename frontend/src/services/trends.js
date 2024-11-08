@@ -9,7 +9,11 @@ const submit = async (word, dataURL, timeframe) => {
         'dataURL': dataURL,
         'timeframe': timeframe
     }
-    const result = await axios.post(baseURL, body)
+    const result = await axios.post(`${baseURL}/submit`, body, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        Accept: 'application/json'
+    })
     return result.data
 }
 

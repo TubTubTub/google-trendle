@@ -12,8 +12,8 @@ app.debug = True
 app.config.from_object(Config)
 app.app_context().push()
 
-Session(app)
 CORS(app, supports_credentials=True)
+Session(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, command="mg")
 

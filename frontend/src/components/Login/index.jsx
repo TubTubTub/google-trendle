@@ -12,6 +12,13 @@ const Login = () => {
     const [{ profile }, profileDispatch] = useProfile()
 
     useEffect(() => {
+        loginService.getAutoLogin()
+            .then((result) => {
+                profileDispatch({ type: 'SET_PROFILE', payload: result })
+            })
+    }, [profileDispatch])
+
+    useEffect(() => {
         if (user) {
             loginService.getInfo(user.access_token)
                 .then((result) => {

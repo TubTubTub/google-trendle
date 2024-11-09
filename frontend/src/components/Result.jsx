@@ -58,7 +58,7 @@ const Result = ({ open, onClose }) => {
                                 variant="gradient"
                                 gradient={scoreDescriptions[roundHalf((trends.result.score / 100) * 3)][1]}
                             >
-                                {trends.result.globalAttempts}
+                                {trends.result.score}
                             </Text>
                         </CustomPaper>
                         

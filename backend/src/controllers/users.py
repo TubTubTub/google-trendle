@@ -7,13 +7,13 @@ from src.models import User, Word
 
 users_blueprint = Blueprint('users', __name__)
 
-def get_user_from_database(user_id, name):
+def get_user_from_database(user_id, name, picture_url):
     user = db.session.scalar(
         sa.select(User).where(User.id == user_id)
     )
     
     if user is None:
-        user = User(id=user_id, name=name)
+        user = User(id=user_id, name=name, picture_url=picture_url)
         print('(get_user_from_database) Registering new user:', user)
         db.session.add(user)
         db.session.commit()
@@ -32,12 +32,12 @@ def login():
         body = json.loads(request.data)
 
         if session.get('userId'):
-            user = get_user_from_database(body['userId'], body['name'])
+            user = get_user_from_database(body['userId'], body['name'], body['picture_url'])
 
             print('(login) Already logged in!', session['userId'])
             return session['userId']
         
-        user = get_user_from_database(body['userId'], body['name'])
+        user = get_user_from_database(body['userId'], body['name'], body['picture_url'])
 
         print('(login) Logging in:', user)
 
@@ -59,3 +59,17 @@ def logout():
         return removed_user_id, 204
 
     return '', 204
+
+@users_blueprint.route('/autologin', methods=['GET'])
+def auto_login():
+    if session.get('userId') is None:
+        print("(auto_login) No user id found, not sending auto-login information")
+        return {}, 404
+
+    user = db.session.get(User, session['userId'])
+
+    if user is None:
+        print("(auto_login) Corresponding user not found in database, not sending auto-login information", session['userId'])
+        return {}, 404
+
+    return { 'id': user.id, 'name': user.name, 'picture': user.picture_url }, 200

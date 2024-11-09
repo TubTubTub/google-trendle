@@ -1,5 +1,6 @@
 import os
 import redis
+import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -10,7 +11,7 @@ class Config:
 
     SESSION_TYPE = 'redis'
     SESSION_PERMANENT = True
-    PERMANENT_SESSION_LIFETIME = 86400
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(hours=12)
     SESSION_REDIS = redis.from_url('redis://localhost:6379')
 
     SECRET_KEY = os.getenv('SESSION_SECRET_KEY')

@@ -10,14 +10,14 @@ const getInfo = async (token) => {
             Accept: 'application/json'
         }
     })
-
     return result.data
 }
 
 const login = async (profile) => {
     const body = JSON.stringify({
         userId: profile.id,
-        name: profile.name
+        name: profile.name,
+        picture: profile.picture
     })
 
     const result = await axios.post(`${baseURL}/login`, body, {
@@ -37,4 +37,12 @@ const logout = async () => {
     return result.data
 }
 
-export default { getInfo, login, logout }
+const getAutoLogin = async () => {
+    const result = await axios.get(`${baseURL}/autologin`, {
+        withCredentials: true,
+    })
+    console.log(result.data, 'RETURN AUTO LOGINDATA')
+    return result.data
+}
+
+export default { getInfo, login, logout, getAutoLogin }

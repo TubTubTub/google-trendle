@@ -35,17 +35,15 @@ def process_submit():
             return 'hi', 204
 
         body = request.get_json()
-        user = session.get('userId')
-
-        if user:
-            user = db.session.get(User, session['userId'])
 
         print('\nReceived body!', f'[ {body['dataURL'][:30]}... ]')
 
         update_word_table(body['word'], result['score'])
         update_user_table(body['word'], result['score'])
         
-        return body
+        word = db.session.get(Word, body['word'])
+        
+        return { 'score': result['score'], 'globalAttempts': word.global_attempts, 'globalAverage': word.global_average }, 200
 
     return '', 204
 
@@ -56,7 +54,6 @@ def get_user():
         print('\n(get_user) No session userId found!')
         return None
     else:
-        print('\n(get_user) Getting user...')
         return db.session.get(User, session['userId'])
 
 def update_word_table(game_word, score):
@@ -77,7 +74,7 @@ def update_word_table(game_word, score):
         word.users.append(user)
 
     db.session.commit()
-// LINK SESSION ID TO FRONTEND FOR AUTOMATICALLY SIGNING IN
+
 def update_user_table(game_word, score):
     user = get_user()
     word = db.session.get(Word, game_word)

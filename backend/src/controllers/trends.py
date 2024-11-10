@@ -64,26 +64,33 @@ def update_word_table(game_word, score):
         word = Word(id=game_word, global_attempts=0, global_average=0)
         db.session.add(word)
         db.session.commit()
+        print(f'\n(update_word_table) Added "{word}" to word database:')
     
     word.global_average = (word.global_attempts * word.global_average + score) / (word.global_attempts + 1)
     word.global_attempts += 1
 
-    print('\n(update_word_table) Added new entry to word database:', word)
+    print(f'\n(update_word_table) Updating "{word}" database statistics')
 
     if user:
-        word.users.append(user)
-
-    db.session.commit()
+        if user not in word.users:
+            word.users.append(user)
+            print(f'\n(update_word_table) Added "{word}" to word users')
+            db.session.commit()
+        else:
+            print(f'\n(update_word_table) "{word}" already in word users')
 
 def update_user_table(game_word, score):
     user = get_user()
     word = db.session.get(Word, game_word)
 
     if user is None:
-        print('\n(update_user_database) Not updating: no session userId found')
+        print('\n(update_user_table) Not updating: no session userId found')
         return
     
-    user.words.append(word)
-    db.session.commit()
-
-    print('\n(update_user_database) User words:', user.words)
+    if word:
+        if word not in user.words:
+            user.words.append(word)
+            db.session.commit()
+            print(f'\n(update_user_table) Added "{word.id}" to user words:', user.words)
+        else:
+            print(f'\n(update_user_table) "{word.id}" already in user words')

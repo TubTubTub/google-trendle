@@ -32,12 +32,12 @@ def login():
         body = json.loads(request.data)
 
         if session.get('userId'):
-            user = get_user_from_database(body['userId'], body['name'], body['picture_url'])
+            user = get_user_from_database(body['userId'], body['name'], body['picture'])
 
             print('(login) Already logged in!', session['userId'])
             return session['userId']
         
-        user = get_user_from_database(body['userId'], body['name'], body['picture_url'])
+        user = get_user_from_database(body['userId'], body['name'], body['picture'])
 
         print('(login) Logging in:', user)
 

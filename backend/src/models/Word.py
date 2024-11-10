@@ -8,4 +8,4 @@ class Word(db.Model):
     users = db.relationship('User', secondary=user_word, back_populates='words')
     
     def __repr__(self):
-        return f'(Word {self.id} | GAttempts: {self.global_attempts}, GAverage: {self.global_average})'
+        return f'(Word {self.id} | GlbAttempts: {self.global_attempts}, GlbAverage: {self.global_average})'

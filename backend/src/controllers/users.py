@@ -2,8 +2,8 @@ from flask import Blueprint, request, session
 import sqlalchemy as sa
 import json
 
-from src import db, app
-from src.models import User, Word
+from src import db
+from src.models import User
 
 users_blueprint = Blueprint('users', __name__)
 

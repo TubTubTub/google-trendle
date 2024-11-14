@@ -1,11 +1,24 @@
-import { Text, Accordion, Group } from '@mantine/core'
+import { Text, Accordion, Group, Skeleton } from '@mantine/core'
+import { useHistoryValue } from '../../contexts/HistoryContextHooks'
 import CustomPaper from '../CustomPaper'
 
-const HistoryList = ({ history }) => {
+const HistoryList = () => {
+    const { history } = useHistoryValue()
+
+    if (history.length === 0) {
+        return (
+            <>
+                {Array(20).fill(0).map((_, index) => (
+                    <Skeleton key={index} w="93%" h='5vh' mx="sm" mt="md" animate={true} />
+                ))}
+            </>
+        )
+    }
+
     return (
         <Accordion>
             {history.map((game, index) => (
-                <Accordion.Item key={index} value={game.word}>
+                <Accordion.Item key={index} value={index.toString()}>
                     <Accordion.Control>{game.word}</Accordion.Control>
                     <Accordion.Panel>
                         <Group>
@@ -16,7 +29,7 @@ const HistoryList = ({ history }) => {
                                 <Text ta="center" size="sm" fw={400}>{game.score}</Text>
                             </CustomPaper>
                             <CustomPaper p="xs" label="Attempted date" tooltip>
-                                <Text ta="center" size="sm" fw={400}>{new Date(game.date).toLocaleDateString('en-GB')}</Text>
+                                <Text ta="center" size="sm" fw={400}>{game.date}</Text>
                             </CustomPaper>
                         </Group>
                     </Accordion.Panel>

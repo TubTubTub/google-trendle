@@ -11,6 +11,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { TrendsContextProvider } from './contexts/TrendsContext'
 import { ErrorContextProvider } from './contexts/ErrorContext'
 import { ProfileContextProvider } from './contexts/ProfileContext'
+import { HistoryContextProvider } from './contexts/HistoryContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,7 +20,9 @@ createRoot(document.getElementById('root')).render(
         <TrendsContextProvider>
           <ErrorContextProvider>
             <ProfileContextProvider>
-              <App />
+              <HistoryContextProvider>
+                <App />
+              </HistoryContextProvider>
             </ProfileContextProvider>
           </ErrorContextProvider>
         </TrendsContextProvider>

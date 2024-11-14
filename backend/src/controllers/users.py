@@ -52,6 +52,7 @@ def login():
 def logout():
     if request.method == 'POST':
         if session.get('userId') is None:
+            print('(logout) logout failed, user not signed in')
             return {'error': 'logout failed, user not signed in'}, 401
 
         print('(logut) Logging out of user:', session['userId'])

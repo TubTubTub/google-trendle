@@ -3,8 +3,8 @@ from src.models.UserWord import UserWord
 
 class Word(db.Model):
     id = db.Column(db.String(128), primary_key=True)
-    global_attempts = db.Column(db.Integer, nullable=False)
-    global_average = db.Column(db.Float, nullable=False)
+    global_attempts = db.Column(db.Integer, nullable=False, default=0)
+    global_average = db.Column(db.Float, nullable=False, default=0)
     users = db.relationship('UserWord', back_populates='word')
     
     def __repr__(self):

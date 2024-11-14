@@ -1,27 +1,18 @@
-import { useState, useEffect } from 'react'
-import { Text, Title, Skeleton, Badge, Divider, ScrollArea, Group, Stack } from '@mantine/core'
+import { useEffect } from 'react'
+import { Title, ScrollArea, Group, Stack } from '@mantine/core'
 
 import HistoryList from './HistoryList'
 import HistorySVG from '../../assets/history.svg?react'
-import historyService from '../../services/history'
+import statisticsService from '../../services/statistics'
+import { useHistoryDispatch } from '../../contexts/HistoryContextHooks'
 
 const History = () => {
-    const [history, setHistory] = useState([])
+    const historyDispatch = useHistoryDispatch()
 
     useEffect(() => {
-        historyService.getAll()
-            .then(result => setHistory(result))
-    }, [])
-
-    if (history.length === 0) {
-        return (
-            <>
-                {Array(20).fill(0).map((_, index) => (
-                    <Skeleton key={index} w="93%" h='5vh' mx="sm" mt="md" animate={true} />
-                ))}
-            </>
-        )
-    }
+        statisticsService.getHistory()
+            .then(result => historyDispatch({ type: 'SET_HISTORY', payload: result }))
+    }, [historyDispatch])
     
     return (
         <Stack>
@@ -30,7 +21,7 @@ const History = () => {
                     <Title ta="center" order={2} py="md">Game History</Title>
                     <HistorySVG style={{ width: '1.5em', height: '1.5em' }} />
                 </Group>
-                <HistoryList history={history} />
+                <HistoryList />
             </ScrollArea>
         </Stack>
     )

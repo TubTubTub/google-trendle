@@ -3,13 +3,16 @@ import { Button } from '@mantine/core'
 import { useGoogleLogin, googleLogout } from '@react-oauth/google'
 import { PiUserCircleThin } from 'react-icons/pi'
 
+import { useHistoryDispatch } from '../../contexts/HistoryContextHooks'
 import { useProfile } from '../../contexts/ProfileContextHooks'
-import UserAvatar from './UserAvatar'
+import statisticsService from '../../services/statistics'
 import loginService from '../../services/login'
+import UserAvatar from './UserAvatar'
 
 const Login = () => {
-    const [user, setUser] = useState(null)
     const [{ profile }, profileDispatch] = useProfile()
+    const [user, setUser] = useState(null)
+    const historyDispatch = useHistoryDispatch()
 
     useEffect(() => {
         loginService.getAutoLogin()
@@ -19,19 +22,28 @@ const Login = () => {
     }, [profileDispatch])
 
     useEffect(() => {
-        if (user) {
-            loginService.getInfo(user.access_token)
-                .then((result) => {
-                    profileDispatch({ type: 'SET_PROFILE', payload: result })
-                    loginService.login(result)
-                })
-                .catch((error) => console.log('Error retrieving user information (Login.jsx)', error))
+        const initialiseUser = async () => {
+            const profile = await loginService.getInfo(user.access_token)
+            profileDispatch({ type: 'SET_PROFILE', payload: profile})
+
+            await loginService.login(profile)
+            
+            const history = await statisticsService.getHistory()
+            historyDispatch({ type: 'SET_HISTORY', payload: history })
         }
-    }, [user, profileDispatch])
+
+        if (user) {
+            try {
+                initialiseUser()
+            } catch(error) {
+                console.log('(Login.jsx) Error retrieving user information', error)
+            }
+        }
+    }, [user, profileDispatch, historyDispatch])
 
     const login = useGoogleLogin({
         onSuccess: (result) => setUser(result),
-        onError: (error) => console.log('LOGIN FAILED (Login.jsx):', error),
+        onError: (error) => console.log('(Login.jsx) LOGIN FAILED:', error),
     })
 
     const logout = () => {
@@ -40,7 +52,8 @@ const Login = () => {
         loginService.logout()
             .then(() => {
                 profileDispatch({ type: 'SET_PROFILE', payload: null })
-                console.log('logged out successfull (Login.jsx)')
+                historyDispatch({ type: 'EMPTY_HISTORY' })
+                console.log('(Login.jsx) Logged out successfully')
             })
     }
  

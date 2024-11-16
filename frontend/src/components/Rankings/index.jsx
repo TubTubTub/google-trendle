@@ -3,13 +3,13 @@ import { Text, Title, Skeleton, Badge, Divider, ScrollArea, Group, Stack } from 
 
 import LeaderboardList from './LeaderboardList'
 import LeaderboardSVG from '../../assets/leaderboard.svg?react'
-import rankingsService from '../../services/rankings'
+import statisticsService from '../../services/statistics'
 
 const Rankings = () => {
     const [rankings, setRankings] = useState([])
 
     useEffect(() => {
-        rankingsService.getAll()
+        statisticsService.getRankings(0)
             .then(result => setRankings(result))
     }, [])
 

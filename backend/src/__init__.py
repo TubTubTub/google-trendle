@@ -19,7 +19,7 @@ migrate = Migrate(app, db, command="mg")
 
 @app.errorhandler(404)
 def handle_page_not_found(error):
-    error_message = dumps({ 'error': 'unknown endpoint' })
+    error_message = dumps({ 'error': str(error) })
     return error_message, 404
 
 # @app.errorhandler(Exception)

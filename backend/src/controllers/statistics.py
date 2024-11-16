@@ -1,6 +1,4 @@
-from flask import Blueprint, abort, Response, request, session
-from json import dumps
-from random import randint
+from flask import Blueprint, session, request
 
 from src import db
 from src.handlers.trend import Trend
@@ -24,6 +22,22 @@ def get_history():
 
     return list(reversed(result)), 200
 
-@statistics_blueprint.get('/rankings')
+@statistics_blueprint.route('/rankings', methods=['GET'])
 def get_rankings():
-    rankings = db.session.scalars()
+    try:
+        page = int(request.args.get('page'))
+        page_size = int(request.args.get('page_size'))
+    except:
+        page = 0
+        page_size = 30
+
+    rankings = db.session.query(User).order_by(User.average_score.desc()) \
+        .limit(page_size) \
+        .offset(page * page_size)
+
+    result = [{
+        'name': user.name,
+        'averageScore': user.average_score
+    } for user in rankings.all()]
+
+    return result, 200

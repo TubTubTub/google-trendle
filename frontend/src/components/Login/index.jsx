@@ -24,12 +24,15 @@ const Login = () => {
     useEffect(() => {
         const initialiseUser = async () => {
             const profile = await loginService.getInfo(user.access_token)
-            profileDispatch({ type: 'SET_PROFILE', payload: profile})
+            profileDispatch({ type: 'SET_PROFILE', payload: profile })
 
             await loginService.login(profile)
             
             const history = await statisticsService.getHistory()
             historyDispatch({ type: 'SET_HISTORY', payload: history })
+
+            const userStatistics = await statisticsService.getUserStatistics()
+            profileDispatch({ type: 'SET_STATISTICS', payload: userStatistics })
         }
 
         if (user) {

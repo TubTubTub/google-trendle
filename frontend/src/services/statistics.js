@@ -8,6 +8,7 @@ const getHistory = async () => {
     const result = await axios.get(`${baseURL}/history`, {
         withCredentials: true
     })
+
     return result.data
 }
 
@@ -19,4 +20,12 @@ const getRankings = async (page) => {
     return result.data
 }
 
-export default { getHistory, getRankings }
+const getUserStatistics = async () => {
+    const result = await axios.get(`${baseURL}/user`, {
+        withCredentials: true
+    })
+
+    return result.data
+}
+
+export default { getHistory, getRankings, getUserStatistics }

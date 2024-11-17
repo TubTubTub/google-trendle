@@ -7,6 +7,14 @@ const profileReducer = (state, action) => {
                 ...state,
                 profile: action.payload
             }
+        case 'SET_STATISTICS':
+            return {
+                ...state,
+                statistics: {
+                    'averageScore': Math.round(action.payload.averageScore * 10) / 10,
+                    'rank': action.payload.rank
+                }
+            }
         default:
             return state
     }
@@ -15,7 +23,11 @@ const profileReducer = (state, action) => {
 const ProfileContext = createContext()
 
 const initialValues = {
-    profile: null
+    profile: null,
+    statistics: {
+        averageScore: null,
+        rank: null
+    }
 }
 
 export const ProfileContextProvider = (props) => {

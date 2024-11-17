@@ -65,12 +65,12 @@ def logout():
 def auto_login():
     if session.get('userId') is None:
         print("(auto_login) No user id found, not sending auto-login information")
-        return {}, 404
+        return {}, 204
 
     user = db.session.get(User, session['userId'])
 
     if user is None:
         print("(auto_login) Corresponding user not found in database, not sending auto-login information", session['userId'])
-        return {}, 404
+        return {}, 204
 
     return { 'id': user.id, 'name': user.name, 'picture': user.picture_url }, 200

@@ -15,7 +15,7 @@ export const LinkIconButton = ({ label, link, icon }) => {
     )
 }
 
-export const ToolIconButton = ({ label, onClick, icon, size="lg", tooltip=false }) => {
+export const ToolIconButton = ({ label, onClick, icon, size="lg", tooltip=true }) => {
     const button = (
         <ActionIcon
             varint="light"

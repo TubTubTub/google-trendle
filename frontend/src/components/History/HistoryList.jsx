@@ -1,17 +1,33 @@
-import { Text, Accordion, Group, Skeleton } from '@mantine/core'
+import { Text, Accordion, Group, Skeleton, Center } from '@mantine/core'
 import { useHistoryValue } from '../../contexts/HistoryContextHooks'
+import { useProfileValue } from '../../contexts/ProfileContextHooks'
 import CustomPaper from '../CustomPaper'
 
 const HistoryList = () => {
     const { history } = useHistoryValue()
+    const { profile } = useProfileValue()
 
-    if (history.length === 0) {
+    if (history === null) {
         return (
             <>
                 {Array(20).fill(0).map((_, index) => (
                     <Skeleton key={index} w="93%" h='5vh' mx="sm" mt="md" animate={true} />
                 ))}
             </>
+        )
+    }
+    
+    if (history.length === 0) {
+        let text = "Sign in to view game history!"
+
+        if (profile) {
+            text = "No games found!"
+        }
+
+        return (
+            <Center style={{ height: '80vh' }}>
+                <Text fw={500}>{text}</Text>
+            </Center>
         )
     }
 

@@ -20,7 +20,7 @@ const historyReducer = (state, action) => {
 const HistoryContext = createContext()
 
 const initialValues = {
-    history: []
+    history: null
 }
 
 export const HistoryContextProvider = (props) => {

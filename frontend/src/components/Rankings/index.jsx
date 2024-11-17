@@ -5,13 +5,18 @@ import LeaderboardList from './LeaderboardList'
 import LeaderboardSVG from '../../assets/leaderboard.svg?react'
 import statisticsService from '../../services/statistics'
 
+import { useProfile } from '../../contexts/ProfileContextHooks'
+
 const Rankings = () => {
     const [rankings, setRankings] = useState([])
+    const [profile, profileDispatch] = useProfile()
 
     useEffect(() => {
         statisticsService.getRankings(0)
             .then(result => setRankings(result))
-    }, [])
+        statisticsService.getUserStatistics()
+            .then(result => profileDispatch({ type: 'SET_STATISTICS', payload: result }))
+    }, [profileDispatch])
 
     if (rankings.length === 0) {
         return (
@@ -35,11 +40,14 @@ const Rankings = () => {
             
             <Divider />
 
-            <Group py="md" px="xl" mx="xs" gap="0.2em">
-                <Text fw={400} ta="left">1.</Text>
-                <Badge mx="xs">100</Badge>
-                <Text fw={500} ta="left">TempUser </Text>
+            {profile.profile ? 
+            <Group py="sm" px="xl" mx="xs" gap="0.2em">
+                <Text fw={500} ta="left">{`${profile.statistics.rank}.`}</Text>
+                <Badge mx="xs">{profile.statistics.averageScore}</Badge>
+                <Text fw={500} ta="left">{profile.profile.name}</Text>
             </Group>
+            :
+            <Text ta="center" fw={500} py="sm">Sign in to save statistics!</Text>}
         </Stack>
     )
 }

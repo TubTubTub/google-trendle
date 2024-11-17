@@ -41,7 +41,7 @@ const getAutoLogin = async () => {
     const result = await axios.get(`${baseURL}/autologin`, {
         withCredentials: true,
     })
-    console.log(result.data, 'RETURN AUTO LOGINDATA')
+
     return result.data
 }
 

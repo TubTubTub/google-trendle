@@ -17,14 +17,14 @@ const LeaderboardList = ({ rankings }) => {
                     </ThemeIcon>
                 }>
                     <Group gap="0.2em">
-                        <Badge mx="xs" color={rankToColour[index]}>{Math.round(user.averageScore * 10) / 10}</Badge><Text fw={500} ta="center">{user.name}</Text>
+                        <Badge mx="xs" color={rankToColour[index]}>{user.averageScore}</Badge><Text fw={500} ta="center">{user.name}</Text>
                     </Group>
                 </List.Item>
             ))}
             {rankings.slice(3).map((user, index) => (
                 <List.Item key={index} px="lg">
                     <Group gap="0.2em">
-                        <Badge mx="xs">{Math.round(user.averageScore * 10) / 10}</Badge><Text fw={500}>{user.name}</Text>
+                        <Badge mx="xs">{user.averageScore}</Badge><Text fw={500}>{user.name}</Text>
                     </Group>
                 </List.Item>
             ))}

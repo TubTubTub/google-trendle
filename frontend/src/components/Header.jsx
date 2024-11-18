@@ -3,9 +3,9 @@ import { Group, Title, useComputedColorScheme, useMantineColorScheme } from '@ma
 import { FiMoon, FiSun } from 'react-icons/fi'
 import { IoHelpOutline } from 'react-icons/io5'
 import { ToolIconButton } from './Buttons'
+
 import Help from './Help'
 import Login from './Login'
-// import CustomGoogleLogin from './Login/CustomGoogleLogin'
 
 const Header = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme()
@@ -35,7 +35,6 @@ const Header = () => {
                 />
                 <Help opened={helpOpened} onClose={helpHandler.close} />
                 <Login />
-                {/* <CustomGoogleLogin /> */}
             </Group>
         </Group>
     )

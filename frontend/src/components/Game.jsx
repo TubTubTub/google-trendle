@@ -5,25 +5,17 @@ import { useDisclosure } from '@mantine/hooks'
 import { useTrendsValue } from '../contexts/TrendsContextHooks'
 import useSessionStorage from '../hooks/useSessionStorage'
 
-import ErrorAlert from './ErrorAlert'
-import Canvas from './Canvas'
-import GameConfig from './GameConfig'
 import PreviousTrendle from './PreviousTrendle'
 import NextTrendle from './NextTrendle'
+import ErrorAlert from './ErrorAlert'
+import GameConfig from './GameConfig'
+import Canvas from './Canvas'
 import Result from './Result'
 
 const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
-    const trends = useTrendsValue()
     const setupSessionState = useSessionStorage()
-
-    useEffect(() => {
-        setupSessionState()
-    }, [])
-
-    useEffect(() => {
-        trends.result.score ? open() : close()
-    }, [trends.result.score, open, close])
+    const trends = useTrendsValue()
 
     const gameStyle = {
         position: 'relative',
@@ -33,6 +25,14 @@ const Game = () => {
         right: (resultOpened ? '10vw' : 0),
         zIndex: 2,
     }
+
+    useEffect(() => {
+        setupSessionState()
+    }, [])
+
+    useEffect(() => {
+        trends.result.score ? open() : close()
+    }, [trends.result.score, open, close])
     
     return (
         <Center style={{ height: "80vh", gap: '2em' }}>

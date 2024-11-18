@@ -4,6 +4,7 @@ import { PiLineVerticalBold } from 'react-icons/pi'
 const XAxis = ({ size, number }) => {
     const labelsArray = []
     const currentDate = new Date()
+
     if (size === 'm') {
         currentDate.setMonth(currentDate.getMonth() + 1)
         
@@ -20,6 +21,7 @@ const XAxis = ({ size, number }) => {
             labelsArray.push(currentDate.getFullYear() + 1)
         }
     }
+
     return (
         <Group justify="space-between">
             {

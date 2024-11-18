@@ -1,57 +1,15 @@
-import { useEffect } from 'react'
 import { Button, Group, Text, Paper, Loader } from '@mantine/core'
+
+import { useTrendsValue } from '../../contexts/TrendsContextHooks'
+import useCanvasControls from '../../hooks/useCanvasControls'
+
 import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from '../Buttons'
 
-import { useTrends } from '../../contexts/TrendsContextHooks'
-import trendsService from '../../services/trends'
-
 const CanvasControl = ({ canvas }) => {
-    const [trends, trendsDispatch] = useTrends()
-
-    useEffect(() => {
-        const keyDownHandler = (event) => {
-            if (event.code == 'Enter') {
-                console.log('Enter')
-                exportCanvas()
-            }
-            else if (event.shiftKey && event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-                console.log('Redo')
-                redoCanvas()
-            }
-            else if (!event.shiftKey && event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-                console.log('Undo')
-                undoCanvas()
-            }
-            else if (event.code == 'KeyR' && (event.ctrlKey || event.metaKey)) {
-                console.log('Clear')
-                clearCanvas()
-            }
-    }
-        document.addEventListener('keydown', (event) => keyDownHandler(event))
-    }, [])
-
-    const undoCanvas = () => canvas.current.undo()
-    const redoCanvas = () => canvas.current.redo()
-    const clearCanvas = () => canvas.current.clearCanvas()
-    const exportCanvas = async () => {
-        try {
-            const dataURL = await canvas.current.exportImage('jpeg')
-            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, 'today 1-m')
-
-            console.log('EXPORED DATA URL (Game.jsx):', dataURL)
-
-            if (result) {
-                trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
-                trendsDispatch({ type: 'SET_RESULT', payload: result })
-                console.log('RECEIVED DATA:', result)
-            }
-
-        } catch(error) {
-            console.log(error)
-        }
-    }
+    const [undoCanvas, redoCanvas, clearCanvas, exportCanvas] = useCanvasControls(canvas)
+    const trends = useTrendsValue()
 
     return (
         <Group justify="space-between" py="xs">

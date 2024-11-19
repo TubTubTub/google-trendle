@@ -21,7 +21,7 @@ const useLoginUser = () => {
             await loginService.login(profile)
             
             const history = await statisticsService.getHistory()
-            historyDispatch({ type: 'SET_HISTORY', payload: history })
+            historyDispatch({ type: 'SET_USER_HISTORY', payload: history })
 
             const userStatistics = await statisticsService.getUserStatistics()
             profileDispatch({ type: 'SET_STATISTICS', payload: userStatistics })
@@ -34,7 +34,7 @@ const useLoginUser = () => {
         try {
             await loginService.logout()
             profileDispatch({ type: 'SET_PROFILE', payload: null })
-            historyDispatch({ type: 'EMPTY_HISTORY' })
+            historyDispatch({ type: 'EMPTY_USER_HISTORY' })
         } catch(error) {
             console.log('(useLoginUser.js) Error logging out:', error)
         }

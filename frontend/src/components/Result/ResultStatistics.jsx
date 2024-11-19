@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Rating, Text, ThemeIcon, Stack, SimpleGrid } from '@mantine/core'
 
 import { useTrendsValue } from '../../contexts/TrendsContextHooks'
@@ -20,22 +21,30 @@ const roundHalf = (num) => {
 }
 
 const ResultStatistics = () => {
+    const [debouncedScore, setDebouncedScore] = useState(null)
     const trends = useTrendsValue()
 
-    return (
+    useEffect(() => {
+        if (trends.result.score) {
+            setDebouncedScore(trends.result.score)
+        } else {
+            setTimeout(() => setDebouncedScore(null), 200)
+        }
+    }, [trends.result.score])
 
+    return (
         <Stack m="xs" align="center" style={{ transform: 'translateY(-10px)'}}>
         <Text
             ta="center"
             size="xl"
             fw={900}
             variant="gradient"
-            gradient={scoreDescriptions[roundHalf((trends.result.score / 100) * 3)][1]}
+            gradient={scoreDescriptions[roundHalf((debouncedScore / 100) * 3)][1]}
         >
-            {scoreDescriptions[roundHalf((trends.result.score / 100) * 3)][0]}
+            {scoreDescriptions[roundHalf((debouncedScore / 100) * 3)][0]}
         </Text>
 
-        <Rating value={(trends.result.score / 100) * 3} count={3} fractions={2} size="lg" readOnly />
+        <Rating value={(debouncedScore / 100) * 3} count={3} fractions={2} size="lg" readOnly />
 
         <CustomPaper p="xs" label="Your Score" tooltip style={{ alignSelf: 'stretch' }}>
             <Text
@@ -44,9 +53,9 @@ const ResultStatistics = () => {
                 size="xl"
                 fw={900}
                 variant="gradient"
-                gradient={scoreDescriptions[roundHalf((trends.result.score / 100) * 3)][1]}
+                gradient={scoreDescriptions[roundHalf((debouncedScore / 100) * 3)][1]}
             >
-                {trends.result.score}
+                {debouncedScore}
             </Text>
         </CustomPaper>
         

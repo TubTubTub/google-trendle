@@ -12,22 +12,22 @@ import LoadingList from '../LoadingList'
 import HistoryList from './HistoryList'
 
 const History = () => {
-    const [{ history }, historyDispatch] = useHistory()
+    const [{ userHistory }, historyDispatch] = useHistory()
     const { profile } = useProfileValue()
 
     const refreshHistory = async () => {
-        historyDispatch({ type: 'SET_HISTORY', payload: null })
-        const history = await statisticsService.getHistory()
-        historyDispatch({ type: 'SET_HISTORY', payload: history })
+        historyDispatch({ type: 'SET_USER_HISTORY', payload: null })
+        const userHistory = await statisticsService.getHistory()
+        historyDispatch({ type: 'SET_USER_HISTORY', payload: userHistory })
     }
 
     useEffect(() => {
         refreshHistory()
     }, [])
 
-    if (history === null) return <LoadingList />
+    if (userHistory === null) return <LoadingList />
     
-    if (history.length === 0) {
+    if (userHistory.length === 0) {
         const displayText = profile ? "No games found!" : "Sign in to view game history!"
         return (
             <Center style={{ height: '80vh' }}>

@@ -3,11 +3,11 @@ import { useHistoryValue } from '../../contexts/HistoryContextHooks'
 import CustomPaper from '../CustomPaper'
 
 const HistoryList = () => {
-    const { history } = useHistoryValue()
+    const { userHistory } = useHistoryValue()
 
     return (
         <Accordion>
-            {history.map((game, index) => (
+            {userHistory.map((game, index) => (
                 <Accordion.Item key={index} value={index.toString()}>
                     <Accordion.Control>{game.word}</Accordion.Control>
                     <Accordion.Panel>

@@ -3,6 +3,7 @@ import { Center, Stack, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { useTrendsValue } from '../contexts/TrendsContextHooks'
+import { useHistoryValue } from '../contexts/HistoryContextHooks'
 import useSessionStorage from '../hooks/useSessionStorage'
 
 import PreviousTrendle from './PreviousTrendle'
@@ -16,6 +17,7 @@ const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
     const setupSessionState = useSessionStorage()
     const trends = useTrendsValue()
+    const { sessionHistory }  = useHistoryValue()
 
     const gameStyle = {
         position: 'relative',
@@ -27,11 +29,14 @@ const Game = () => {
     }
 
     useEffect(() => {
+        console.log('CALL ONCE?')
         setupSessionState()
     }, [])
 
     useEffect(() => {
         trends.result.score ? open() : close()
+        console.log(trends.result.score, 'wow')
+        console.log(sessionHistory)
     }, [trends.result.score, open, close])
     
     return (

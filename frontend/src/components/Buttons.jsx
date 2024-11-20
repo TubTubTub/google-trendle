@@ -15,13 +15,14 @@ export const LinkIconButton = ({ label, link, icon }) => {
     )
 }
 
-export const ToolIconButton = ({ label, onClick, icon, size="lg", tooltip=true }) => {
+export const ToolIconButton = ({ label, onClick, icon, size="lg", tooltip=true, disabled=false }) => {
     const button = (
         <ActionIcon
             varint="light"
             size={size}
             aria-label={label}
             onClick={onClick}
+            disabled={disabled}
         >
             {icon}
         </ActionIcon>

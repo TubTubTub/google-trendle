@@ -19,27 +19,20 @@ const historyReducer = (state, action) => {
                 sessionHistory: [...state.sessionHistory, action.payload]
             }
         case 'SET_CURRENT_SESSION_RESULT':
-            console.log('setting result', [
+            const result = [
                 ...state.sessionHistory.slice(0, state.sessionIndex),
                 {
                     word: state.sessionHistory.at(state.sessionIndex).word,
                     result: action.payload,
                     yAxisLabels: state.sessionHistory.at(state.sessionIndex).yAxisLabels
                 },
-                ...(state.sessionIndex === -1 ? [] : state.sessionHistory.slice(state.sesisonIndex + 1))
-            ])
+                ...(state.sessionIndex === -1 ? [] : state.sessionHistory.slice(state.sessionIndex + 1))
+            ]
+
+            console.log(result, 'CURRENt sesh REULT')
             return {
                 ...state,
-                sessionHistory: [
-                    ...state.sessionHistory.slice(0, state.sessionIndex),
-                    {
-                        word: state.sessionHistory.at(state.sessionIndex).word,
-                        result: action.payload,
-                        yAxisLabels: state.sessionHistory.at(state.sessionIndex).yAxisLabels
-                    },
-                    ...(state.sessionIndex === -1 ? [] : state.sessionHistory.slice(state.sesisonIndex + 1))
-                ]
-            }
+                sessionHistory: result }
         case 'SET_SESSION_INDEX':
             return {
                 ...state,

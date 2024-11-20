@@ -5,11 +5,11 @@ import usePreviousTrendle from '../hooks/usePreviousTrendle'
 
 const PreviousTrendle = () => {
     const setError = useSetError()
-    const loadPreviousTrendle = usePreviousTrendle()
+    const [previousDisabled, loadPreviousTrendle] = usePreviousTrendle()
 
     return (
-        <ToolIconButton label="Previous trendle" onClick={loadPreviousTrendle} icon={<IoIosArrowBack />} tooltip />
+        <ToolIconButton label="Previous trendle" onClick={loadPreviousTrendle} icon={<IoIosArrowBack />} disabled={previousDisabled} tooltip />
     )
 }
 
-export default PreviousTrendle # KEEP GOING PREVIOUS DOESNT WORK
+export default PreviousTrendle

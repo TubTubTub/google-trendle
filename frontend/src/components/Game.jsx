@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Center, Stack, Group } from '@mantine/core'
+import { useEffect, useRef } from 'react'
+import { Center, Stack, Group, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { useTrendsValue } from '../contexts/TrendsContextHooks'
@@ -12,15 +12,25 @@ import ErrorAlert from './ErrorAlert'
 import GameConfig from './GameConfig'
 import Canvas from './Canvas'
 import Result from './Result'
+import CanvasControl from './Canvas/CanvasControl'
 
 const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
     const setupSessionState = useSessionStorage()
     const trends = useTrendsValue()
     const { sessionHistory }  = useHistoryValue()
+    const theme = useMantineTheme()
+    const canvas = useRef()
 
     const gameStyle = {
         position: 'relative',
+        height: '75%',
+        width: '50%',
+        gap: 0,
+        justifyContent: 'space-between',
+        backgroundColor: 'green',
+
+
         transitionProperty: 'right',
         transitionDuration: '200ms',
         transitionTimingFunction: 'ease',
@@ -35,19 +45,23 @@ const Game = () => {
 
     useEffect(() => {
         trends.result.score ? open() : close()
-        console.log(trends.result.score, 'wow')
-        console.log(sessionHistory)
     }, [trends.result.score, open, close])
-    
     return (
-        <Center style={{ height: "80vh", gap: '2em' }}>
+        <Center style={{ width: '100%', height: "calc(100vh - 110px)", gap: '2em' }}>
             <ErrorAlert />
 
             <Group style={gameStyle}>
                 <PreviousTrendle />
-                <Stack>
+                <Stack style={{
+                        flexGrow: 1,
+                        width: `calc(100% - 2 * ${theme.other.canvasButtonHeight})`,
+                        height: '100%',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     <GameConfig />
-                    <Canvas />
+                    <Canvas canvas={canvas} />
+                    <CanvasControl canvas={canvas} />
                 </Stack>
                 <NextTrendle />
             </Group>

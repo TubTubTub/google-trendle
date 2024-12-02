@@ -1,11 +1,11 @@
 import { Tooltip, ActionIcon, Box } from '@mantine/core'
 
-export const LinkIconButton = ({ label, link, icon }) => {
+export const LinkIconButton = ({ label, link, icon, size="lg" }) => {
     return (
         <Tooltip label={label} openDelay={250} closeDelay={100}>
             <ActionIcon
             variant="outline"
-            size="lg"
+            size={size}
             aria-label={label}
             onClick={() => window.open(link)}
             >

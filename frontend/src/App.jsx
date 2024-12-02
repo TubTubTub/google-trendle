@@ -5,6 +5,7 @@ import History from './components/History'
 import Rankings from './components/Rankings'
 import Footer from './components/Footer'
 import useMouseSidebar from './hooks/useMouseSidebar'
+import './styles.css'
 
 const mergeRefs = (...inputRefs) => {
     return (ref) => {
@@ -31,7 +32,8 @@ const App = () => {
             header={{ height: 60 }}
             navbar={{ width: 300, breakpoint: 'md', collapsed: { desktop: !navbarOpened, mobile: true } }}
             aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: !asideOpened, mobile: true }}}
-            padding="md"
+            footer={{ height: 50 }}
+            padding={0}
             ref={mergeRefs(navbarRef, asideRef)}
         >
             <AppShell.Header px="md">
@@ -50,7 +52,7 @@ const App = () => {
                 <History />
             </AppShell.Aside>
 
-            <AppShell.Footer px="md" py="xs">
+            <AppShell.Footer>
                 <Footer />
             </AppShell.Footer>
 

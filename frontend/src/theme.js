@@ -13,7 +13,10 @@ const theme = createTheme({
         dark: 9,
     },
     primaryColor: 'primary',
-    autoContrast: true
+    autoContrast: true,
+    other: {
+        canvasButtonHeight: '3rem'
+    }
 })
 
 export default theme

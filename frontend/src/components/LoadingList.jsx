@@ -1,13 +1,13 @@
-import { Skeleton, Box } from '@mantine/core'
+import { Skeleton, Stack } from '@mantine/core'
 
 
 const LoadingList = () => {
     return (
-        <Box>
-            {Array(20).fill(0).map((_, index) => (
-                <Skeleton key={index} w="93%" h='5vh' mx="sm" mt="md" animate={true} />
+        <Stack h="100%" py="md">
+            {Array(15).fill(0).map((_, index) => (
+                <Skeleton key={index} h="100%" width="90%" animate={true} style={{ alignSelf: 'center'}} />
             ))}
-        </Box>
+        </Stack>
     )
 }
 

@@ -1,4 +1,4 @@
-import { createTheme, virtualColor } from '@mantine/core'
+import { createTheme, virtualColor, rem } from '@mantine/core'
 
 const theme = createTheme({
     colors: {
@@ -15,7 +15,7 @@ const theme = createTheme({
     primaryColor: 'primary',
     autoContrast: true,
     other: {
-        canvasButtonHeight: '3rem'
+        canvasButtonHeight: rem('2rem')
     }
 })
 

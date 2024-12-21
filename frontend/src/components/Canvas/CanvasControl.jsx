@@ -12,7 +12,7 @@ const CanvasControl = ({ canvas }) => {
     const trends = useTrendsValue()
 
     return (
-        <Group justify="space-between" py="xs">
+        <Group justify="space-between" style={{ flexGrow: 1 }}>
             <Button onClick={exportCanvas} disabled={trends.result.score}>
                 Export
             </Button>

@@ -8,7 +8,7 @@ const GameConfig = () => {
     const trends = useTrendsValue()
 
     return (
-        <Group align='stretch'>
+        <Group align='stretch' style={{ flexGrow: 1 }}>
             <CustomPaper>
                 <Text fw={500} ta="center">
                     {getDisplay()}

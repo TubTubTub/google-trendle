@@ -1,4 +1,4 @@
-import { useMantineTheme } from '@mantine/core'
+import { Box, useMantineTheme } from '@mantine/core'
 import { IoIosArrowBack } from 'react-icons/io'
 import { ToolIconButton } from './Buttons'
 import { useSetError } from '../contexts/ErrorContextHooks'
@@ -10,7 +10,9 @@ const PreviousTrendle = () => {
     const theme = useMantineTheme()
 
     return (
-        <ToolIconButton size={theme.other.canvasButtonHeight} label="Previous trendle" onClick={loadPreviousTrendle} icon={<IoIosArrowBack />} disabled={previousDisabled} tooltip />
+        <Box w="2rem">
+            <ToolIconButton size={theme.other.canvasButtonHeight} label="Previous trendle" onClick={loadPreviousTrendle} icon={<IoIosArrowBack />} disabled={previousDisabled} tooltip />
+        </Box>
     )
 }
 

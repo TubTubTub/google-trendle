@@ -14,7 +14,7 @@ const Canvas = ({ canvas }) => {
     const theme = useMantineTheme()
 
     return (
-        <Stack gap={0} style={{ backgroundColor: 'red', flexGrow: 1 }}>
+        <Stack h="100%" gap={0} style={{ backgroundColor: 'red', flexGrow: 1 }}>
             <YAxis />
 
             <ReactSketchCanvas

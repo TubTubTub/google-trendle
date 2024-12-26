@@ -30,7 +30,7 @@ const History = () => {
     if (userHistory.length === 0) {
         const displayText = profile ? "No games found!" : "Sign in to view game history!"
         return (
-            <Center style={{ height: '80vh' }}>
+            <Center h='100%'>
                 <Text fw={500}>{displayText}</Text>
             </Center>
         )
@@ -38,10 +38,10 @@ const History = () => {
     
     return (
         <Stack>
-            <Group justify="center">
-                <HistorySVG style={{ width: '1.5em', height: '1.5em' }} />
-                <Title ta="center" order={2} py="md">Game History</Title>
-                <ToolIconButton onClick={refreshHistory} label="Refresh history" icon={<HiOutlineRefresh size="1.5em" />} tooltip={true} />
+            <Group h="4rem" justify="center">
+                <HistorySVG style={{ width: '1.5rem', height: '1.5rem' }} />
+                <Title order={2}>Game History</Title>
+                <ToolIconButton onClick={refreshHistory} label="Refresh history" icon={<HiOutlineRefresh size="1.5rem" />} tooltip={true} />
             </Group>
             
             <ScrollArea type="auto" scrollbars="y">

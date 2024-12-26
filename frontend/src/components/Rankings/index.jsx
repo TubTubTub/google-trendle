@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Text, Title, Divider, ScrollArea, Group, Stack } from '@mantine/core'
+import { Text, Title, Divider, ScrollArea, Group, Stack, Center } from '@mantine/core'
 
 import { useProfile } from '../../contexts/ProfileContextHooks'
 import statisticsService from '../../services/statistics'
@@ -23,19 +23,26 @@ const Rankings = () => {
     if (rankings.length === 0) return <LoadingList />
     
     return (
-        <Stack>
-            <Group justify="center">
-                <LeaderboardSVG style={{ width: '1.5em', height: '1.5em' }}/>
-                <Title ta="center" order={2} py="md">Leaderboard</Title>
+        <Stack h="100%" gap={0}>
+            <Group h="4rem" justify="center">
+                <LeaderboardSVG style={{ width: '1.5rem', height: '1.5rem' }}/>
+                <Title order={2}>Leaderboard</Title>
             </Group>
             
-            <ScrollArea type="auto" scrollbars="y" style={{ height: '76.5vh'}}>
+            <ScrollArea type="auto" scrollbars="y" style={{ flexGrow: 1 }}>
                 <LeaderboardList rankings={rankings} />
             </ScrollArea>
             
             <Divider />
 
-            {profile.profile ? <UserRank profile={profile} /> : <Text ta="center" fw={500}>Sign in to save statistics!</Text>}
+            {
+            profile.profile ?
+            <UserRank profile={profile} />
+            :
+            <Center h="4rem">
+                <Text ta="center" fw={500}>Sign in to save statistics!</Text>
+            </Center>
+            }
         </Stack>
     )
 }

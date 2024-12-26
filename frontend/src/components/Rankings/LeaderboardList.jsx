@@ -7,9 +7,13 @@ const rankToColour = {
     2: 'darkgoldenrod'
 }
 
+const round = (num, dp) => {
+    return Math.floor(num * 10 ** dp) / 10 ** dp
+}
+
 const LeaderboardList = ({ rankings }) => {
     return (
-        <List spacing="xs" px='sm' type="ordered" center>
+        <List spacing="xs" px="sm" type="ordered" center>
             {rankings.slice(0, 3).map((user, index) => (
                 <List.Item key={index} icon={
                     <ThemeIcon variant="transparent" color={rankToColour[index]} radius="xl" size={24}>
@@ -17,14 +21,14 @@ const LeaderboardList = ({ rankings }) => {
                     </ThemeIcon>
                 }>
                     <Group gap="0.2em">
-                        <Badge mx="xs" color={rankToColour[index]}>{user.averageScore}</Badge><Text fw={500} ta="center">{user.name}</Text>
+                        <Badge mx="xs" color={rankToColour[index]}>{round(user.averageScore, 1)}</Badge><Text fw={500} ta="center">{user.name}</Text>
                     </Group>
                 </List.Item>
             ))}
             {rankings.slice(3).map((user, index) => (
                 <List.Item key={index} px="lg">
-                    <Group gap="0.2em">
-                        <Badge mx="xs">{user.averageScore}</Badge><Text fw={500}>{user.name}</Text>
+                    <Group gap="0.2rem">
+                        <Badge mx="xs">{round(user.averageScore, 1)}</Badge><Text fw={500}>{user.name}</Text>
                     </Group>
                 </List.Item>
             ))}

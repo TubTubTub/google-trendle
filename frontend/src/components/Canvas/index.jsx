@@ -14,7 +14,7 @@ const Canvas = ({ canvas }) => {
     const theme = useMantineTheme()
 
     return (
-        <Stack h="100%" gap={0} style={{ backgroundColor: 'red', flexGrow: 1 }}>
+        <Stack h="100%" gap={0} style={{ flexGrow: 1 }}>
             <YAxis />
 
             <ReactSketchCanvas
@@ -24,12 +24,13 @@ const Canvas = ({ canvas }) => {
                 strokeColor={colorScheme === 'dark' ? 'white' : 'black' }
                 canvasColor={colorScheme === 'dark' ? theme.colors.dark[4] : 'white' }
                 ref={canvas}
-                backgroundImage={backgroundSVG}
             />
 
             <XAxis size={trends.timeframe.at(-1)} number={Number(trends.timeframe.match(/\d+/)) + 1} />
         </Stack>
     )
 }
+
+// ADD BACKGROUND IMAGE CAUSE CANNOT EXPORT PROPERLY WITH backgroundImage={backgroundSVG}
 
 export default Canvas

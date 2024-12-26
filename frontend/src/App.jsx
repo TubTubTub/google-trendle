@@ -30,8 +30,8 @@ const App = () => {
     return (
         <AppShell
             header={{ height: '4rem' }}
-            navbar={{ width: '20rem', breakpoint: 'md', collapsed: { desktop: !navbarOpened, mobile: true } }}
-            aside={{ width: '20rem', breakpoint: 'md', collapsed: { desktop: !asideOpened, mobile: true }}}
+            navbar={{ width: '20rem', breakpoint: 'lg', collapsed: { desktop: !navbarOpened, mobile: true } }}
+            aside={{ width: '20rem', breakpoint: 'lg', collapsed: { desktop: !asideOpened, mobile: true }}}
             footer={{ height: '4rem' }}
             padding={0}
             ref={mergeRefs(navbarRef, asideRef)}

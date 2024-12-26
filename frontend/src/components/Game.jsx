@@ -23,7 +23,6 @@ const Game = () => {
         position: 'relative',
         height: '75%',
         width: '50%',
-        backgroundColor: 'green',
 
         transitionProperty: 'right',
         transitionDuration: '200ms',
@@ -41,23 +40,23 @@ const Game = () => {
         trends.result.score ? open() : close()
     }, [trends.result.score, open, close])
     return (
-        <Center style={{ width: '100%', height: "calc(100vh - 8rem)", gap: '2rem', backgroundColor: 'yellow' }}>
+        <Center gap="2rem" w="100%" h="calc(100vh - 8rem)">
             <ErrorAlert />
             
             <Stack gap={0} style={gameStyle}>
-                <Group h="20%" style={{backgroundColor:'orange'}}>
+                <Group h="20%">
                     <Space w="2rem" />
                     <GameConfig />
                     <Space w="2rem" />
                 </Group>
 
-                <Group h="90%" style={{backgroundColor:'purple'}}>
+                <Group h="90%">
                     <PreviousTrendle />
                     <Canvas canvas={canvas} />
                     <NextTrendle />
                 </Group>
 
-                <Group h="20%" style={{backgroundColor:'orange'}}>
+                <Group h="20%">
                     <Space w="2rem" />
                     <CanvasControl canvas={canvas} />
                     <Space w="2rem" />

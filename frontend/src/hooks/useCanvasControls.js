@@ -10,7 +10,7 @@ const useCanvasControls = (canvas) => {
     const clearCanvas = useCallback(() => canvas.current.clearCanvas(), [canvas])
     const exportCanvas = useCallback(async () => {
         try {
-            const dataURL = await canvas.current.exportImage('jpeg')
+            const dataURL = await canvas.current.getDataURL('jpeg', false, 'white')
             const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, 'today 1-m')
 
             console.log('EXPORED DATA URL (Game.jsx):', dataURL)

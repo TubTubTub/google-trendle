@@ -2,6 +2,12 @@ import { useEffect, useCallback } from 'react'
 import { useTrends } from '../contexts/TrendsContextHooks'
 import trendsService from '../services/trends'
 
+export const exportPath = async (canvas) => await canvas.current.exportPaths()
+
+export const loadPath = (canvas, path) => canvas.current.loadPaths(path)
+
+export const clearCanvas = (canvas) => canvas.current.clearCanvas()
+
 const useCanvasControls = (canvas) => {
     const [trends, trendsDispatch] = useTrends()
 
@@ -10,10 +16,10 @@ const useCanvasControls = (canvas) => {
     const clearCanvas = useCallback(() => canvas.current.clearCanvas(), [canvas])
     const exportCanvas = useCallback(async () => {
         try {
-            const dataURL = await canvas.current.getDataURL('jpeg', false, 'white')
-            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, 'today 1-m')
+            const dataURL = await canvas.current.exportImage('jpg')
+            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, trends.timeframe)
 
-            console.log('EXPORED DATA URL (Game.jsx):', dataURL)
+            console.log('EXPORED DATA URL (Game.jsx):' + 'TIMEFRAME:', trends.timeframe, dataURL)
 
             if (result) {
                 trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
@@ -24,7 +30,7 @@ const useCanvasControls = (canvas) => {
         } catch(error) {
             console.log('(useCanvasControls.exportCanvas) Error exporting canvas:', error)
         }
-    }, [canvas, trends.word, trendsDispatch])
+    }, [canvas, trends.word, trends.timeframe, trendsDispatch])
 
     useEffect(() => {
         const keyDownHandler = (event) => {

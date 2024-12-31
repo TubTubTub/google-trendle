@@ -31,12 +31,16 @@ const trendsReducer = (state, action) => {
             }
 
         case 'SET_WORD':
+            sessionStorage.setItem('WORD', action.payload)
+
             return {
                 ...state,
                 word: action.payload
             }
 
         case 'SET_Y_AXIS_LABELS':
+            sessionStorage.setItem('Y_AXIS_LABELS', action.payload)
+            
             return {
                 ...state,
                 yAxisLabels: action.payload

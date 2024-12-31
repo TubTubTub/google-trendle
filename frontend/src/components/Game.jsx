@@ -3,6 +3,7 @@ import { Center, Stack, Group, Space } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { useTrendsValue } from '../contexts/TrendsContextHooks'
+import { useHistoryDispatch, useHistoryValue } from '../contexts/HistoryContextHooks'
 import useSessionStorage from '../hooks/useSessionStorage'
 
 import PreviousTrendle from './PreviousTrendle'
@@ -15,7 +16,9 @@ import CanvasControl from './Canvas/CanvasControl'
 
 const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
-    const setupSessionState = useSessionStorage()
+    const [getStorage, setupStorage] = useSessionStorage()
+    const historyDispatch = useHistoryDispatch()
+    const history = useHistoryValue()
     const trends = useTrendsValue()
     const canvas = useRef()
 
@@ -32,13 +35,19 @@ const Game = () => {
     }
 
     useEffect(() => {
-        console.log('CALL ONCE?')
-        setupSessionState()
-    }, [])
+        const [sessionWord, sessionLabels, sessionValue, sessionSize] = getStorage()
+        setupStorage(sessionWord, sessionLabels, sessionValue, sessionSize).then( // CURRENTLY FETCHES AND SETS WORD TWICE CAUSE STRICT MODE
+            ([currentWord, currentLabels]) => {
+                historyDispatch({ type: 'SET_GAME_WORD', payload: currentWord })
+                historyDispatch({ type: 'SET_GAME_LABELS', payload: currentLabels })
+            }
+        )
+    }, [getStorage, setupStorage, historyDispatch, history.sessionHistory.length])
 
     useEffect(() => {
         trends.result.score ? open() : close()
     }, [trends.result.score, open, close])
+    
     return (
         <Center gap="2rem" w="100%" h="calc(100vh - 8rem)">
             <ErrorAlert />
@@ -51,9 +60,9 @@ const Game = () => {
                 </Group>
 
                 <Group h="90%">
-                    <PreviousTrendle />
+                    <PreviousTrendle canvas={canvas} />
                     <Canvas canvas={canvas} />
-                    <NextTrendle />
+                    <NextTrendle canvas={canvas} />
                 </Group>
 
                 <Group h="20%">

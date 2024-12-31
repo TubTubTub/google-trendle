@@ -4,9 +4,9 @@ import { ToolIconButton } from './Buttons'
 import { useSetError } from '../contexts/ErrorContextHooks'
 import usePreviousTrendle from '../hooks/usePreviousTrendle'
 
-const PreviousTrendle = () => {
+const PreviousTrendle = ({ canvas }) => {
     const setError = useSetError()
-    const [previousDisabled, loadPreviousTrendle] = usePreviousTrendle()
+    const [previousDisabled, loadPreviousTrendle] = usePreviousTrendle(canvas)
     const theme = useMantineTheme()
 
     return (

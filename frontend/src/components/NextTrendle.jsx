@@ -1,13 +1,13 @@
-import { Box, useMantineTheme, rem } from '@mantine/core'
+import { Box, useMantineTheme } from '@mantine/core'
 import { IoIosArrowForward } from 'react-icons/io'
 import { ToolIconButton } from './Buttons'
 import useNextTrendle from '../hooks/useNextTrendle'
 
-const NextTrendle = () => {
-    const loadNextTrendle = useNextTrendle()
+const NextTrendle = ({ canvas }) => {
+    const loadNextTrendle = useNextTrendle(canvas)
     const theme = useMantineTheme()
     return (
-        <Box style={{width: rem('2rem'),flexShrink: 1}}>
+        <Box w='2rem' style={{ flexShrink: 1} }>
             <ToolIconButton size={theme.other.canvasButtonHeight} label="Next trendle" onClick={loadNextTrendle} icon={<IoIosArrowForward />} tooltip />
         </Box>
     )

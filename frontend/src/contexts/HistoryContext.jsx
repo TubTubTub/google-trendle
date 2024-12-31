@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react'
+import { EMPTY_RESULT } from '../utils/constants'
 
 const historyReducer = (state, action) => {
     switch (action.type) {
@@ -12,31 +13,86 @@ const historyReducer = (state, action) => {
                 ...state,
                 userHistory: []
             }
-        case 'APPEND_SESSION_HISTORY':
-            console.log('(sessh) appending', action.payload)
+        case 'ADD_NEW_GAME':
             return {
                 ...state,
-                sessionHistory: [...state.sessionHistory, action.payload]
+                sessionHistory: [
+                    ...state.sessionHistory,
+                    {
+                        word: action.payload.word,
+                        labels: action.payload.labels,
+                        result: EMPTY_RESULT,
+                        path: null,
+                    }
+                ]
             }
-        case 'SET_CURRENT_SESSION_RESULT':
-            const result = [
-                ...state.sessionHistory.slice(0, state.sessionIndex),
-                {
-                    word: state.sessionHistory.at(state.sessionIndex).word,
-                    result: action.payload,
-                    yAxisLabels: state.sessionHistory.at(state.sessionIndex).yAxisLabels
-                },
-                ...(state.sessionIndex === -1 ? [] : state.sessionHistory.slice(state.sessionIndex + 1))
-            ]
-
-            console.log(result, 'CURRENt sesh REULT')
+        case 'SET_GAME_PATH':
             return {
                 ...state,
-                sessionHistory: result }
-        case 'SET_SESSION_INDEX':
+                sessionHistory: [
+                    ...state.sessionHistory.slice(0, state.currentIndex),
+                    {
+                        word: state.sessionHistory.at(state.currentIndex).word,
+                        labels: state.sessionHistory.at(state.currentIndex).labels,
+                        result: state.sessionHistory.at(state.currentIndex).result,
+                        path: action.payload
+                    },
+                    ...(state.currentIndex === -1 ? [] : state.sessionHistory.slice(state.currentIndex + 1))
+                ]
+            }
+        case 'SET_GAME_RESULT':
             return {
                 ...state,
-                sessionIndex: action.payload
+                sessionHistory: [
+                    ...state.sessionHistory.slice(0, state.currentIndex),
+                    {
+                        word: state.sessionHistory.at(state.currentIndex).word,
+                        labels: state.sessionHistory.at(state.currentIndex).labels,
+                        result: action.payload,
+                        path: state.sessionHistory.at(state.currentIndex).path
+                    },
+                    ...(state.currentIndex === -1 ? [] : state.sessionHistory.slice(state.currentIndex + 1))
+                ]
+            }
+        case 'SET_GAME_WORD':
+            return {
+                ...state,
+                sessionHistory: [
+                    ...state.sessionHistory.slice(0, state.currentIndex),
+                    {
+                        word: action.payload,
+                        labels: state.sessionHistory.at(state.currentIndex).labels,
+                        result: state.sessionHistory.at(state.currentIndex).result,
+                        path: state.sessionHistory.at(state.currentIndex).path
+                    },
+                    ...(state.currentIndex === -1 ? [] : state.sessionHistory.slice(state.currentIndex + 1))
+                ]
+            }
+        case 'SET_GAME_LABELS':
+            return {
+                ...state,
+                sessionHistory: [
+                    ...state.sessionHistory.slice(0, state.currentIndex),
+                    {
+                        word: state.sessionHistory.at(state.currentIndex).word,
+                        labels: action.payload,
+                        result: state.sessionHistory.at(state.currentIndex).result,
+                        path: state.sessionHistory.at(state.currentIndex).path
+                    },
+                    ...(state.currentIndex === -1 ? [] : state.sessionHistory.slice(state.currentIndex + 1))
+                ]
+            }
+        
+        case 'SET_CURRENT_INDEX':
+            return {
+                ...state,
+                currentIndex: action.payload
+            }
+        case 'EMPTY_GAMES':
+            return {
+                ...state,
+                sessionHistory: [],
+                currentIndex: -1
             }
         default:
             return state
@@ -47,8 +103,15 @@ const HistoryContext = createContext()
 
 const initialValues = {
     userHistory: null,
-    sessionHistory: [],
-    sessionIndex: -1
+    sessionHistory: [
+        {
+            word: null,
+            labels: [null, null],
+            result: EMPTY_RESULT,
+            path: null
+        }
+    ],
+    currentIndex: -1
 }
 
 export const HistoryContextProvider = (props) => {

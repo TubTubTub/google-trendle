@@ -7,9 +7,9 @@ import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from '../Buttons'
 
-const CanvasControl = ({ canvas }) => {
-    const [undoCanvas, redoCanvas, clearCanvas, exportCanvas] = useCanvasControls(canvas)
+const CanvasControl = () => {
     const trends = useTrendsValue()
+    const [undoCanvas, redoCanvas, clearCanvas, exportCanvas] = useCanvasControls()
 
     return (
         <Group justify="space-between" style={{ flexGrow: 1 }}>

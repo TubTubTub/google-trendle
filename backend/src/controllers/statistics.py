@@ -1,8 +1,7 @@
 from flask import Blueprint, session, request
 
 from src import db
-from src.handlers.trend import Trend
-from src.models import User, Word, UserWord
+from src.models import User, UserWord
 
 from sqlalchemy import func, select
 

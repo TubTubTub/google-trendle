@@ -3,14 +3,16 @@ import { useTrends } from '../contexts/TrendsContextHooks'
 import { useHistory } from '../contexts/HistoryContextHooks'
 import { useSetError } from '../contexts/ErrorContextHooks'
 import { exportPath, loadPath, clearCanvas } from './useCanvasControls'
+import { useCanvasValue } from '../contexts/CanvasContextHooks'
 import { EMPTY_RESULT } from '../utils/constants'
 import wordsService from '../services/words'
 import trendsService from '../services/trends'
 
-const useNextTrendle = (canvas) => {
+const useNextTrendle = () => {
     const [trends, trendsDispatch] = useTrends()
     const [history, historyDispatch] = useHistory()
     const setError = useSetError()
+    const canvas = useCanvasValue()
 
     return useCallback(async () => {
         try {

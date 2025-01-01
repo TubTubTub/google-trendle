@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useTrends } from '../contexts/TrendsContextHooks'
+import { useCanvasValue } from '../contexts/CanvasContextHooks'
 import trendsService from '../services/trends'
 
 export const exportPath = async (canvas) => await canvas.current.exportPaths()
@@ -8,8 +9,9 @@ export const loadPath = (canvas, path) => canvas.current.loadPaths(path)
 
 export const clearCanvas = (canvas) => canvas.current.clearCanvas()
 
-const useCanvasControls = (canvas) => {
+const useCanvasControls = () => {
     const [trends, trendsDispatch] = useTrends()
+    const canvas = useCanvasValue()
 
     const undoCanvas = useCallback(() => canvas.current.undo(), [canvas])
     const redoCanvas = useCallback(() => canvas.current.redo(), [canvas])
@@ -50,9 +52,12 @@ const useCanvasControls = (canvas) => {
                 console.log('Clear')
                 clearCanvas()
             }
-    }
-        document.addEventListener('keydown', (event) => keyDownHandler(event))
-    }, [undoCanvas, redoCanvas, clearCanvas, exportCanvas])
+        }
+
+        if (canvas) {
+            document.addEventListener('keydown', (event) => keyDownHandler(event))
+        }
+    }, [undoCanvas, redoCanvas, clearCanvas, exportCanvas, canvas])
 
     return [undoCanvas, redoCanvas, clearCanvas, exportCanvas]
 }

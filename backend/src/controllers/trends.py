@@ -1,9 +1,10 @@
 from flask import Blueprint, abort, Response, request, session
 from json import dumps
 from random import randint
+import json
 
 from src import db
-from src.handlers.trend import Trend
+from src.handlers import Trend
 from src.models import User, Word, UserWord
 
 trends_blueprint = Blueprint('trends', __name__)
@@ -26,10 +27,10 @@ def trend(keyword):
 @trends_blueprint.route('/submit', methods=['POST', 'GET'])
 def process_submit():
     if request.method == 'POST':
-        '''TEMP RESULTS'''
-        result = {
-            'score': randint(0, 100)
-        }
+        body = json.loads(request.data)
+        
+        trend = Trend(keyword=body['word'], timeframe=body['timeframe'], data_url=body['dataURL'])
+        score = trend.calculate_score()
 
         if request.method != 'POST':
             print('\n(process_submit) Handling unknown request', request)
@@ -39,16 +40,14 @@ def process_submit():
 
         print('\nReceived body!', f'[ {body['dataURL'][:30]}... ]')
 
-        update_word_table(body['word'], result['score'])
-        update_association_table(body['word'], result['score'])
+        update_word_table(body['word'], score)
+        update_association_table(body['word'], score)
         
         word = db.session.get(Word, body['word'])
         
-        return { 'score': result['score'], 'globalAttempts': word.global_attempts, 'globalAverage': word.global_average }, 200
+        return { 'score': int(score), 'globalAttempts': word.global_attempts, 'globalAverage': round(word.global_average, 1) }, 200
 
     return '', 204
-
-# parsed_data_url = Trend.parse_data_url(body['dataURL'])
 
 def get_user():
     if session.get('userId') is None:
@@ -71,6 +70,8 @@ def update_word_table(game_word, score):
 
     print(f'\n(update_word_table) Updating word statistics:', word)
 
+    db.session.commit()
+
 def update_association_table(game_word, score):
     user = get_user()
     word = db.session.get(Word, game_word)
@@ -86,7 +87,7 @@ def update_association_table(game_word, score):
     user.average_score = (len(user.words) * user.average_score + score) / (len(user.words) + 1)
     user.words.append(new_entry)
 
-    db.session.commit()
-
     print('\n(update_association_table) Updating UserWord association:', new_entry)
     print('\n(update_association_table) Updating User statistics:', user)
+
+    db.session.commit()

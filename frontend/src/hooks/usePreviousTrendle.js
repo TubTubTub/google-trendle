@@ -1,14 +1,16 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useTrends } from '../contexts/TrendsContextHooks'
 import { useHistory } from '../contexts/HistoryContextHooks'
+import { useCanvasValue } from '../contexts/CanvasContextHooks'
 import { useSetError } from '../contexts/ErrorContextHooks'
 import { exportPath, loadPath, clearCanvas } from './useCanvasControls'
 
-const usePreviousTrendle = (canvas) => {
+const usePreviousTrendle = () => {
     const [previousDisabled, setPreviousDisabled] = useState(true)
     const [history, historyDispatch] = useHistory()
     const [trends, trendsDispatch] = useTrends()
     const setError = useSetError()
+    const canvas = useCanvasValue()
 
     useEffect(() => {
         history.sessionHistory.length === -history.currentIndex ? setPreviousDisabled(true) : setPreviousDisabled(false)

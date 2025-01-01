@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { Center, Stack, Group, Space } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -20,7 +20,6 @@ const Game = () => {
     const historyDispatch = useHistoryDispatch()
     const history = useHistoryValue()
     const trends = useTrendsValue()
-    const canvas = useRef()
 
     const gameStyle = {
         position: 'relative',
@@ -60,14 +59,14 @@ const Game = () => {
                 </Group>
 
                 <Group h="90%">
-                    <PreviousTrendle canvas={canvas} />
-                    <Canvas canvas={canvas} />
-                    <NextTrendle canvas={canvas} />
+                    <PreviousTrendle />
+                    <Canvas />
+                    <NextTrendle />
                 </Group>
 
                 <Group h="20%">
                     <Space w="2rem" />
-                    <CanvasControl canvas={canvas} />
+                    <CanvasControl />
                     <Space w="2rem" />
                 </Group>
             </Stack>

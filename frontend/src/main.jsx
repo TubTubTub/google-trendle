@@ -12,6 +12,7 @@ import { TrendsContextProvider } from './contexts/TrendsContext'
 import { ErrorContextProvider } from './contexts/ErrorContext'
 import { ProfileContextProvider } from './contexts/ProfileContext'
 import { HistoryContextProvider } from './contexts/HistoryContext'
+import { CanvasContextProvider } from './contexts/CanvasContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')).render(
           <ErrorContextProvider>
             <ProfileContextProvider>
               <HistoryContextProvider>
-                <App />
+                <CanvasContextProvider>
+                  <App />
+                </CanvasContextProvider>
               </HistoryContextProvider>
             </ProfileContextProvider>
           </ErrorContextProvider>

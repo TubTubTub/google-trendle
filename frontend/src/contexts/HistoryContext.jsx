@@ -3,16 +3,6 @@ import { EMPTY_RESULT } from '../utils/constants'
 
 const historyReducer = (state, action) => {
     switch (action.type) {
-        case 'SET_USER_HISTORY':
-            return {
-                ...state,
-                userHistory: action.payload
-            }
-        case 'EMPTY_USER_HISTORY':
-            return {
-                ...state,
-                userHistory: []
-            }
         case 'ADD_NEW_GAME':
             return {
                 ...state,
@@ -102,7 +92,6 @@ const historyReducer = (state, action) => {
 const HistoryContext = createContext()
 
 const initialValues = {
-    userHistory: null,
     sessionHistory: [
         {
             word: null,

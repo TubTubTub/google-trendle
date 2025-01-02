@@ -15,7 +15,7 @@ import { HistoryContextProvider } from './contexts/HistoryContext'
 import { CanvasContextProvider } from './contexts/CanvasContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS defaultColorScheme="light">
         <TrendsContextProvider>
@@ -31,5 +31,5 @@ createRoot(document.getElementById('root')).render(
         </TrendsContextProvider>
       </MantineProvider>
     </GoogleOAuthProvider>
-  </StrictMode>
+  // </StrictMode>
 )

@@ -7,18 +7,31 @@ import statisticsService from '../../services/statistics'
 import LeaderboardSVG from '../../assets/leaderboard.svg?react'
 import LeaderboardList from './LeaderboardList'
 import LoadingList from '../LoadingList'
+import PageTurner from '../PageTurner'
 import UserRank from './UserRank'
+
+const RANKS_PER_PAGE = 50
 
 const Rankings = () => {
     const [rankings, setRankings] = useState([])
+    const [pageNumber, setPageNumber] = useState(1)
+    const [maxPage, setMaxPage] = useState(1)
     const [profile, profileDispatch] = useProfile()
 
     useEffect(() => {
-        statisticsService.getRankings(0)
-            .then(result => setRankings(result))
-        statisticsService.getUserStatistics()
-            .then(result => profileDispatch({ type: 'SET_STATISTICS', payload: result }))
-    }, [profileDispatch])
+        statisticsService.getRankings(pageNumber, RANKS_PER_PAGE)
+            .then(result => {
+                setRankings(result.rankings)
+                setMaxPage(result.page_count)
+            })
+    }, [pageNumber])
+
+    useEffect(() => {
+        if (profile.profile) {
+            statisticsService.getUserStatistics()
+                .then(result => profileDispatch({ type: 'SET_STATISTICS', payload: result }))
+        }
+    }, [profile.profile, profileDispatch])
 
     if (rankings.length === 0) return <LoadingList />
     
@@ -32,14 +45,16 @@ const Rankings = () => {
             <ScrollArea type="auto" scrollbars="y" style={{ flexGrow: 1 }}>
                 <LeaderboardList rankings={rankings} />
             </ScrollArea>
-            
+
+            <PageTurner pageNumber={pageNumber} setPageNumber={setPageNumber} maxPage={maxPage} />
+
             <Divider />
 
             {
             profile.profile ?
             <UserRank profile={profile} />
             :
-            <Center h="4rem">
+            <Center h="3rem">
                 <Text ta="center" fw={500}>Sign in to save statistics!</Text>
             </Center>
             }

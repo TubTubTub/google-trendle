@@ -1,13 +1,10 @@
 import { Text, Accordion, Group } from '@mantine/core'
-import { useHistoryValue } from '../../contexts/HistoryContextHooks'
 import CustomPaper from '../CustomPaper'
 
-const HistoryList = () => {
-    const { userHistory } = useHistoryValue()
-
+const HistoryList = ({ history }) => {
     return (
         <Accordion>
-            {userHistory.map((game, index) => (
+            {history.map((game, index) => (
                 <Accordion.Item key={index} value={index.toString()}>
                     <Accordion.Control>{game.word}</Accordion.Control>
                     <Accordion.Panel>

@@ -17,20 +17,15 @@ const useCanvasControls = () => {
     const redoCanvas = useCallback(() => canvas.current.redo(), [canvas])
     const clearCanvas = useCallback(() => canvas.current.clearCanvas(), [canvas])
     const exportCanvas = useCallback(async () => {
-        try {
-            const dataURL = await canvas.current.exportImage('jpg')
-            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, trends.timeframe)
+        const dataURL = await canvas.current.exportImage('jpg')
+        const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, trends.timeframe)
 
-            console.log('EXPORED DATA URL (Game.jsx):' + 'TIMEFRAME:', trends.timeframe, dataURL)
+        console.log('EXPORED DATA URL (Game.jsx):' + 'TIMEFRAME:', trends.timeframe, dataURL)
 
-            if (result) {
-                trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
-                trendsDispatch({ type: 'SET_RESULT', payload: result })
-                console.log('RECEIVED DATA:', result)
-            }
-
-        } catch(error) {
-            console.log('(useCanvasControls.exportCanvas) Error exporting canvas:', error)
+        if (result) {
+            trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
+            trendsDispatch({ type: 'SET_RESULT', payload: result })
+            console.log('RECEIVED DATA:', result)
         }
     }, [canvas, trends.word, trends.timeframe, trendsDispatch])
 

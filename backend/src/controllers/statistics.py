@@ -1,9 +1,11 @@
-from flask import Blueprint, session, request
+from flask import Blueprint, Response, session, request, abort
 
 from src import db
 from src.models import User, UserWord
 
-from sqlalchemy import func, select
+from sqlalchemy import func
+
+import math
 
 statistics_blueprint = Blueprint('statistics', __name__)
 
@@ -13,7 +15,24 @@ def get_history():
         print('\n(get_history) User id not found, not sending history')
         return [], 204
     
-    history = db.session.scalars(db.select(UserWord).filter_by(user_id=session['userId']))
+    try:
+        page = int(request.args.get('page'))
+        page_size = int(request.args.get('page_size'))
+    except:
+        page = 1
+        page_size = 30
+
+    relevant_rows = db.session.query(UserWord).filter_by(user_id=session['userId'])
+    number_of_rows = relevant_rows.count()
+    offset = (page - 1) * page_size
+
+    if offset > number_of_rows:
+        abort(Response('Page number exceeds number of database entries', 400))
+        return
+    
+    history = relevant_rows.order_by(UserWord.updated_dt.desc()) \
+        .limit(page_size) \
+        .offset(offset)
     
     result = [{
         'word': game.word.id,
@@ -21,7 +40,7 @@ def get_history():
         'date': game.updated_dt.strftime('%d/%m/%Y')
     } for game in history.all()]
 
-    return list(reversed(result)), 200
+    return { 'history': result, 'page_count': math.ceil(number_of_rows / page_size) }, 200
 
 @statistics_blueprint.route('/rankings', methods=['GET'])
 def get_rankings():
@@ -29,19 +48,26 @@ def get_rankings():
         page = int(request.args.get('page'))
         page_size = int(request.args.get('page_size'))
     except:
-        page = 0
+        page = 1
         page_size = 30
+
+    number_of_rows = db.session.query(User).count()
+    offset = (page - 1) * page_size
+
+    if offset > number_of_rows:
+        abort(Response('Page number exceeds number of database entries', 400))
+        return
 
     rankings = db.session.query(User).order_by(User.average_score.desc()) \
         .limit(page_size) \
-        .offset(page * page_size)
+        .offset(offset)
 
     result = [{
         'name': user.name,
         'averageScore': user.average_score
     } for user in rankings.all()]
 
-    return result, 200
+    return { 'rankings': result, 'page_count': math.ceil(number_of_rows / page_size) }, 200
 
 @statistics_blueprint.get('/user')
 def get_user_statistics():

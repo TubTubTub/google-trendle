@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Text, Title, Divider, ScrollArea, Group, Stack, Center } from '@mantine/core'
 
+import { useAddError } from '../../hooks/useAddError'
 import { useProfile } from '../../contexts/ProfileContextHooks'
 import statisticsService from '../../services/statistics'
 
@@ -17,6 +18,7 @@ const Rankings = () => {
     const [pageNumber, setPageNumber] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
     const [profile, profileDispatch] = useProfile()
+    const addError = useAddError()
 
     useEffect(() => {
         statisticsService.getRankings(pageNumber, RANKS_PER_PAGE)
@@ -24,7 +26,10 @@ const Rankings = () => {
                 setRankings(result.rankings)
                 setMaxPage(result.page_count)
             })
-    }, [pageNumber])
+            .catch(error => {
+                addError(`${error.message}: Failed to load rankings!`)
+            })
+    }, [pageNumber, addError])
 
     useEffect(() => {
         if (profile.profile) {

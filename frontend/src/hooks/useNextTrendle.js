@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useTrends } from '../contexts/TrendsContextHooks'
 import { useHistory } from '../contexts/HistoryContextHooks'
-import { useSetError } from '../contexts/ErrorContextHooks'
+import { useAddError } from './useAddError'
 import { exportPath, loadPath, clearCanvas } from './useCanvasControls'
 import { useCanvasValue } from '../contexts/CanvasContextHooks'
 import { EMPTY_RESULT } from '../utils/constants'
@@ -11,7 +11,7 @@ import trendsService from '../services/trends'
 const useNextTrendle = () => {
     const [trends, trendsDispatch] = useTrends()
     const [history, historyDispatch] = useHistory()
-    const setError = useSetError()
+    const addError = useAddError()
     const canvas = useCanvasValue()
 
     return useCallback(async () => {
@@ -23,6 +23,7 @@ const useNextTrendle = () => {
             
             if (history.currentIndex === -1) {
                 trendsDispatch({ type: 'SET_RESULT', payload: EMPTY_RESULT })
+                trendsDispatch({ type: 'SET_WORD', payload: null })
                 
                 const newWord = await wordsService.getWord()
                 const newLabels = await trendsService.getYAxisLabels(newWord)
@@ -46,9 +47,9 @@ const useNextTrendle = () => {
 
         } catch(error) {
             console.error(`(useNextTrendle) Error loading next trendle:`, error)
-            setError(error.message)
+            addError(`${error.message}: Failed to load next Trendle!`)
         }
-    }, [trendsDispatch, historyDispatch, trends.result, history.sessionHistory, history.currentIndex, canvas, setError])
+    }, [trendsDispatch, historyDispatch, trends.result, history.sessionHistory, history.currentIndex, canvas, addError])
 }
 
 export default useNextTrendle

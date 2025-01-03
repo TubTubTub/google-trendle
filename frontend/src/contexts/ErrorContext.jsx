@@ -2,11 +2,11 @@ import { createContext, useReducer } from 'react'
 
 const errorReducer = (state, action) => {
     switch (action.type) {
-        case 'SET_ERROR':
+        case 'ADD_ERROR':
             return {
                 errorQueue: [...state.errorQueue, action.payload]
             }
-        case 'POP_ERROR_QUEUE':
+        case 'SHIFT_ERROR_QUEUE':
             return {
                 errorQueue: state.errorQueue.slice(1)
             }

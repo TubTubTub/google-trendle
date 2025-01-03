@@ -27,7 +27,7 @@ const XAxis = ({ size, number }) => {
             {
                 labelsArray.reverse().map((label, index) => (
                     <Stack key={index} gap={0}>
-                        <PiLineVerticalBold style={{ marginTop: '-1px' }} color="gray" size="0.75em" />
+                        <PiLineVerticalBold color="gray" size="0.75rem" style={{ marginTop: '-1px' }}/>
                         <Text fw={500} c="dimmed">{label}</Text>
                     </Stack>
                 ))

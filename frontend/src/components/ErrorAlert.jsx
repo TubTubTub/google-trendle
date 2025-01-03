@@ -1,37 +1,29 @@
-import { useEffect } from 'react'
-import { Alert, Text, List } from '@mantine/core'
+import { Alert, Text, Group } from '@mantine/core'
 import { MdErrorOutline } from 'react-icons/md'
-import { useError } from '../contexts/ErrorContextHooks'
+import { useErrorValue } from '../contexts/ErrorContextHooks'
 
 const ErrorAlert = () => {
-    const [error, errorDispatch] = useError()
-    
-    useEffect(() => {
-        if (error.errorQueue.length !== 0) {
-            setTimeout(() => errorDispatch({ type: 'POP_ERROR_QUEUE' }), 3000)
-        }
-    }, [error, errorDispatch])
+    const error = useErrorValue()
 
     if (error.errorQueue.length === 0) return null
 
     return (
-        <Alert
-            variant="light"
-            color="red"
-            title="Oops!"
-            icon={<MdErrorOutline size="1.5em" />}
-            style={{ position: 'absolute', top: '70px', padding: 12}}
-        >
-            <List>
-                {
-                    error.errorQueue.map(error =>
-                        <List.Item key={Math.random()}>
-                            <Text fw={500} size="sm">{error}</Text>
-                        </List.Item>
+        <Group pos='absolute' top='4rem' my='0.7rem'>
+            {
+                error.errorQueue.map(error => (
+                    <Alert
+                        variant="light"
+                        color="red"
+                        title="Oops!"
+                        icon={<MdErrorOutline size="1.5em" />}
+                        key={Math.random()}
+                    >
+                        <Text fw={500} size="sm">{error}</Text>
+                    </Alert>
                     )
-                }
-            </List>
-        </Alert>
+                )
+            }
+        </Group>
     )
 }
 

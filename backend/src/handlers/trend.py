@@ -25,6 +25,7 @@ class Trend:
         self.parse_data_url()
 
     def get_api_data(self):
+        print('\n\n\nBUILDING REQuesT:', self._keyword, self._timeframe)
         pytrends.build_payload(kw_list=[self._keyword], timeframe=[self._timeframe])
         self._api_df = pytrends.interest_over_time()
     

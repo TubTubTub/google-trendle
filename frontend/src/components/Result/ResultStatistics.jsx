@@ -25,7 +25,7 @@ const ResultStatistics = () => {
     const trends = useTrendsValue()
 
     useEffect(() => {
-        if (trends.result.score) {
+        if (trends.result.score !== null) {
             setDebouncedScore(trends.result.score)
         } else {
             setTimeout(() => setDebouncedScore(null), 200)

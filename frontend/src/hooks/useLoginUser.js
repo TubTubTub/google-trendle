@@ -1,10 +1,12 @@
 import { useCallback } from 'react'
 import { useProfileDispatch } from '../contexts/ProfileContextHooks'
+import { useAddError } from './useAddError'
 import statisticsService from '../services/statistics'
 import loginService from '../services/login'
 
 const useLoginUser = () => {
     const profileDispatch = useProfileDispatch()
+    const addError = useAddError()
 
     const autoLoginUser = useCallback(async () => {
         const profile = await loginService.getAutoLogin()
@@ -22,8 +24,9 @@ const useLoginUser = () => {
             profileDispatch({ type: 'SET_STATISTICS', payload: userStatistics })
         } catch(error) {
             console.log('(useLoginUser.js) Error retrieving user information', error)
+            addError(`${error.message}: Failed to log in!`)
         }
-    }, [profileDispatch])
+    }, [profileDispatch, addError])
 
     const logoutUser = useCallback(async () => {
         try {
@@ -31,8 +34,9 @@ const useLoginUser = () => {
             profileDispatch({ type: 'SET_PROFILE', payload: null })
         } catch(error) {
             console.log('(useLoginUser.js) Error logging out:', error)
+            addError(`${error.message}: Failed to log out!`)
         }
-    }, [profileDispatch])
+    }, [profileDispatch, addError])
 
     return [autoLoginUser, loginUser, logoutUser]
 }

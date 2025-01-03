@@ -16,8 +16,3 @@ export const useErrorDispatch = () => {
     const errorAndDispatch = useContext(ErrorContext)
     return errorAndDispatch[1]
 }
-
-export const useSetError = () => {
-    const errorDispatch = useErrorDispatch()
-    return (errorMessage) => errorDispatch({ type: 'SET_ERROR', payload: errorMessage })
-}

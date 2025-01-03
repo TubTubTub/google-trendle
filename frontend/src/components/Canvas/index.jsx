@@ -10,20 +10,19 @@ import YAxis from './YAxis'
 import XAxis from './XAxis'
 
 const Canvas = () => {
-    const ref = useRef()
+    const { colorScheme, _ } = useMantineColorScheme()
     const canvasDispatch = useCanvasDispatch()
     const trends = useTrendsValue()
-    const { colorScheme, _ } = useMantineColorScheme()
     const theme = useMantineTheme()
+    const ref = useRef()
 
     useEffect(() => {
         canvasDispatch({ type: 'SET_REF', payload: ref })
     }, [canvasDispatch])
 
     return (
-        <Stack id="parent" h="100%" gap={0} style={{ width: 'calc(100% - 6rem)' }}>
-            {/* <YAxis /> PROBABLY DON'T NEED CAUSE WILL ALWAYS BE STANDARDISED FROM 0-100 */}
-
+        <Stack h="100%" w='calc(100% - 6rem)' gap={0}>
+            {/* <YAxis /> */}
             <ReactSketchCanvas
                 width='100%'
                 height='100%'

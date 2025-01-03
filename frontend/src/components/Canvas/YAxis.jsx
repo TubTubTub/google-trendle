@@ -1,14 +1,13 @@
-import { Text, Box } from '@mantine/core'
+import { Text, Stack } from '@mantine/core'
 import { useTrendsValue } from '../../contexts/TrendsContextHooks'
 
 const YAxis = () => {
     const trends = useTrendsValue()
-
     return (
-        <Box>
-            <Text size="sm" fw={500} c="dimmed" style={{ position: 'absolute', left: '3.8em', transform: 'translateY(+116px)' }}>{trends.yAxisLabels[0]}</Text>
-            <Text size="sm" fw={500} c="dimmed" style={{ position: 'absolute', left: '3.8em', transform: 'translateY(+258px)' }}>{trends.yAxisLabels[1]}</Text>
-        </Box>
+        <Stack pos='absolute' justify='space-evenly' h='60%'>
+            <Text size="sm" fw={500} c="dimmed" pl='0.2rem'>{trends.yAxisLabels[0]}</Text>
+            <Text size="sm" fw={500} c="dimmed" pl='0.2rem'>{trends.yAxisLabels[1]}</Text>
+        </Stack>
     )
 }
 

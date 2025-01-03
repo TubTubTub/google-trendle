@@ -44,7 +44,7 @@ const Game = () => {
     }, [getStorage, setupStorage, historyDispatch, history.sessionHistory.length])
 
     useEffect(() => {
-        trends.result.score ? open() : close()
+        trends.result.score !== null ? open() : close()
     }, [trends.result.score, open, close])
     
     return (
@@ -58,7 +58,7 @@ const Game = () => {
                     <Space w="2rem" />
                 </Group>
 
-                <Group h="90%">
+                <Group h="80%">
                     <PreviousTrendle />
                     <Canvas />
                     <NextTrendle />

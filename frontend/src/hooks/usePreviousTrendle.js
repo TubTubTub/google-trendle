@@ -2,14 +2,14 @@ import { useCallback, useState, useEffect } from 'react'
 import { useTrends } from '../contexts/TrendsContextHooks'
 import { useHistory } from '../contexts/HistoryContextHooks'
 import { useCanvasValue } from '../contexts/CanvasContextHooks'
-import { useSetError } from '../contexts/ErrorContextHooks'
+import { useAddError } from './useAddError'
 import { exportPath, loadPath, clearCanvas } from './useCanvasControls'
 
 const usePreviousTrendle = () => {
     const [previousDisabled, setPreviousDisabled] = useState(true)
     const [history, historyDispatch] = useHistory()
     const [trends, trendsDispatch] = useTrends()
-    const setError = useSetError()
+    const addError = useAddError()
     const canvas = useCanvasValue()
 
     useEffect(() => {
@@ -38,10 +38,10 @@ const usePreviousTrendle = () => {
             
         } catch(error) {
             console.error(`(usePreviousTrendle) Error loading previous trendle:`, error)
-            setError(error.message)
+            addError(`${error.message}: Failed to load  previous Trendle!`)
         }
 
-    }, [trendsDispatch, historyDispatch, trends.result, history.sessionHistory, history.currentIndex, setError, canvas])
+    }, [trendsDispatch, historyDispatch, trends.result, history.sessionHistory, history.currentIndex, canvas, addError])
 
     return [previousDisabled, loadPreviousTrendle]
 }

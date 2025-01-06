@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { BACKEND_URL } from '../utils/constants'
 
-const baseURL = `${BACKEND_URL}/api/statistics`
+const baseURL = `${import.meta.env.VITE_BACKEND_URL}/statistics`
 
 const getHistory = async (page, games_per_page) => {
     const result = await axios.get(`${baseURL}/history?page=${page}&page_size=${games_per_page}`, {

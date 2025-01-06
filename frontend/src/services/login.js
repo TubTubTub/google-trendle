@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { BACKEND_URL } from '../utils/constants'
 
-const baseURL = `${BACKEND_URL}/api/users`
+const baseURL = `${import.meta.env.VITE_BACKEND_URL}/users`
 
 const getInfo = async (token) => {
     const result = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {

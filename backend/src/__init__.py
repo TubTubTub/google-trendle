@@ -27,6 +27,5 @@ def handle_page_not_found(error):
 #     print('AN ERROR OCCURED (src.__init__.py):', str(error))
 #     return dumps({ 'error': str(error) })
 
-
 from src.models import *
 import src.controllers

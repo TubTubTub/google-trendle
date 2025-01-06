@@ -38,7 +38,7 @@ def process_submit():
 
         body = request.get_json()
 
-        print('\nReceived body!', f'[ {body['dataURL'][:30]}... ]')
+        print('\nReceived body!', f'[ {body["dataURL"][:30]}... ]')
 
         update_word_table(body['word'], score)
         update_association_table(body['word'], score)

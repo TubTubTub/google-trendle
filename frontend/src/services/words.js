@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { BACKEND_URL } from '../utils/constants'
 
-const baseURL = `${BACKEND_URL}/api/words`
+const baseURL = `${import.meta.env.VITE_BACKEND_URL}/words`
 
 const getWord = async () => {
     const result = await axios.get(baseURL)

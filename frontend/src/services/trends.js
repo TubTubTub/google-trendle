@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { BACKEND_URL } from '../utils/constants'
 
-const baseURL = `${BACKEND_URL}/api/trends`
+const baseURL = `${import.meta.env.VITE_BACKEND_URL}/trends`
 
 const submit = async (word, dataURL, timeframe) => {
     const body = {

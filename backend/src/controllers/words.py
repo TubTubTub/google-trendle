@@ -1,5 +1,4 @@
 from flask import Blueprint
-from src import app
 
 from src.handlers.word import Word
 

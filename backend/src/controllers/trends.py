@@ -1,17 +1,15 @@
 from flask import Blueprint, abort, Response, request, session
-from json import dumps
-from random import randint
 import json
 
-from src import db
-from src.handlers import Trend
 from src.models import User, Word, UserWord
+from src.handlers import Trend
+from src import db
 
 trends_blueprint = Blueprint('trends', __name__)
 
 def handle_missing_keyword(keyword):
     keyword = keyword or 'unspecified keyword'
-    error_message = dumps({ 'error': f'{keyword.capitalize()} not provided' })
+    error_message = json.dumps({ 'error': f'{keyword.capitalize()} not provided' })
     abort(Response(error_message, 400))
 
 @trends_blueprint.get('/<keyword>')
@@ -28,7 +26,7 @@ def trend(keyword):
 def process_submit():
     if request.method == 'POST':
         body = json.loads(request.data)
-        
+
         trend = Trend(keyword=body['word'], timeframe=body['timeframe'], data_url=body['dataURL'])
         score = trend.calculate_score()
 
@@ -42,9 +40,9 @@ def process_submit():
 
         update_word_table(body['word'], score)
         update_association_table(body['word'], score)
-        
+
         word = db.session.get(Word, body['word'])
-        
+
         return { 'score': int(score), 'globalAttempts': word.global_attempts, 'globalAverage': round(word.global_average, 1) }, 200
 
     return '', 204
@@ -64,7 +62,7 @@ def update_word_table(game_word, score):
         db.session.add(word)
         db.session.commit()
         print(f'\n(update_word_table) Adding to word database:', word)
-    
+
     word.global_average = (word.global_attempts * word.global_average + score) / (word.global_attempts + 1)
     word.global_attempts += 1
 
@@ -79,7 +77,7 @@ def update_association_table(game_word, score):
     if user is None:
         print('\n(update_association_table) Not updating - no session userId found')
         return
-    
+
     new_entry = UserWord(score=score)
     new_entry.word = word
     db.session.add(new_entry)

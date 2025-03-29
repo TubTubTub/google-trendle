@@ -1,12 +1,51 @@
-FROM python:3.11-alpine
-WORKDIR /usr/src/app
+FROM python:3.12
+# FROM python:3.12-alpine
 
+RUN apt-get -q -y update
+RUN apt-get install -y gcc
+
+# # #
+
+ARG SESSION_SECRET_KEY
+ARG POSTGRES_URL
+ARG REDIS_URL
+
+ENV FLASK_APP=src
+ENV FLASK_ENV=production
+
+# # #
+
+ENV USERNAME=backend
+ENV WORKING_DIR=/home/backend
+WORKDIR ${WORKING_DIR}
+
+# # #
+
+COPY src src
 COPY requirements.txt .
-RUN pip3 install -r requirements.txt
+COPY service_entrypoint.sh .
 
-COPY . .
+# # #
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+RUN groupadd ${USERNAME} && \
+    useradd -g ${USERNAME} ${USERNAME}
 
-# docker build -t backend .
-# docker run -it --rm -p 5000:5000 backend
+RUN chown -R ${USERNAME}:${USERNAME} ${WORKING_DIR}
+RUN chmod -R u=rwx,g=rwx ${WORKING_DIR}
+
+USER ${USERNAME}
+ENV PATH "$PATH:/home/${USERNAME}/.local/bin"
+
+# # #
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+RUN chmod +x service_entrypoint.sh
+
+# # #
+
+EXPOSE 5000
+RUN flask db init
+
+ENTRYPOINT [ "./service_entrypoint.sh" ]

@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from json import dumps
 
 from src.utils.config import Config
+from src.database import db
 
 app = Flask(__name__)
 app.debug = True
@@ -14,8 +14,8 @@ app.app_context().push()
 
 CORS(app, supports_credentials=True)
 Session(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db, command="mg")
+db.init_app(app)
+migrate = Migrate(app, db)
 
 @app.errorhandler(404)
 def handle_page_not_found(error):
@@ -29,3 +29,6 @@ def handle_page_not_found(error):
 
 from src.models import *
 import src.controllers
+
+def get_app():
+    return app

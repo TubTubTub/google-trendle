@@ -2,8 +2,8 @@ from flask import Blueprint, request, session
 import sqlalchemy as sa
 import json
 
-from src import db
 from src.models import User
+from src import db
 
 users_blueprint = Blueprint('users', __name__)
 
@@ -11,13 +11,13 @@ def get_user_from_database(user_id, name, picture_url):
     user = db.session.scalar(
         sa.select(User).where(User.id == user_id)
     )
-    
+
     if user is None:
         user = User(id=user_id, name=name, picture_url=picture_url)
         print('(get_user_from_database) Registering new user:', user)
         db.session.add(user)
         db.session.commit()
-    
+
     return user
 
 @users_blueprint.route('/test', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def login():
 
             print('(login) Already logged in!', session['userId'])
             return session['userId']
-        
+
         user = get_user_from_database(body['userId'], body['name'], body['picture'])
 
         print('(login) Logging in:', user)

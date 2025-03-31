@@ -4,7 +4,26 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 
-pytrends = TrendReq(hl='en-GB', tz=0)
+pytrends = TrendReq(hl='en-GB', tz=0, requests_args={
+    'headers': {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        'Origin': 'http://localhost:8080',
+        'Pragma': 'no-cache',
+        'Referer': 'http://localhost:8080/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-site',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        # 'Cookie': 'g_state={"i_l":0,"i_t":1736084658226}',
+    }
+})
 
 class Trend:
     def __init__(self, keyword, timeframe, data_url):
@@ -24,9 +43,12 @@ class Trend:
         self.parse_data_url()
 
     def get_api_data(self):
-        print('\n\n\nBUILDING REQuesT:', self._keyword, self._timeframe)
+        print('Aaaa')
+        print(self._keyword)
+        print(self._timeframe)
+        print(f'BUILDING REQUEST: {self._keyword} | {self._timeframe}')
         pytrends.build_payload(kw_list=[self._keyword], timeframe=[self._timeframe])
-        self._api_df = pytrends.interest_over_time()
+        self._api_df = pytrends.interest_over_time() # Changed to requests.post https://stackoverflow.com/questions/75744524/pytends-api-throwing-429-error-even-if-the-request-was-made-very-first-time
 
     def parse_api_df(self):
         self._api_df[self._keyword] = self._api_df[self._keyword] / 100

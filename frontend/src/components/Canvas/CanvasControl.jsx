@@ -14,6 +14,8 @@ const CanvasControl = () => {
     const [resultLoading, setResultLoading] = useState(false)
 
     const exportResult = async () => {
+        console.log('ooooo')
+        console.log(import.meta.env.VITE_BACKEND_URL)
         setResultLoading(true)
         await exportCanvas()
         setResultLoading(false)

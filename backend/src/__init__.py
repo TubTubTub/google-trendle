@@ -8,7 +8,7 @@ from src.utils.config import Config
 from src.database import db
 
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 app.config.from_object(Config)
 app.app_context().push()
 

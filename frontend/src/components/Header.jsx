@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks'
 import { Group, Title, useComputedColorScheme, useMantineColorScheme } from '@mantine/core'
 import { FiMoon, FiSun } from 'react-icons/fi'
-import { IoHelpOutline } from 'react-icons/io5'
+import { FaQuestion } from 'react-icons/fa'
 import { ToolIconButton } from './Buttons'
 
 import Help from './Help'
@@ -11,7 +11,7 @@ const Header = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme()
     const computedColorScheme = useComputedColorScheme('light')
     const [helpOpened, helpHandler] = useDisclosure(false)
-    
+
     const toggleColorScheme = () => {
         setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')
     }
@@ -24,7 +24,7 @@ const Header = () => {
                 <ToolIconButton
                     label="Open help screen"
                     onClick={helpHandler.open}
-                    icon={<IoHelpOutline size="2em"/>}
+                    icon={<FaQuestion size="2em"/>}
                     size="xl"
                 />
                 <ToolIconButton

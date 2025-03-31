@@ -1,5 +1,4 @@
 FROM python:3.12
-# FROM python:3.12-alpine
 
 RUN apt-get -q -y update
 RUN apt-get install -y gcc

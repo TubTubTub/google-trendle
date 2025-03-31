@@ -1,4 +1,4 @@
-import { Group, rem } from '@mantine/core'
+import { Group } from '@mantine/core'
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io5'
 import { LinkIconButton } from './Buttons'
 

@@ -13,8 +13,18 @@ const scoreDescriptions = {
     '1.5': ['Not bad!', { from: 'indigo', to: 'teal', deg: 90 }],
     '2': ['Damn!', { from: 'teal', to: 'lime', deg: 90 }],
     '2.5': ['Great job!', { from: 'green', to: 'lime', deg: 90 }],
-    '3': ['Touch grass!', { from: 'yellow', to: 'orange', deg: 90 }],
+    '3': ['WOW!', { from: 'yellow', to: 'orange', deg: 90 }],
 }
+
+/* const scoreDescriptions = {
+    '0': [`You're shit!`, { from: 'red', to: 'pink', deg: 90 }],
+    '0.5': ['Oh no!', { from: 'red', to: 'pink', deg: 90 }],
+    '1': ['Could be better...', { from: 'grape', to: 'violet', deg: 90 }],
+    '1.5': ['Not bad!', { from: 'indigo', to: 'teal', deg: 90 }],
+    '2': ['Damn!', { from: 'teal', to: 'lime', deg: 90 }],
+    '2.5': ['Great job!', { from: 'green', to: 'lime', deg: 90 }],
+    '3': ['Touch grass!', { from: 'yellow', to: 'orange', deg: 90 }],
+} */
 
 const roundHalf = (num) => {
     return (Math.round(num * 2)) / 2
@@ -58,7 +68,7 @@ const ResultStatistics = () => {
                 {debouncedScore}
             </Text>
         </CustomPaper>
-        
+
         <SimpleGrid cols={2}>
             <ThemeIcon variant="transparent" color="gray" style={{ justifySelf: 'center' }}>
                 <FaEarthAmericas size="1.5em" />
@@ -67,7 +77,7 @@ const ResultStatistics = () => {
             <ThemeIcon variant="transparent" color="gray" style={{ justifySelf: 'center' }}>
                 <FaUser size="1.5em" />
             </ThemeIcon>
-            
+
             <CustomPaper label="Global Average Score" tooltip style={{ width: '4em', height: '4em' }}>
                 <Text ta="center" size="lg" fw={500}>{trends.result.globalAverage}</Text>
             </CustomPaper>

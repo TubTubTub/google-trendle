@@ -1,32 +1,16 @@
-from pytrends.request import TrendReq
-import urllib.request
+from dotenv import load_dotenv
 from PIL import Image
+import urllib.request
 import pandas as pd
 import numpy as np
 import datetime
+import requests
+import os
 
-headers = {
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'Content-Type': 'application/json',
-    'Origin': 'http://localhost:8080',
-    'Pragma': 'no-cache',
-    'Referer': 'http://localhost:8080/',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
-    'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    # 'Cookie': 'g_state={"i_l":0,"i_t":1736084658226}',
-}
-
-pytrends = TrendReq(backoff_factor=0.5, retries=3)
+load_dotenv()
 
 class Trend:
+
     def __init__(self, keyword, timeframe, data_url):
         self._keyword = keyword
         self._timeframe = timeframe
@@ -51,25 +35,40 @@ class Trend:
         number_of_units = int(''.join([char for char in self._timeframe if char.isdigit()]))
         self._timeframe = datetime.datetime.now() - datetime.timedelta(days=number_of_units * days_unit)
         self._timeframe = f'{self._timeframe.strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%Y-%m-%d')}'
+        self._timeframe = self._timeframe.replace(' ', '%20')
 
-        pytrends.build_payload(kw_list=[self._keyword], timeframe=['today 3-m'])
-        self._api_df = pytrends.interest_over_time()
+        try:
+            data = requests.get(f'https://serpapi.com/search.json?tz=0&date={self._timeframe}&engine=google_trends&q={self._keyword}&data_type=TIMESERIES&api_key={os.getenv('SERP_API_KEY')}')
+            data.raise_for_status()
+            data = data.json()['interest_over_time']['timeline_data']
 
-        print(self._api_df.to_csv())
-        # Changed to requests.post https://stackoverflow.com/questions/75744524/pytends-api-throwing-429-error-even-if-the-request-was-made-very-first-time
-        # Changed to allowed_methods https://github.com/GeneralMills/pytrends/issues/591
+            scores = []
+            raw_data = []
+            for date_items in data:
+                for scraped_values in date_items['values']:
+                    score = int(scraped_values['value'])
+                    raw_data.append({'key': date_items['date'], 'value': score})
+                    scores.append(score)
+
+            self._api_df = pd.DataFrame(scores, columns=[self._keyword])
+            self._raw_data = raw_data
+        except Exception as error:
+            match data.status_code:
+                case 400:
+                    raise Exception('400 Bad request.')
+                case 401:
+                    raise Exception('401 Invalid API key.')
+                case 402:
+                    raise Exception('429 Too many requests, please come back later!')
+                case _:
+                    raise error
 
     def parse_api_df(self):
         self._api_df[self._keyword] = self._api_df[self._keyword] / 100
         self._api_df = self._api_df.reset_index()
-        self.parse_raw_data()
 
         self._api_df['user_values'] = np.nan
         self._api_row_count = len(self._api_df)
-
-    def parse_raw_data(self):
-        self._raw_data = self._api_df[self._keyword].to_dict()
-        self._raw_data = [{'key': key, 'value': value} for key, value in self._raw_data.items()]
 
     def parse_data_url(self):
         image_data = urllib.request.urlopen(self._data_url)
@@ -90,12 +89,6 @@ class Trend:
                 corresponding_row = int(column_idx / self._user_col_count * self._api_row_count)
                 mean = (self._user_row_count - line_values.index.values.mean()) / self._user_row_count
                 self._api_df.at[corresponding_row, 'user_values'] = mean
-
-        # self._api_df['user_values'] = self._api_df['user_values'].interpolate(method='linear', axis=0)
-
-        # if self._api_df['user_values'].isnull().values.any():
-        #     self._api_df['user_values'] = self._api_df['user_values'].bfill(axis=0)
-        #     self._api_df['user_values'] = self._api_df['user_values'].ffill(axis=0)
 
         self._api_df['difference'] = np.square((self._api_df['user_values'] - self._api_df[self._keyword]))
         self._api_df['difference'] = self._api_df['difference'].fillna(value=1, axis=0)

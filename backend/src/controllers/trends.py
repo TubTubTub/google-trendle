@@ -27,9 +27,12 @@ def process_submit():
     if request.method == 'POST':
         body = json.loads(request.data)
 
-        trend = Trend(keyword=body['word'], timeframe=body['timeframe'], data_url=body['dataURL'])
-        score = trend.calculate_score()
-        raw_data = trend.get_raw_data()
+        try:
+            trend = Trend(keyword=body['word'], timeframe=body['timeframe'], data_url=body['dataURL'])
+            score = trend.calculate_score()
+            raw_data = trend.get_raw_data()
+        except Exception as error:
+            return str(error), 500
 
         if request.method != 'POST':
             print('\n(process_submit) Handling unknown request', request)

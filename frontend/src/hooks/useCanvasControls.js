@@ -33,7 +33,7 @@ const useCanvasControls = () => {
             }
         } catch(error) {
             console.error(`(useCanvasControls) Error submitting trendle:`, error)
-            addError(`${error.message}: Failed to submit Trendle!`)
+            addError(`Submission failed: ${error.message}`)
         }
     }, [canvas, trends.word, trends.timeframe, trendsDispatch, addError])
 
@@ -51,7 +51,7 @@ const useCanvasControls = () => {
                 console.log('Undo')
                 undoCanvas()
             }
-            else if (event.code == 'KeyR' && (event.ctrlKey || event.metaKey)) {
+            else if (event.code == 'KeyX' && (event.ctrlKey || event.metaKey)) {
                 console.log('Clear')
                 clearCanvas()
             }

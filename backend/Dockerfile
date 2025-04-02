@@ -8,6 +8,7 @@ RUN apt-get install -y gcc
 ARG SESSION_SECRET_KEY
 ARG POSTGRES_URL
 ARG REDIS_URL
+ARG SERP_API_KEY
 
 ENV FLASK_APP=src
 ENV FLASK_ENV=production
@@ -40,10 +41,6 @@ ENV PATH "$PATH:/home/${USERNAME}/.local/bin"
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-
-# # #
-
-COPY pytrends_fix/request.py ./.local/lib/python3.12/site-packages/pytrends/
 
 # # #
 

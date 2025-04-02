@@ -29,6 +29,7 @@ def process_submit():
 
         trend = Trend(keyword=body['word'], timeframe=body['timeframe'], data_url=body['dataURL'])
         score = trend.calculate_score()
+        raw_data = trend.get_raw_data()
 
         if request.method != 'POST':
             print('\n(process_submit) Handling unknown request', request)
@@ -43,7 +44,7 @@ def process_submit():
 
         word = db.session.get(Word, body['word'])
 
-        return { 'score': int(score), 'globalAttempts': word.global_attempts, 'globalAverage': round(word.global_average, 1) }, 200
+        return { 'score': int(score), 'globalAttempts': word.global_attempts, 'globalAverage': round(word.global_average, 1), 'rawData': raw_data }, 200
 
     return '', 204
 

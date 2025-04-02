@@ -6,7 +6,6 @@ const Help = ({ opened, onClose }) => {
             <Title order={2}>What is Google Trendle?</Title>
             <hr/>
             <Highlight
-                pb="lg"
                 highlight={['Google Trendle']}
                 highlightStyles={{
                     backgroundImage:
@@ -18,6 +17,9 @@ const Help = ({ opened, onClose }) => {
             >
                 Google Trendle is a game based on guessing the popularity of words and terms. The aim is to draw a graph, representing the change in interest in that topic over time (based on number of Google searches for that topic), that is as close to the trend data taken from the official Google Trends as possible.
             </Highlight>
+            <Text pb="sm">
+                All graphs are standardised to fill the entire length of the X and Y axis.
+            </Text>
 
             <Title order={3}>Keyboard Shortcuts</Title>
             <hr/>

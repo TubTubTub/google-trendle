@@ -37,9 +37,6 @@ const logout = async () => {
 }
 
 const getAutoLogin = async () => {
-    console.log(`${baseURL}/autologin`, 'nig')
-    console.log(baseURL, 'CLMON')
-    console.log('cheez')
     const result = await axios.get(`${baseURL}/autologin`, {
         withCredentials: true,
     })

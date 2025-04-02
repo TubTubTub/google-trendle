@@ -46,11 +46,11 @@ const Game = () => {
     useEffect(() => {
         trends.result.score !== null ? open() : close()
     }, [trends.result.score, open, close])
-    
+
     return (
         <Center gap="2rem" w="100%" h="calc(100vh - 8rem)">
             <ErrorAlert />
-            
+
             <Stack gap={0} style={gameStyle}>
                 <Group h="20%">
                     <Space w="2rem" />

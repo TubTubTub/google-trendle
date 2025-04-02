@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks'
 import { Group, Title, useComputedColorScheme, useMantineColorScheme } from '@mantine/core'
 import { FiMoon, FiSun } from 'react-icons/fi'
-import { FaQuestion } from 'react-icons/fa'
+import { BsQuestionLg } from 'react-icons/bs'
 import { ToolIconButton } from './Buttons'
 
 import Help from './Help'
@@ -24,7 +24,7 @@ const Header = () => {
                 <ToolIconButton
                     label="Open help screen"
                     onClick={helpHandler.open}
-                    icon={<FaQuestion size="2em"/>}
+                    icon={<BsQuestionLg size="2em"/>}
                     size="xl"
                 />
                 <ToolIconButton

@@ -1,13 +1,13 @@
 import { Group, Stack, Text } from '@mantine/core'
 import { PiLineVerticalBold } from 'react-icons/pi'
 
-const XAxis = ({ size, number }) => {
+const XAxis = ({ size, number, axisRef }) => {
     const labelsArray = []
     const currentDate = new Date()
 
     if (size === 'm') {
         currentDate.setMonth(currentDate.getMonth() + 1)
-        
+
         for (let i = 0 ; i < number ; i++) {
             currentDate.setMonth(currentDate.getMonth() - 1)
             labelsArray.push(currentDate.getMonth() + 1)
@@ -15,7 +15,7 @@ const XAxis = ({ size, number }) => {
     }
     else if (size === 'y') {
         currentDate.setYear(currentDate.getFullYear())
-        
+
         for (let i = 0 ; i < number ; i++) {
             currentDate.setYear(currentDate.getFullYear() - 1)
             labelsArray.push(currentDate.getFullYear() + 1)
@@ -23,7 +23,7 @@ const XAxis = ({ size, number }) => {
     }
 
     return (
-        <Group justify="space-between">
+        <Group justify="space-between" ref={axisRef}>
             {
                 labelsArray.reverse().map((label, index) => (
                     <Stack key={index} gap={0}>

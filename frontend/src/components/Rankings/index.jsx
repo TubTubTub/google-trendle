@@ -28,6 +28,7 @@ const Rankings = () => {
             })
             .catch(error => {
                 addError(`${error.message}: Failed to load rankings!`)
+                setRankings(null)
             })
     }, [pageNumber, addError])
 
@@ -38,15 +39,21 @@ const Rankings = () => {
         }
     }, [profile.profile, profileDispatch])
 
+    if (rankings === null) return (
+        <Center h='100%'>
+            <Text fw={500}>Rankings failed to load!</Text>
+        </Center>
+    )
+
     if (rankings.length === 0) return <LoadingList />
-    
+
     return (
         <Stack h="100%" gap={0}>
             <Group h="4rem" justify="center">
                 <LeaderboardSVG style={{ width: '1.5rem', height: '1.5rem' }}/>
                 <Title order={2}>Leaderboard</Title>
             </Group>
-            
+
             <ScrollArea type="auto" scrollbars="y" style={{ flexGrow: 1 }}>
                 <LeaderboardList rankings={rankings} />
             </ScrollArea>

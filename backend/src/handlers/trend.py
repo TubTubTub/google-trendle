@@ -3,27 +3,28 @@ import urllib.request
 from PIL import Image
 import pandas as pd
 import numpy as np
+import datetime
 
-pytrends = TrendReq(hl='en-GB', tz=0, requests_args={
-    'headers': {
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'Content-Type': 'application/json',
-        'Origin': 'http://localhost:8080',
-        'Pragma': 'no-cache',
-        'Referer': 'http://localhost:8080/',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-site',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
-        'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        # 'Cookie': 'g_state={"i_l":0,"i_t":1736084658226}',
-    }
-})
+headers = {
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Content-Type': 'application/json',
+    'Origin': 'http://localhost:8080',
+    'Pragma': 'no-cache',
+    'Referer': 'http://localhost:8080/',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+    'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    # 'Cookie': 'g_state={"i_l":0,"i_t":1736084658226}',
+}
+
+pytrends = TrendReq(backoff_factor=0.5, retries=3)
 
 class Trend:
     def __init__(self, keyword, timeframe, data_url):
@@ -33,6 +34,7 @@ class Trend:
 
         self._api_df = None
         self._user_df = None
+        self._raw_data = None
 
         self._api_row_count = None
         self._user_row_count = None
@@ -43,18 +45,31 @@ class Trend:
         self.parse_data_url()
 
     def get_api_data(self):
-        print('Aaaa')
-        print(self._keyword)
-        print(self._timeframe)
         print(f'BUILDING REQUEST: {self._keyword} | {self._timeframe}')
-        pytrends.build_payload(kw_list=[self._keyword], timeframe=[self._timeframe])
-        self._api_df = pytrends.interest_over_time() # Changed to requests.post https://stackoverflow.com/questions/75744524/pytends-api-throwing-429-error-even-if-the-request-was-made-very-first-time
+
+        days_unit = 30 if self._timeframe[-1] == 'm' else 365
+        number_of_units = int(''.join([char for char in self._timeframe if char.isdigit()]))
+        self._timeframe = datetime.datetime.now() - datetime.timedelta(days=number_of_units * days_unit)
+        self._timeframe = f'{self._timeframe.strftime('%Y-%m-%d')} {datetime.datetime.now().strftime('%Y-%m-%d')}'
+
+        pytrends.build_payload(kw_list=[self._keyword], timeframe=['today 3-m'])
+        self._api_df = pytrends.interest_over_time()
+
+        print(self._api_df.to_csv())
+        # Changed to requests.post https://stackoverflow.com/questions/75744524/pytends-api-throwing-429-error-even-if-the-request-was-made-very-first-time
+        # Changed to allowed_methods https://github.com/GeneralMills/pytrends/issues/591
 
     def parse_api_df(self):
         self._api_df[self._keyword] = self._api_df[self._keyword] / 100
         self._api_df = self._api_df.reset_index()
+        self.parse_raw_data()
+
         self._api_df['user_values'] = np.nan
         self._api_row_count = len(self._api_df)
+
+    def parse_raw_data(self):
+        self._raw_data = self._api_df[self._keyword].to_dict()
+        self._raw_data = [{'key': key, 'value': value} for key, value in self._raw_data.items()]
 
     def parse_data_url(self):
         image_data = urllib.request.urlopen(self._data_url)
@@ -86,7 +101,10 @@ class Trend:
         self._api_df['difference'] = self._api_df['difference'].fillna(value=1, axis=0)
 
         mean_squared_error = (self._api_df['difference'].sum()) / self._api_row_count
-        return (1 - mean_squared_error) * 100
+        return float((1 - mean_squared_error) * 100)
+
+    def get_raw_data(self):
+        return self._raw_data
 
     def visualise_result(self):
         self._api_df['user_values'].plot()

@@ -11,6 +11,7 @@ ARG REDIS_URL
 
 ENV FLASK_APP=src
 ENV FLASK_ENV=production
+ENV PYTHONUNBUFFERED=1
 
 # # #
 
@@ -39,6 +40,12 @@ ENV PATH "$PATH:/home/${USERNAME}/.local/bin"
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+
+# # #
+
+COPY pytrends_fix/request.py ./.local/lib/python3.12/site-packages/pytrends/
+
+# # #
 
 RUN chmod +x service_entrypoint.sh
 

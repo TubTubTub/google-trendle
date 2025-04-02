@@ -21,6 +21,7 @@ const useCanvasControls = () => {
     const exportCanvas = useCallback(async () => {
         try {
             const dataURL = await canvas.current.exportImage('jpg')
+            console.log('EXPORTED DATA URL:', dataURL)
             const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, trends.timeframe)
 
             console.log('EXPORED DATA URL (Game.jsx):' + 'TIMEFRAME:', trends.timeframe, dataURL)

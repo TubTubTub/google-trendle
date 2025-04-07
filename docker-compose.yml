@@ -1,0 +1,77 @@
+name: google-trendle
+services:
+    # gt-nginx:
+    #     container_name: gt-reverse-proxy
+    #     image: nginx
+    #     volumes:
+    #         - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    #     ports:
+    #         - 8080:8080
+    #     depends_on:
+    #         - gt-frontend
+    #         - gt-backend
+
+    gt-frontend:
+        container_name: gt-frontend
+        image: gt-frontend
+        env_file:
+            - .env
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+            args:
+                VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+                VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+                VITE_BACKEND_AUTH_KEY: ${VITE_BACKEND_AUTH_KEY}
+
+    gt-backend:
+        container_name: gt-backend
+        image: gt-backend
+        restart: always
+        env_file:
+            - .env
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+            args:
+                SESSION_SECRET_KEY: ${SESSION_SECRET_KEY}
+                POSTGRES_URL: ${POSTGRES_URL}
+                REDIS_URL: ${REDIS_URL}
+                SERP_API_KEY: ${SERP_API_KEY}
+                AUTH_KEY: ${AUTH_KEY}
+        ports:
+            - 5000:5000
+
+        # depends_on:
+        #     - gt-postgres
+        #     - gt-redis
+        # links:
+        #     - gt-postgres
+
+    # gt-postgres: # NAME IN POSTGRES URL
+    #     container_name: gt-postgres
+    #     image: postgres
+    #     restart: always
+    #     ports:
+    #         - 5432:5432
+    #     environment:
+    #         POSTGRES_USER: db_user
+    #         POSTGRES_PASSWORD: db_password
+    #     volumes:
+    #         - ./pg_data:/var/lib/postgresql/data
+    #     healthcheck:
+    #         test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -t 1"]
+    #         interval: 10s
+    #         timeout: 10s
+    #         retries: 10
+    #         start_period: 10s
+
+    # gt-redis:
+    #     container_name: gt-redis
+    #     image: redis
+    #     restart: always
+    #     command: ['redis-server', '--appendonly', 'yes']
+    #     volumes:
+    #         - ./rs_data:/data
+    #     ports:
+    #         - 6379:6379

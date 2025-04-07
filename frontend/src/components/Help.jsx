@@ -1,4 +1,4 @@
-import { Modal, Title, Text, Kbd, Highlight } from '@mantine/core'
+import { Highlight, Kbd, Modal, Text, Title } from '@mantine/core'
 
 const Help = ({ opened, onClose }) => {
     return (

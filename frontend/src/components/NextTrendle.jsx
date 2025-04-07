@@ -1,6 +1,8 @@
 import { Box, useMantineTheme } from '@mantine/core'
 import { IoIosArrowForward } from 'react-icons/io'
+
 import { ToolIconButton } from './Buttons'
+
 import useNextTrendle from '../hooks/useNextTrendle'
 
 const NextTrendle = () => {

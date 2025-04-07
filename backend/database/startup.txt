@@ -1,3 +1,0 @@
-docker run -e POSTGRES_PASSWORD=mysecretpassword -v ./postgres-data:/var/lib/postgresgl/data  -p 5432:5432 postgres
-docker exec -it e62 psql -U test postgres
-docker exec -it 1c3 redis-cli

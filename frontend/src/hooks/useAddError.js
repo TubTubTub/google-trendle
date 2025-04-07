@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+
 import { useErrorDispatch } from "../contexts/ErrorContextHooks"
 
 export const useAddError = () => {

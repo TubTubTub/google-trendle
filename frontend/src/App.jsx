@@ -1,11 +1,12 @@
 import { AppShell } from '@mantine/core'
-import Header from './components/Header'
-import Game from './components/Game'
-import History from './components/History'
-import Rankings from './components/Rankings'
-import Footer from './components/Footer'
-import useMouseSidebar from './hooks/useMouseSidebar'
 import './styles.css'
+
+import useMouseSidebar from './hooks/useMouseSidebar'
+import Rankings from './components/Rankings'
+import History from './components/History'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Game from './components/Game'
 
 const mergeRefs = (...inputRefs) => {
     return (ref) => {
@@ -29,6 +30,7 @@ const App = () => {
 
     return (
         <AppShell
+            layout="alt"
             header={{ height: '4rem' }}
             navbar={{ width: '20rem', breakpoint: 'lg', collapsed: { desktop: !navbarOpened, mobile: true } }}
             aside={{ width: '20rem', breakpoint: 'lg', collapsed: { desktop: !asideOpened, mobile: true }}}
@@ -36,7 +38,7 @@ const App = () => {
             padding={0}
             ref={mergeRefs(navbarRef, asideRef)}
         >
-            <AppShell.Header px="md">
+            <AppShell.Header>
                 <Header />
             </AppShell.Header>
 
@@ -52,7 +54,7 @@ const App = () => {
                 <History />
             </AppShell.Aside>
 
-            <AppShell.Footer>
+            <AppShell.Footer withBorder={false}>
                 <Footer />
             </AppShell.Footer>
 

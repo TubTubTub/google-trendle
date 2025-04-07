@@ -1,1 +1,0 @@
-To drop table: Test.__table__.drop(bind=sa.engine)

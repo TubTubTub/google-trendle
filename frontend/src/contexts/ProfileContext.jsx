@@ -10,10 +10,7 @@ const profileReducer = (state, action) => {
         case 'SET_STATISTICS':
             return {
                 ...state,
-                statistics: {
-                    'averageScore': Math.round(action.payload.averageScore * 10) / 10,
-                    'rank': action.payload.rank
-                }
+                statistics: action.payload
             }
         default:
             return state

@@ -1,5 +1,6 @@
-import { Button, Avatar, Menu } from '@mantine/core'
+import { Avatar, Button, Menu } from '@mantine/core'
 import { TbLogout2 } from 'react-icons/tb'
+
 import { useProfileValue } from '../../contexts/ProfileContextHooks'
 
 const UserAvatar = ({ onLogout, size="md" }) => {

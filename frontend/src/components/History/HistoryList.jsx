@@ -1,4 +1,5 @@
-import { Text, Accordion, Group } from '@mantine/core'
+import { Accordion, Group, Text } from '@mantine/core'
+
 import CustomPaper from '../CustomPaper'
 
 const HistoryList = ({ history }) => {
@@ -12,10 +13,10 @@ const HistoryList = ({ history }) => {
                             <CustomPaper p="xs" label="Word" tooltip style={{ flexGrow: 1 }}>
                                 <Text ta="center" size="sm" fw={500}>{game.word}</Text>
                             </CustomPaper>
-                            <CustomPaper p="xs" label="Your score" tooltip style={{ minWidth: '2.5em' }}>
+                            <CustomPaper p="xs" label="Score" tooltip style={{ minWidth: '2.5em' }}>
                                 <Text ta="center" size="sm" fw={400}>{game.score}</Text>
                             </CustomPaper>
-                            <CustomPaper p="xs" label="Attempted date" tooltip>
+                            <CustomPaper p="xs" label="Date attempted" tooltip>
                                 <Text ta="center" size="sm" fw={400}>{game.date}</Text>
                             </CustomPaper>
                         </Group>

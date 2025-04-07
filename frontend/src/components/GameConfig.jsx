@@ -1,6 +1,8 @@
 import { Group, SegmentedControl, Slider, Text } from '@mantine/core'
-import { useTrendsValue } from '../contexts/TrendsContextHooks'
+
 import CustomPaper from './CustomPaper'
+
+import { useTrendsValue } from '../contexts/TrendsContextHooks'
 import useTimeFrame from '../hooks/useTimeFrame'
 
 const GameConfig = () => {

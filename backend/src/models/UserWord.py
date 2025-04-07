@@ -1,5 +1,6 @@
 from datetime import datetime
-from src import db
+
+from src.database import db
 
 class UserWord(db.Model):
     id = db.Column(db.Integer, primary_key=True)

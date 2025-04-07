@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { Button } from '@mantine/core'
-import { useGoogleLogin, googleLogout } from '@react-oauth/google'
+import { googleLogout, useGoogleLogin } from '@react-oauth/google'
 import { PiUserCircleThin } from 'react-icons/pi'
+
+import UserAvatar from './UserAvatar'
 
 import { useProfileValue } from '../../contexts/ProfileContextHooks'
 import useLoginUser from '../../hooks/useLoginUser'
-import UserAvatar from './UserAvatar'
 
 const Login = () => {
     const [autoLoginUser, loginUser, logoutUser] = useLoginUser()
@@ -17,14 +18,14 @@ const Login = () => {
 
     const login = useGoogleLogin({
         onSuccess: (user) => loginUser(user),
-        onError: (error) => console.log('(Login.jsx) LOGIN FAILED:', error),
+        onError: (error) => console.error(`(Login.jsx) Login failed: ${error}`),
     })
 
     const logout = () => {
         googleLogout()
         logoutUser()
     }
- 
+
     return (
         <>
             {profile ? <UserAvatar onLogout={logout} /> : (

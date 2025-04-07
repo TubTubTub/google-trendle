@@ -1,7 +1,10 @@
-import { useEffect, useCallback } from 'react'
-import { useTrends } from '../contexts/TrendsContextHooks'
+import { useCallback, useEffect } from 'react'
+
 import { useAddError } from './useAddError'
+
+import { useTrends } from '../contexts/TrendsContextHooks'
 import { useCanvasValue } from '../contexts/CanvasContextHooks'
+import { useProfileValue } from '../contexts/ProfileContextHooks'
 import trendsService from '../services/trends'
 
 export const exportPath = async (canvas) => await canvas.current.exportPaths()
@@ -13,6 +16,7 @@ export const clearCanvas = (canvas) => canvas.current.clearCanvas()
 const useCanvasControls = () => {
     const [trends, trendsDispatch] = useTrends()
     const canvas = useCanvasValue()
+    const profile = useProfileValue()
     const addError = useAddError()
 
     const undoCanvas = useCallback(() => canvas.current.undo(), [canvas])
@@ -21,38 +25,36 @@ const useCanvasControls = () => {
     const exportCanvas = useCallback(async () => {
         try {
             const dataURL = await canvas.current.exportImage('jpg')
-            console.log('EXPORTED DATA URL:', dataURL)
-            const result = await trendsService.submit(trends.word.slice(0, -1), dataURL, trends.timeframe)
-
-            console.log('EXPORED DATA URL (Game.jsx):' + 'TIMEFRAME:', trends.timeframe, dataURL)
+            const result = await trendsService.submit(trends.word, dataURL, trends.timeframe, profile.profile ? profile.profile.id : null)
+            console.info(`(useCanvasControls.js) Exported DataURL: ${dataURL.slice(0, 20)} | Timeframe: ${trends.timeframe}`)
 
             if (result) {
                 trendsDispatch({ type: 'SET_DATA_URL', payload: dataURL })
                 trendsDispatch({ type: 'SET_RESULT', payload: result })
-                console.log('RECEIVED DATA:', result)
+                console.info(`(useCanvasControls.js) Received data: ${result}`)
             }
         } catch(error) {
-            console.error(`(useCanvasControls) Error submitting trendle:`, error)
+            console.error(`(useCanvasControls.js) Error submitting trendle:`, error)
             addError(`Submission failed: ${error.message}`)
         }
-    }, [canvas, trends.word, trends.timeframe, trendsDispatch, addError])
+    }, [canvas, trends.word, trends.timeframe, trendsDispatch, profile, addError])
 
     useEffect(() => {
         const keyDownHandler = (event) => {
             if (event.code == 'Enter') {
-                console.log('Enter')
+                console.debug('(useCanvasControls.js) Enter key pressed')
                 exportCanvas()
             }
             else if (event.shiftKey && event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-                console.log('Redo')
+                console.debug('(useCanvasControls.js) Redo key pressed')
                 redoCanvas()
             }
             else if (!event.shiftKey && event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-                console.log('Undo')
+                console.debug('(useCanvasControls.js) Undo key pressed')
                 undoCanvas()
             }
             else if (event.code == 'KeyX' && (event.ctrlKey || event.metaKey)) {
-                console.log('Clear')
+                console.debug('(useCanvasControls.js) Clear key pressed')
                 clearCanvas()
             }
         }

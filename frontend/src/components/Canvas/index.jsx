@@ -1,16 +1,15 @@
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Stack, useMantineColorScheme } from '@mantine/core'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 
-import { useTrendsValue } from '../../contexts/TrendsContextHooks'
-import { useCanvasDispatch } from '../../contexts/CanvasContextHooks'
-
-import backgroundSVG from '../../assets/background.svg'
-import AnswerGraph from '../Result/AnswerGraph'
 import XAxis from './XAxis'
 
+import { useTrendsValue } from '../../contexts/TrendsContextHooks'
+import { useCanvasDispatch } from '../../contexts/CanvasContextHooks'
+import AnswerGraph from '../Result/AnswerGraph'
+
 const Canvas = () => {
-    const { colorScheme, _ } = useMantineColorScheme()
+    const { colorScheme } = useMantineColorScheme()
     const canvasDispatch = useCanvasDispatch()
     const trends = useTrendsValue()
     const canvasRef = useRef()

@@ -1,9 +1,9 @@
-import { Paper, CloseButton, Button, Flex, Transition } from '@mantine/core'
+import { Button, CloseButton, Flex, Paper, Transition } from '@mantine/core'
+import { FaArrowRightLong } from 'react-icons/fa6'
+
+import ResultStatistics from './ResultStatistics'
 
 import useNextTrendle from '../../hooks/useNextTrendle'
-
-import { FaArrowRightLong } from 'react-icons/fa6'
-import ResultStatistics from './ResultStatistics'
 
 const Result = ({ open, onClose }) => {
     const loadNextTrendle = useNextTrendle()

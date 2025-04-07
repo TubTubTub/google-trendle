@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+
 import TrendsContext from './TrendsContext'
 
 export const useTrends = () => {

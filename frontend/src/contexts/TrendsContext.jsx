@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react'
+
 import { EMPTY_RESULT } from '../utils/constants'
 
 const trendsReducer = (state, action) => {
@@ -39,14 +40,6 @@ const trendsReducer = (state, action) => {
                 word: action.payload
             }
 
-        case 'SET_Y_AXIS_LABELS':
-            sessionStorage.setItem('Y_AXIS_LABELS', action.payload)
-
-            return {
-                ...state,
-                yAxisLabels: action.payload
-            }
-
         default:
             return state
     }
@@ -58,7 +51,6 @@ const initialValues = {
     timeframe: 'today 3-m',
     dataURL: null,
     word: null,
-    yAxisLabels: [],
     result: EMPTY_RESULT
 }
 

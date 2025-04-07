@@ -1,76 +1,79 @@
-from flask import Blueprint, request, session
-import sqlalchemy as sa
 import json
 
+import sqlalchemy as sa
+from flask import Blueprint, current_app, request, session
+
+from src.database import db
 from src.models import User
-from src import db
 
 users_blueprint = Blueprint('users', __name__)
 
-def get_user_from_database(user_id, name, picture_url):
+@users_blueprint.post('/test-in-database')
+def test_in_database():
+    body = json.loads(request.data)
     user = db.session.scalar(
-        sa.select(User).where(User.id == user_id)
+        sa.select(User).where(User.id == body['userId'])
+    )
+
+    if user:
+        return user.__dict__, 200
+
+    return { 'message': f'no user found with id {body['userId']}' }, 204
+
+@users_blueprint.post('/test-session')
+def test_logged_in():
+    return { 'User ID in session': session['userId'] if 'userId' in session else None }, 200
+
+@users_blueprint.post('/login')
+def login():
+    body = json.loads(request.data)
+
+    user = db.session.scalar(
+        sa.select(User).where(User.id == body['userId'])
     )
 
     if user is None:
-        user = User(id=user_id, name=name, picture_url=picture_url)
-        print('(get_user_from_database) Registering new user:', user)
+        user = User(id=body['userId'], name=body['name'], picture_url=body['picture_url'])
+        current_app.logger.info('(login) Registering new user: %r', user)
         db.session.add(user)
         db.session.commit()
 
-    return user
+    if 'userId' in session:
+        current_app.logger.info(
+            '(login) Relogging in from %s as %s',
+            session['userId'], body['userId']
+        )
 
-@users_blueprint.route('/test', methods=['GET', 'POST'])
-def test():
-    print('(test) TEST REQUEST:', request)
-    user_id = session.get('userId') or 'no id in redis database'
-    return user_id
+    current_app.logger.info(
+        '(login) Logging in user | ID: %s | Name: %s',
+        body['userId'], body['name']
+    )
 
-@users_blueprint.route('/login', methods=['POST', 'GET'])
-def login():
-    if request.method == 'POST':
-        body = json.loads(request.data)
+    session['userId'] = body['userId']
+    session.modified = True
 
-        if session.get('userId'):
-            user = get_user_from_database(body['userId'], body['name'], body['picture'])
+    return {}, 204
 
-            print('(login) Already logged in!', session['userId'])
-            return session['userId']
-
-        user = get_user_from_database(body['userId'], body['name'], body['picture'])
-
-        print('(login) Logging in:', user)
-
-        session['userId'] = body['userId']
-        session.modified = True
-
-        return repr(user)
-
-    return '', 204
-
-@users_blueprint.route('/logout', methods=['POST', 'GET'])
+@users_blueprint.post('/logout')
 def logout():
-    if request.method == 'POST':
-        if session.get('userId') is None:
-            print('(logout) logout failed, user not signed in')
-            return {'error': 'logout failed, user not signed in'}, 401
-
-        print('(logut) Logging out of user:', session['userId'])
-        removed_user_id = session.pop('userId', default=None)
-        return removed_user_id, 204
-
-    return '', 204
-
-@users_blueprint.route('/autologin', methods=['GET'])
-def auto_login():
-    if session.get('userId') is None:
-        print("(auto_login) No user id found, not sending auto-login information")
+    if 'userId' in session:
+        current_app.logger.info('(logout) Logging out of user: %s', session['userId'])
+        session.pop('userId')
+        session.modified = True
         return {}, 204
 
-    user = db.session.get(User, session['userId'])
+    current_app.logger.info('(logout) Logout request received without user signed in')
+    return {}, 204
 
-    if user is None:
-        print("(auto_login) Corresponding user not found in database, not sending auto-login information", session['userId'])
-        return {}, 204
+@users_blueprint.post('/autologin')
+def autologin():
+    if 'userId' in session:
+        user = db.session.get(User, session['userId'])
 
-    return { 'id': user.id, 'name': user.name, 'picture': user.picture_url }, 200
+        if user is None:
+            return { 'error': '(autologin) User ID cached without user being registered' }, 500
+
+        return { 'id': user.id, 'name': user.name, 'picture': user.picture_url }, 200
+
+    current_app.logger.info("(autologin) No user ID in session, not sending auto-login information")
+    return {}, 204

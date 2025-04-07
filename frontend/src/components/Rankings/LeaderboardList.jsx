@@ -1,10 +1,11 @@
-import { Text, ThemeIcon, Badge, List, Group, rem } from '@mantine/core'
+import { Badge, Group, List, rem, Text, ThemeIcon } from '@mantine/core'
 import { TbAwardFilled } from 'react-icons/tb'
 
 const rankToColour = {
-    0: 'gold',
-    1: 'silver',
-    2: 'darkgoldenrod'
+    0: '#EA4335',
+    1: '#4285F4',
+    2: '#FBBC04',
+    3: '#9AA0A6'
 }
 
 const round = (num, dp) => {
@@ -28,7 +29,7 @@ const LeaderboardList = ({ rankings }) => {
             {rankings.slice(3).map((user, index) => (
                 <List.Item key={index} px="lg">
                     <Group gap="0.2rem">
-                        <Badge mx="xs">{round(user.averageScore, 1)}</Badge><Text fw={500}>{user.name}</Text>
+                        <Badge mx="xs" color={rankToColour[3]}>{round(user.averageScore, 1)}</Badge><Text fw={500}>{user.name}</Text>
                     </Group>
                 </List.Item>
             ))}

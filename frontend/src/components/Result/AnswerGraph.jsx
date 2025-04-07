@@ -1,5 +1,6 @@
 import { useMantineTheme } from '@mantine/core'
-import { LineChart, Line, YAxis, CartesianGrid } from 'recharts'
+import { CartesianGrid, Line, LineChart, YAxis } from 'recharts'
+
 import { useTrendsValue } from '../../contexts/TrendsContextHooks'
 
 const AnswerGraph = ({ width, height }) => {

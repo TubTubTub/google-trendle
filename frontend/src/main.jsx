@@ -1,18 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-
 import { MantineProvider } from '@mantine/core'
-import theme from './theme'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import '@mantine/core/styles.css'
 
-import { GoogleOAuthProvider } from '@react-oauth/google'
-
-import { TrendsContextProvider } from './contexts/TrendsContext'
-import { ErrorContextProvider } from './contexts/ErrorContext'
+import { CanvasContextProvider } from './contexts/CanvasContext.jsx'
 import { ProfileContextProvider } from './contexts/ProfileContext'
 import { HistoryContextProvider } from './contexts/HistoryContext'
-import { CanvasContextProvider } from './contexts/CanvasContext.jsx'
+import { TrendsContextProvider } from './contexts/TrendsContext'
+import { ErrorContextProvider } from './contexts/ErrorContext'
+import initialiseAxios from './initialiseAxios.js'
+import theme from './theme'
+import App from './App.jsx'
+
+initialiseAxios()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

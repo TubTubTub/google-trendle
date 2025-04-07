@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const baseURL = `${import.meta.env.VITE_BACKEND_URL}/users`
+import { BACKEND_URL } from '../utils/constants'
+
+const baseURL = `${BACKEND_URL}/users`
 
 const getInfo = async (token) => {
     const result = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`, {
@@ -13,35 +15,34 @@ const getInfo = async (token) => {
 }
 
 const login = async (profile) => {
-    const body = JSON.stringify({
+    const body = {
         userId: profile.id,
         name: profile.name,
         picture: profile.picture
-    })
+    }
 
     const result = await axios.post(`${baseURL}/login`, body, {
         withCredentials: true,
-        headers: { 'Content-Type': 'application/json' },
-        Accept: 'application/json'
+        timeout: 20000
     })
     return result.data
 }
 
 const logout = async () => {
-    const result = await axios.post(`${baseURL}/logout`, {}, {
+    const body = {}
+
+    await axios.post(`${baseURL}/logout`, body, {
         withCredentials: true,
-        headers: { 'Content-Type': 'application/json' },
-        Accept: 'application/json'
+        timeout: 20000
     })
-    return result.data
 }
 
 const getAutoLogin = async () => {
     const result = await axios.get(`${baseURL}/autologin`, {
         withCredentials: true,
+        timeout: 40000
     })
-
     return result.data
 }
 
-export default { getInfo, login, logout, getAutoLogin }
+export default { getInfo, getAutoLogin, login, logout }

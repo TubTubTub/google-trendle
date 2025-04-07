@@ -1,18 +1,19 @@
 import { useEffect } from 'react'
-import { Center, Stack, Group, Space } from '@mantine/core'
+import { Center, Group, Space, Stack } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-import { useTrendsValue } from '../contexts/TrendsContextHooks'
-import { useHistoryDispatch, useHistoryValue } from '../contexts/HistoryContextHooks'
-import useSessionStorage from '../hooks/useSessionStorage'
 
+import CanvasControl from './Canvas/CanvasControl'
 import PreviousTrendle from './PreviousTrendle'
 import NextTrendle from './NextTrendle'
 import ErrorAlert from './ErrorAlert'
 import GameConfig from './GameConfig'
 import Canvas from './Canvas'
 import Result from './Result'
-import CanvasControl from './Canvas/CanvasControl'
+
+import useSessionStorage from '../hooks/useSessionStorage'
+import { useTrendsValue } from '../contexts/TrendsContextHooks'
+import { useHistoryDispatch, useHistoryValue } from '../contexts/HistoryContextHooks'
 
 const Game = () => {
     const [resultOpened, { open, close }] = useDisclosure(false)
@@ -34,12 +35,9 @@ const Game = () => {
     }
 
     useEffect(() => {
-        const [sessionWord, sessionLabels, sessionValue, sessionSize] = getStorage()
-        setupStorage(sessionWord, sessionLabels, sessionValue, sessionSize).then( // CURRENTLY FETCHES AND SETS WORD TWICE CAUSE STRICT MODE
-            ([currentWord, currentLabels]) => {
-                historyDispatch({ type: 'SET_GAME_WORD', payload: currentWord })
-                historyDispatch({ type: 'SET_GAME_LABELS', payload: currentLabels })
-            }
+        const [sessionWord, sessionValue, sessionSize] = getStorage()
+        setupStorage(sessionWord, sessionValue, sessionSize).then(
+            (currentWord) => { historyDispatch({ type: 'SET_GAME_WORD', payload: currentWord }) }
         )
     }, [getStorage, setupStorage, historyDispatch, history.sessionHistory.length])
 

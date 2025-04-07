@@ -4,10 +4,11 @@ from src.handlers.word import Word
 
 words_blueprint = Blueprint('words', __name__)
 
-@words_blueprint.get('/')
+@words_blueprint.post('/word')
 def get_random_word():
-    while True:
+    word = ''
+
+    while len(word) <= 1:
         word = Word.get_random_word()
 
-        if (len(word) != 1):
-            return word
+    return { 'word': word }, 200

@@ -1,4 +1,4 @@
-import { Tooltip, ActionIcon, Box } from '@mantine/core'
+import { ActionIcon, Box, Tooltip } from '@mantine/core'
 
 export const LinkIconButton = ({ label, link, icon, size="lg" }) => {
     return (
@@ -31,7 +31,7 @@ export const ToolIconButton = ({ label, onClick, icon, size="lg", tooltip=true, 
     return (
         <Box>
             {
-                (!tooltip) ? button : 
+                (!tooltip) ? button :
                 <Tooltip label={label} openDelay={500} closeDelay={100}>
                     {button}
                 </Tooltip>

@@ -1,6 +1,5 @@
-from src import db
-from src.models.UserWord import UserWord
-    
+from src.database import db
+
 class User(db.Model):
     id = db.Column(db.String(23), primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=False)

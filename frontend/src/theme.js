@@ -1,4 +1,4 @@
-import { createTheme, virtualColor, rem } from '@mantine/core'
+import { createTheme, rem, virtualColor } from '@mantine/core'
 
 const theme = createTheme({
     colors: {

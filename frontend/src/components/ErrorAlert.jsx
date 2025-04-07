@@ -1,5 +1,6 @@
-import { Alert, Text, Group } from '@mantine/core'
+import { Alert, Group, Text } from '@mantine/core'
 import { MdErrorOutline } from 'react-icons/md'
+
 import { useErrorValue } from '../contexts/ErrorContextHooks'
 
 const ErrorAlert = () => {

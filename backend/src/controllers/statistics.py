@@ -1,39 +1,36 @@
-from flask import Blueprint, Response, session, request, abort
+import json
+import math
 
-from src import db
-from src.models import User, UserWord
-
+from flask import Blueprint, request
 from sqlalchemy import func
 
-import math
+from src.database import db
+from src.models import User, UserWord
 
 statistics_blueprint = Blueprint('statistics', __name__)
 
-@statistics_blueprint.get('/history')
+@statistics_blueprint.post('/history')
 def get_history():
-    if session.get('userId') is None:
-        print('\n(get_history) User id not found, not sending history')
-        return [], 204
-    
+    body = json.loads(request.data)
+
     try:
         page = int(request.args.get('page'))
         page_size = int(request.args.get('page_size'))
-    except:
+    except TypeError:
         page = 1
         page_size = 30
 
-    relevant_rows = db.session.query(UserWord).filter_by(user_id=session['userId'])
+    relevant_rows = db.session.query(UserWord).filter_by(user_id=body['userId'])
     number_of_rows = relevant_rows.count()
     offset = (page - 1) * page_size
 
     if offset > number_of_rows:
-        abort(Response('Page number exceeds number of database entries', 400))
-        return
-    
+        return { 'error': 'page number exceeds number of database entries' }, 400
+
     history = relevant_rows.order_by(UserWord.updated_dt.desc()) \
         .limit(page_size) \
         .offset(offset)
-    
+
     result = [{
         'word': game.word.id,
         'score': game.score,
@@ -42,12 +39,12 @@ def get_history():
 
     return { 'history': result, 'page_count': math.ceil(number_of_rows / page_size) }, 200
 
-@statistics_blueprint.route('/rankings', methods=['GET'])
+@statistics_blueprint.post('/rankings')
 def get_rankings():
     try:
         page = int(request.args.get('page'))
         page_size = int(request.args.get('page_size'))
-    except:
+    except TypeError:
         page = 1
         page_size = 30
 
@@ -55,8 +52,7 @@ def get_rankings():
     offset = (page - 1) * page_size
 
     if offset > number_of_rows:
-        abort(Response('Page number exceeds number of database entries', 400))
-        return
+        return { 'error': 'page number exceeds number of database entries' }, 400
 
     rankings = db.session.query(User).order_by(User.average_score.desc()) \
         .limit(page_size) \
@@ -69,22 +65,21 @@ def get_rankings():
 
     return { 'rankings': result, 'page_count': math.ceil(number_of_rows / page_size) }, 200
 
-@statistics_blueprint.get('/user')
+@statistics_blueprint.post('/user')
 def get_user_statistics():
-    if session.get('userId') is None:
-        print('\n(get_user_statistics) User id not found, not sending user statistics')
-        return {}, 204
-    
-    user = db.session.get(User, session['userId'])
+    body = json.loads(request.data)
 
-    ranks = db.session.query(User, func.row_number().over(partition_by=None, order_by=User.average_score.desc())).all()
+    user = db.session.get(User, body['userId'])
+    ranks = db.session.query(
+        User,
+        func.row_number().over(
+            partition_by=None,
+            order_by=User.average_score.desc()
+        )
+    ).all()
 
     for row, rank in ranks:
         if row.id == user.id:
-            return {
-                'averageScore': user.average_score,
-                'rank': rank
-            }, 200
-    
-    
-    return {}, 401
+            return { 'averageScore': user.average_score, 'rank': rank }, 200
+
+    return { 'averageScore': None, 'rank': None }, 200

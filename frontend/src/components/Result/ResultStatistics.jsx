@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
-import { Rating, Text, ThemeIcon, Stack, SimpleGrid } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { Rating, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core'
+import { FaEarthAmericas, FaUser } from 'react-icons/fa6'
 
 import { useTrendsValue } from '../../contexts/TrendsContextHooks'
-
-import { FaEarthAmericas, FaUser } from 'react-icons/fa6'
 import CustomPaper from '../CustomPaper'
 
 const scoreDescriptions = {

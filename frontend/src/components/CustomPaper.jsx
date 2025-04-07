@@ -1,8 +1,8 @@
-import { Paper, Tooltip, useMantineTheme, useMantineColorScheme } from '@mantine/core'
+import { Paper, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 
 const CustomPaper = (props) => {
     const theme = useMantineTheme()
-    const { colorScheme, _ } = useMantineColorScheme()
+    const { colorScheme } = useMantineColorScheme()
 
     const paper = (
         <Paper
@@ -16,8 +16,8 @@ const CustomPaper = (props) => {
         >
             {props.children}
         </Paper>
-    ) 
-    
+    )
+
     if (props.tooltip) {
         return (
             <Tooltip label={props.label} openDelay={250} closeDelay={100}>
@@ -25,7 +25,7 @@ const CustomPaper = (props) => {
             </Tooltip>
         )
     }
-    
+
     return paper
 }
 

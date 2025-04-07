@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Button, Group, Text, Paper, Loader } from '@mantine/core'
+import { Button, Group, Loader, Paper, Text } from '@mantine/core'
+import { FaRedoAlt, FaUndoAlt } from 'react-icons/fa'
+import { FaRegTrashCan } from 'react-icons/fa6'
 
 import { useTrendsValue } from '../../contexts/TrendsContextHooks'
 import useCanvasControls from '../../hooks/useCanvasControls'
-
-import { FaUndoAlt, FaRedoAlt } from 'react-icons/fa'
-import { FaRegTrashCan } from 'react-icons/fa6'
 import { ToolIconButton } from '../Buttons'
 
 const CanvasControl = () => {

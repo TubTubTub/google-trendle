@@ -1,8 +1,11 @@
 .vscode
 .venv
-*.env
+*.
+
+archive/** */
 archive
 production
+
 __pycache__
 *.pyc
 

@@ -5,9 +5,8 @@ import { BACKEND_URL } from '../utils/constants'
 const baseURL = `${BACKEND_URL}/statistics`
 
 const getUserStatistics = async (userId) => {
-    const body = {
-        'userId': userId
-    }
+    const body = { 'userId': userId }
+
     const result = await axios.post(`${baseURL}/user`, body, {
         withCredentials: true,
         timeout: 20000
@@ -17,9 +16,8 @@ const getUserStatistics = async (userId) => {
 }
 
 const getHistory = async (page, games_per_page, userId) => {
-    const body = {
-        'userId': userId
-    }
+    const body = { 'userId': userId }
+
     const result = await axios.post(`${baseURL}/history?page=${page}&page_size=${games_per_page}`, body, {
         withCredentials: true,
         timeout: 20000
@@ -29,7 +27,9 @@ const getHistory = async (page, games_per_page, userId) => {
 }
 
 const getRankings = async (page, ranks_per_page) => {
-    const result = await axios.get(`${baseURL}/rankings?page=${page}&page_size=${ranks_per_page}`, {
+    const body = {}
+
+    const result = await axios.post(`${baseURL}/rankings?page=${page}&page_size=${ranks_per_page}`, body, {
         withCredentials: true,
         timeout: 40000
     })

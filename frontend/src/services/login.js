@@ -38,7 +38,9 @@ const logout = async () => {
 }
 
 const getAutoLogin = async () => {
-    const result = await axios.get(`${baseURL}/autologin`, {
+    const body = {}
+
+    const result = await axios.post(`${baseURL}/autologin`, body, {
         withCredentials: true,
         timeout: 40000
     })

@@ -28,7 +28,7 @@ def handle_other_errors(error):
 @app.before_request
 def check_for_auth_key():
     if request.method == 'POST':
-        if ['authKey'] not in request.data or request.data['authKey'] != os.getenv('AUTH_KEY'):
+        if 'authKey' not in request.data or request.data['authKey'] != os.getenv('AUTH_KEY'):
             return {
                 'error': 'Invalid authorisation key, '
                 'please ensure key is identical for both frontend and backend'

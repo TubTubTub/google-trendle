@@ -5,7 +5,9 @@ import { BACKEND_URL } from '../utils/constants'
 const baseURL = `${BACKEND_URL}/words`
 
 const getWord = async () => {
-    const result = await axios.get(`${baseURL}/word`, {
+    const body = {}
+
+    const result = await axios.post(`${baseURL}/word`, body, {
         withCredentials: true,
         timeout: 40000
     })

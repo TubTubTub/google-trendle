@@ -25,5 +25,4 @@ Currently deployed at https://trendle.tubtubtub.com using Google Cloud Run.
 
 > [!WARNING]
 > Due to the free tier of serverless deployment, visiting the website may require a cold-start, and take up to a minute to load
-
 > Due to limit on free requests using SerpAPI, the game may be unserviceable

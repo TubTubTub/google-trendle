@@ -4,9 +4,9 @@ services:
     #     container_name: gt-reverse-proxy
     #     image: nginx
     #     volumes:
-    #         - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    #         - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
     #     ports:
-    #         - 8080:8080
+    #         - 8080:80
     #     depends_on:
     #         - gt-frontend
     #         - gt-backend

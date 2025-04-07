@@ -43,7 +43,7 @@ def update_word_table(game_word, score):
         word = Word(id=game_word)
         db.session.add(word)
         db.session.commit()
-        current_app.logger.info('(update_word_table) Adding to word database: %r', word)
+        current_app.logger.info('Adding to word database: %r', word)
 
     word.global_average = (
         word.global_attempts * word.global_average + score
@@ -51,7 +51,7 @@ def update_word_table(game_word, score):
 
     word.global_attempts += 1
 
-    current_app.logger.info('(update_word_table) Updating word statistics: %r', word)
+    current_app.logger.info('Updating word statistics: %r', word)
 
     db.session.commit()
 
@@ -61,7 +61,7 @@ def update_association_table(game_word, score, user_id):
 
     if user is None or user_id is None:
         current_app.logger.info(
-            '(update_association_table) Not updating, user not found: %s',
+            'Not updating, user not found: %s',
             user_id
         )
         return
@@ -76,11 +76,11 @@ def update_association_table(game_word, score, user_id):
     user.words.append(new_entry)
 
     current_app.logger.info(
-        '(update_association_table) Updating UserWord association: %r',
+        'Updating UserWord association: %r',
         new_entry
     )
     current_app.logger.info(
-        '(update_association_table) Updating User statistics: %r',
+        'Updating User statistics: %r',
         user
     )
 

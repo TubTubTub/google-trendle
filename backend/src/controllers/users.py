@@ -11,10 +11,10 @@ users_blueprint = Blueprint('users', __name__)
 @users_blueprint.post('/test-in-database')
 def test_in_database():
     body = json.loads(request.data)
+
     user = db.session.scalar(
         sa.select(User).where(User.id == body['userId'])
     )
-
     if user:
         return user.__dict__, 200
 
@@ -33,19 +33,19 @@ def login():
     )
 
     if user is None:
-        user = User(id=body['userId'], name=body['name'], picture_url=body['picture_url'])
-        current_app.logger.info('(login) Registering new user: %r', user)
+        user = User(id=body['userId'], name=body['name'], picture_url=body['picture'])
+        current_app.logger.info('Registering new user: %r', user)
         db.session.add(user)
         db.session.commit()
 
     if 'userId' in session:
         current_app.logger.info(
-            '(login) Relogging in from %s as %s',
+            'Relogging in from %s as %s',
             session['userId'], body['userId']
         )
 
     current_app.logger.info(
-        '(login) Logging in user | ID: %s | Name: %s',
+        'Logging in user | ID: %s | Name: %s',
         body['userId'], body['name']
     )
 
@@ -57,12 +57,12 @@ def login():
 @users_blueprint.post('/logout')
 def logout():
     if 'userId' in session:
-        current_app.logger.info('(logout) Logging out of user: %s', session['userId'])
+        current_app.logger.info('Logging out of user: %s', session['userId'])
         session.pop('userId')
         session.modified = True
         return {}, 204
 
-    current_app.logger.info('(logout) Logout request received without user signed in')
+    current_app.logger.info('Logout request received without user signed in')
     return {}, 204
 
 @users_blueprint.post('/autologin')
@@ -71,9 +71,11 @@ def autologin():
         user = db.session.get(User, session['userId'])
 
         if user is None:
-            return { 'error': '(autologin) User ID cached without user being registered' }, 500
+            return {
+                'error': 'User ID cached without user being registered while autologging in'
+            }, 500
 
         return { 'id': user.id, 'name': user.name, 'picture': user.picture_url }, 200
 
-    current_app.logger.info("(autologin) No user ID in session, not sending auto-login information")
+    current_app.logger.info("No user ID in session, not sending auto-login information")
     return {}, 204

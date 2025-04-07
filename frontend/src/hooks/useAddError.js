@@ -7,7 +7,7 @@ export const useAddError = () => {
 
     return useCallback((error) => {
         errorDispatch({ type: 'ADD_ERROR', payload: error })
-        setTimeout(() => errorDispatch({ type: 'SHIFT_ERROR_QUEUE'}), 3000)
+        setTimeout(() => errorDispatch({ type: 'SHIFT_ERROR_QUEUE' }), 3000)
     }, [errorDispatch])
 }
 

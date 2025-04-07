@@ -2,7 +2,6 @@ import { useContext } from 'react'
 
 import HistoryContext from './HistoryContext'
 
-
 export const useHistory = () => {
     const historyAndDispatch = useContext(HistoryContext)
     return historyAndDispatch
